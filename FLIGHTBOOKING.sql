@@ -50,3 +50,10 @@ CREATE TABLE IF NOT EXISTS Payments (
     CreditCardUsed VARCHAR(255) NOT NULL,
     FOREIGN KEY (BookingID) REFERENCES Bookings(BookingID)
 );
+
+-- Crews Table
+CREATE TABLE IF NOT EXISTS Crews (
+    CrewID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Position ENUM('pilot', 'flight_attendant', 'engineer') NOT NULL
+);
