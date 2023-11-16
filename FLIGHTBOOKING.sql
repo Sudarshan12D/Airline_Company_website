@@ -16,3 +16,14 @@ CREATE TABLE IF NOT EXISTS Flights (
     DepartureDateTime 															DATETIME NOT NULL,
     ArrivalDateTime 															DATETIME NOT NULL
 );
+
+-- Seats Table
+CREATE TABLE IF NOT EXISTS Seats (
+    SeatID INT AUTO_INCREMENT PRIMARY KEY,
+    FlightID INT NOT NULL,
+    SeatNumber VARCHAR(10) NOT NULL,
+    SeatType ENUM('ordinary', 'comfort', 'business_class') NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    IsBooked BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+);
