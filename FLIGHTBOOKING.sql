@@ -65,3 +65,9 @@ CREATE TABLE IF NOT EXISTS Planes (
     Capacity INT NOT NULL
 );
 
+-- Destinations Table
+CREATE TABLE IF NOT EXISTS Destinations (
+    DestinationID INT AUTO_INCREMENT PRIMARY KEY,
+    City VARCHAR(255) NOT NULL,
+    Country VARCHAR(255) NOT NULL
+);
