@@ -57,3 +57,11 @@ CREATE TABLE IF NOT EXISTS Crews (
     Name VARCHAR(255) NOT NULL,
     Position ENUM('pilot', 'flight_attendant', 'engineer') NOT NULL
 );
+
+-- Planes Table
+CREATE TABLE IF NOT EXISTS Planes (
+    PlaneID INT AUTO_INCREMENT PRIMARY KEY,
+    Model VARCHAR(255) NOT NULL,
+    Capacity INT NOT NULL
+);
+
