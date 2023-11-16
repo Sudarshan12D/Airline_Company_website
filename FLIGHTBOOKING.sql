@@ -27,3 +27,16 @@ CREATE TABLE IF NOT EXISTS Seats (
     IsBooked BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
+
+-- Bookings Table
+CREATE TABLE IF NOT EXISTS Bookings (
+    BookingID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    FlightID INT NOT NULL,
+    SeatID INT NOT NULL,
+    CancellationInsurance BOOLEAN DEFAULT FALSE,
+    BookingDateTime DATETIME NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
+    FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
+);
