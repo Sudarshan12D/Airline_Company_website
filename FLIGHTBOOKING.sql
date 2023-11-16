@@ -1,17 +1,9 @@
-DROP DATABASE IF EXISTS FLIGHTBOOKING;
-CREATE DATABASE FLIGHTBOOKING; 
-USE FLIGHTBOOKING;
-
-DROP TABLE IF EXISTS PLANE;
-CREATE TABLE PLANE (
-    Plane_Number                     varchar(10) not null,
-    primary key (Exhibition_Name)
-);
-
-DROP TABLE IF EXISTS SEAT;
-CREATE TABLE SEAT (
-	Seat_Number						varchar(3) not null,
-    On_Plane						varchar(10) not null,
-    primary key (Seat_Number),
-    foreign key (On_Plane) references PLANE(Plane_Number)
+-- Users Table
+CREATE TABLE IF NOT EXISTS Users (
+    UserID 																		INT AUTO_INCREMENT PRIMARY KEY,
+    User_Name VARCHAR(255) 														NOT NULL,
+    Email VARCHAR(255) 															UNIQUE NOT NULL,
+    UserType ENUM('passenger', 'tourism_agent', 'airline_agent', 'admin') 		NOT NULL,
+    MembershipStatus 															BOOLEAN DEFAULT FALSE,
+    CreditCardInfo 																VARCHAR(255)
 );
