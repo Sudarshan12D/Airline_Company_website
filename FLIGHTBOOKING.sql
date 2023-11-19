@@ -71,3 +71,58 @@ CREATE TABLE IF NOT EXISTS Destinations (
     City VARCHAR(255) NOT NULL,
     Country VARCHAR(255) NOT NULL
 );
+-- Users Table
+INSERT INTO Users (User_Name, Email, UserType, MembershipStatus, CreditCardInfo)
+VALUES
+    ('John Doe', 'john.doe@example.com', 'passenger', TRUE, '****-****-****-1234'),
+    ('Jane Smith', 'jane.smith@example.com', 'tourism_agent', FALSE, '****-****-****-5678'),
+    ('Robert Johnson', 'robert.johnson@example.com', 'airline_agent', TRUE, '****-****-****-9012');
+
+-- Flights Table
+INSERT INTO Flights (Origin, Destination, DepartureDateTime, ArrivalDateTime)
+VALUES
+    ('New York', 'Los Angeles', '2023-12-01 08:00:00', '2023-12-01 11:00:00'),
+    ('London', 'Paris', '2023-12-02 14:30:00', '2023-12-02 16:00:00'),
+    ('Tokyo', 'Sydney', '2023-12-03 20:45:00', '2023-12-04 06:30:00');
+
+-- Seats Table
+INSERT INTO Seats (FlightID, SeatNumber, SeatType, Price, IsBooked)
+VALUES
+    (1, 'A1', 'ordinary', 100.00, FALSE),
+    (1, 'B2', 'comfort', 150.00, TRUE),
+    (2, 'C3', 'business_class', 200.00, FALSE);
+
+-- Bookings Table
+INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
+VALUES
+    (1, 1, 1, TRUE, '2023-11-18 10:30:00'),
+    (2, 2, 2, FALSE, '2023-11-18 12:45:00'),
+    (3, 3, 3, TRUE, '2023-11-18 15:00:00');
+
+-- Payments Table
+INSERT INTO Payments (BookingID, Amount, PaymentDateTime, CreditCardUsed)
+VALUES
+    (1, 120.00, '2023-11-18 11:00:00', '****-****-****-1234'),
+    (2, 150.00, '2023-11-18 13:15:00', '****-****-****-5678'),
+    (3, 200.00, '2023-11-18 16:30:00', '****-****-****-9012');
+
+-- Crews Table
+INSERT INTO Crews (Name, Position)
+VALUES
+    ('Captain Smith', 'pilot'),
+    ('Linda Johnson', 'flight_attendant'),
+    ('Tom Davis', 'engineer');
+
+-- Planes Table
+INSERT INTO Planes (Model, Capacity)
+VALUES
+    ('Boeing 737', 150),
+    ('Airbus A320', 180),
+    ('Boeing 747', 300);
+
+-- Destinations Table
+INSERT INTO Destinations (City, Country)
+VALUES
+    ('Dubai', 'United Arab Emirates'),
+    ('Rome', 'Italy'),
+    ('Beijing', 'China');
