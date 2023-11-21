@@ -4,9 +4,12 @@ import java.util.ArrayList;
 public class Plane {
     //Variables
     ArrayList<Seat> listOfSeats;
+    String callSign;
+    int id;
 
     //Member Functions
-    public Plane(){
+    public Plane(String callSign){
+        this.callSign = callSign;
         listOfSeats = new ArrayList<Seat>();
     }
 

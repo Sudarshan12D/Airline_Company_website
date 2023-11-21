@@ -10,11 +10,11 @@ public class Crew {
         listOfCrew = new ArrayList<CrewMember>();
     }
 
-    void addFlight(String n, String p, int id){
+    void addCrew(String n, String p, int id){
         listOfCrew.add(new CrewMember(n, p, id));
     }
 
-    void addFlight(CrewMember c){
+    void addCrew(CrewMember c){
         listOfCrew.add(c);
     }
 
