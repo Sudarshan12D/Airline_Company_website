@@ -24,7 +24,14 @@ public class Crew {
     }
 
     //Getters
-
+    public ArrayList<CrewMember> getListOfCrew() {
+        return listOfCrew;
+    }
+    
 
     //Setters
-}
+    public void setListOfCrew(ArrayList<CrewMember> listOfCrew) {
+        this.listOfCrew = listOfCrew;
+    }
+    
+}   

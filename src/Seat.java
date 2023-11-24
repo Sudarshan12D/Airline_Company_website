@@ -15,8 +15,26 @@ public class Seat {
 
 
     //Getters
+    public int getId() {
+        return id;
+    }
+    public String getRow() {
+        return row;
+    }
+    public int getSeatNumber() {
+        return seatNumber;
+    }
 
 
     //Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setRow(String row) {
+        this.row = row;
+    }
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
+    }
     
 }
