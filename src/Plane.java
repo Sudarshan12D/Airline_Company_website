@@ -17,7 +17,7 @@ public class Plane {
         listOfSeats.add(new Seat(r, s, id));
     }
 
-    void addFlight(Seat s){
+    void addSeat(Seat s){
         listOfSeats.add(s);
     }
 

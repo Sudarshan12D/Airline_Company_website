@@ -18,8 +18,8 @@ public class FlightList {
         listOfFlights.add(f);
     }
 
-    void removeFlight(){
-
+    void removeFlight(int id){
+        //REmove flight by id
 
     }
 
