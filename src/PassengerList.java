@@ -20,8 +20,14 @@ public class PassengerList {
 
 
     //Getters
+    public ArrayList<Passenger> getListOfPassengers() {
+        return listOfPassengers;
+    }
 
 
     //Setters
+    public void setListOfPassengers(ArrayList<Passenger> listOfPassengers) {
+        this.listOfPassengers = listOfPassengers;
+    }
     
 }

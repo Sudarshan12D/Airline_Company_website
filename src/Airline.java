@@ -14,8 +14,22 @@ public class Airline {
     }
 
     //Getters
+    public String getAirlineName() {
+        return airlineName;
+    }
 
+    public int getIdNum() {
+        return idNum;
+    }
 
     //Setters
+    public void setAirlineName(String airlineName) {
+        this.airlineName = airlineName;
+    }
+
+    public void setIdNum(int idNum) {
+        this.idNum = idNum;
+    }
+
 
 }

@@ -21,8 +21,44 @@ public class FlightItinerary {
     }
 
     //Getters
+    public Airline getAirline() {
+        return airline;
+    }
+    public Crew getCrew() {
+        return crew;
+    }
+    public int getId() {
+        return id;
+    }
+    public static int getIdSetter() {
+        return idSetter;
+    }
+    public LocationInformation getLocationInformation() {
+        return locationInformation;
+    }
+    public Plane getPlane() {
+        return plane;
+    }
 
 
     //Setters
+    public void setAirline(Airline airline) {
+        this.airline = airline;
+    }
+    public void setCrew(Crew crew) {
+        this.crew = crew;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public static void setIdSetter(int idSetter) {
+        FlightItinerary.idSetter = idSetter;
+    }
+    public void setLocationInformation(LocationInformation locationInformation) {
+        this.locationInformation = locationInformation;
+    }
+    public void setPlane(Plane plane) {
+        this.plane = plane;
+    }
 
 }
