@@ -232,21 +232,14 @@ public class Main {
             frame.add(topPanel, BorderLayout.NORTH);
 
             //.................................... Retrieve flight data......................................................
-            ArrayList<String> flightDataStrings = FlightDataRetriever.getAvailableFlights();
+            ArrayList<Object[]> flightData = FlightDataRetriever.getAvailableFlights();
 
             String[] columnNames = {"Flight ID", "Origin", "Destination", "Departure", "Arrival"};
-            Object[][] data = new Object[flightDataStrings.size()][columnNames.length];
-
-            // Parse the flight data strings into the data array for the JTable
-            for (int i = 0; i < flightDataStrings.size(); i++) {
-                String[] flightInfo = flightDataStrings.get(i).split(", ");
-                for (int j = 0; j < flightInfo.length; j++) {
-                    // Assuming each piece of flight information follows the format "Key: Value"
-                    String[] entry = flightInfo[j].split(": ");
-                    if (entry.length > 1) {
-                        data[i][j] = entry[1].trim(); 
-                    }
-                }
+            Object[][] data = new Object[flightData.size()][5]; // Adjusted for 5 columns
+        
+            // Copy the flight data to the data array
+            for (int i = 0; i < flightData.size(); i++) {
+                data[i] = flightData.get(i);
             }
 
             // Create the table and add it to a scroll pane
