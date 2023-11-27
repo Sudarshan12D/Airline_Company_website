@@ -8,10 +8,11 @@ public class Passenger {
     
 
     //Member Functions
-    public Passenger(String f, String l, String e){
+    public Passenger(String f, String l, String e, String a){
         this.fname = f;
         this.lname = l;
         this.email = e;
+        this.address = a;
     }
 
     //Getters
