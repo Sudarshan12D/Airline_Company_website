@@ -263,14 +263,10 @@ public class Main {
                     return String.class; // Set the class for all cells to String for simplicity
                 }
             };
-
-
             // Create the table and add it to a scroll pane
             JTable table = new JTable(model);
 
             
-
-
             // Add a mouse listener to handle clicks on the "Book" button
             table.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -288,7 +284,6 @@ public class Main {
                             // Create a label for displaying selected seats
                             selectedSeatsLabel = new JLabel("<html>Seats selected: </html>");
                             selectedSeatsLabel.setFont(new Font("Serif", Font.PLAIN, 16));
-                            
                             selectedSeatsLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
                             // Main panel with GridBagLayout
@@ -301,8 +296,6 @@ public class Main {
                             // Panel for seats with GridLayout
                             JPanel seatsPanel = new JPanel(new GridLayout(6, 7, 10, 10)); // 8 rows, 7 cols for spacers
                             seatsPanel.setPreferredSize(new Dimension(600, 300));
-
-                            
 
                             // Method to create a label with a colored box
                             Function<String, JPanel> createColorInfoPanel = (String text) -> {
@@ -344,7 +337,6 @@ public class Main {
                             infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
                             infoPanel.setBorder(BorderFactory.createTitledBorder("Seat Information"));
 
-
                             // Add color-coded labels to info panel
                             infoPanel.add(createColorInfoPanel.apply("Business Class $1000"));
                             infoPanel.add(createColorInfoPanel.apply("Economy Class $500"));
@@ -352,6 +344,28 @@ public class Main {
                             infoPanel.add(createColorInfoPanel.apply("Selected Seats"));
                             infoPanel.add(createColorInfoPanel.apply("Reserved Seats"));
 
+
+                            // ..................................CONTINUE BUTTON HERE .........................................
+                            JButton continueButton = new JButton("Continue");
+                            continueButton.setAlignmentX(Component.CENTER_ALIGNMENT); // To align the button in the center of the box layout
+                            continueButton.setBackground(new Color(0, 153, 0)); // Set the button color to green
+                            continueButton.setForeground(Color.WHITE); // Set the text color to white
+                            continueButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    // Check if any seats have been selected
+                                    if (selectedSeats.isEmpty()) {
+                                        JOptionPane.showMessageDialog(frame, "No seats selected.", "None Selected", JOptionPane.INFORMATION_MESSAGE);
+                                    } else {
+                                        // Code to execute when Continue button is clicked and at least one seat is selected
+                                        System.out.println("Continue button clicked with selected seats: " + selectedSeats);
+                                        // Implement your logic here
+                                    }
+                                }
+                            });
+
+                            // Add the Continue button just below the infoPanel
+                            infoPanel.add(Box.createVerticalStrut(10)); // Add some space between the last label and the button
+                            infoPanel.add(continueButton);
                             
                             // Add selectedSeatsLabel to the top panel
                             topPanel.add(selectedSeatsLabel, BorderLayout.SOUTH);
