@@ -1,11 +1,17 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.function.Function;
+
 
 public class Main {
+
+
+    private static JLabel selectedSeatsLabel;
+    static ArrayList<String> selectedSeats = new ArrayList<>();
+
     public static void main(String[] args) {
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
@@ -246,7 +252,7 @@ public class Main {
                 data[i][5] = "View Seats"; // Place a "Book" placeholder that will be replaced with a button
             }
 
-            String[] columnNames = {"Flight ID", "Origin", "Destination", "Departure", "Arrival", "Select Flight"};
+            String[] columnNames = {"Flight ID", "Origin", "Destination", "Departure", "Arrival", "Select Seats"};
 
             // Create a DefaultTableModel with the new column
             DefaultTableModel model = new DefaultTableModel(data, columnNames) {
@@ -262,7 +268,7 @@ public class Main {
             // Create the table and add it to a scroll pane
             JTable table = new JTable(model);
 
-
+            
 
 
             // Add a mouse listener to handle clicks on the "Book" button
@@ -277,8 +283,13 @@ public class Main {
                             JFrame seatsFrame = new JFrame("Select Seats");
                             seatsFrame.setLayout(new BorderLayout());
                             seatsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                            seatsFrame.setSize(800, 400);
+                            seatsFrame.setSize(950, 500);
                             
+                            // Create a label for displaying selected seats
+                            selectedSeatsLabel = new JLabel("<html>Seats selected: </html>");
+                            selectedSeatsLabel.setFont(new Font("Serif", Font.PLAIN, 16));
+                            
+                            selectedSeatsLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
                             // Main panel with GridBagLayout
                             JPanel mainPanel = new JPanel(new GridBagLayout());
@@ -291,15 +302,103 @@ public class Main {
                             JPanel seatsPanel = new JPanel(new GridLayout(6, 7, 10, 10)); // 8 rows, 7 cols for spacers
                             seatsPanel.setPreferredSize(new Dimension(600, 300));
 
+                            
+
+                            // Method to create a label with a colored box
+                            Function<String, JPanel> createColorInfoPanel = (String text) -> {
+                                JPanel panel = new JPanel();
+                                panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+                            
+                                JLabel colorLabel = new JLabel();
+                                colorLabel.setPreferredSize(new Dimension(15, 15));
+                                colorLabel.setOpaque(true);
+                            
+                                // Set color based on the text
+                                switch (text) {
+                                    case "Business Class $1000":
+                                        colorLabel.setBackground(Color.ORANGE);
+                                        break;
+                                    case "Economy Class $500":
+                                        colorLabel.setBackground(Color.BLUE);
+                                        break;
+                                    case "First Class $700":
+                                        colorLabel.setBackground(Color.YELLOW);
+                                        break;
+                                    case "Selected Seats":
+                                        colorLabel.setBackground(Color.GREEN);
+                                        break;
+                                    case "Reserved Seats":
+                                        colorLabel.setBackground(Color.GRAY);
+                                        break;
+                                }
+                            
+                                JLabel textLabel = new JLabel(text);
+                                panel.add(colorLabel);
+                                panel.add(textLabel);
+                            
+                                return panel;
+                            };
+
+                            // Info panel for class colors
+                            JPanel infoPanel = new JPanel();
+                            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+                            infoPanel.setBorder(BorderFactory.createTitledBorder("Seat Information"));
+
+
+                            // Add color-coded labels to info panel
+                            infoPanel.add(createColorInfoPanel.apply("Business Class $1000"));
+                            infoPanel.add(createColorInfoPanel.apply("Economy Class $500"));
+                            infoPanel.add(createColorInfoPanel.apply("First Class $700"));
+                            infoPanel.add(createColorInfoPanel.apply("Selected Seats"));
+                            infoPanel.add(createColorInfoPanel.apply("Reserved Seats"));
+
+                            
+                            // Add selectedSeatsLabel to the top panel
+                            topPanel.add(selectedSeatsLabel, BorderLayout.SOUTH);
                             // Buttons for each seat with fixed size
                             for (int i = 1; i <= 36; i++) {
                                 JButton seatButton = new JButton("Seat " + i);
                                 seatButton.setPreferredSize(new Dimension(80, 40));
+
+
+                                // Assign a default action command as "NOT_SELECTED"
+                                seatButton.setActionCommand("NOT_SELECTED");
+
+                                // Set color based on the class of the seat
+                                Color originalColor;
+                                if (i <= 12) { // First class
+                                    originalColor = Color.YELLOW;
+                                } else if (i <= 30) { // Economy class
+                                    originalColor = Color.BLUE;
+                                } else { // Business class
+                                    originalColor = Color.ORANGE;
+                                }
+
+                                seatButton.setBackground(originalColor);
+
+                                // Set action command to store the original color
+                                seatButton.setActionCommand(originalColor.toString());
+                                
                                 seatButton.addActionListener(seatEvent -> {
                                     JButton clickedSeat = (JButton) seatEvent.getSource();
-                                    JOptionPane.showMessageDialog(seatsFrame, clickedSeat.getText() + " selected.");
+                                    Color currentColor = clickedSeat.getBackground();
+                                    String seatText = clickedSeat.getText();
+
+                                    // If the current color is not green, change it to green
+                                    if (!currentColor.equals(Color.GREEN)) {
+                                        clickedSeat.setBackground(Color.GREEN);
+                                        selectedSeats.add(seatText);
+                                    } else {
+                                        // Parse the original color from the action command and change back to it
+                                        clickedSeat.setBackground(originalColor);
+                                        selectedSeats.remove(seatText);
+                                    }
+
+                                    String selectedSeatsText = "<html>Seats selected: " + String.join(", ", selectedSeats) + "</html>";
+                                    selectedSeatsLabel.setText(selectedSeatsText);
                                 });
                                 seatsPanel.add(seatButton);
+                                
 
                                 // Add spacer after every third seat in a row
                                 if (i % 3 == 0 && i % 6 != 0) {
@@ -310,14 +409,36 @@ public class Main {
                                 }
                             }
 
+                            seatsFrame.addWindowListener(new WindowAdapter() {
+                                @Override
+                                public void windowClosing(WindowEvent e) {
+                                    selectedSeats.clear(); // Clear the list of selected seats
+                                    selectedSeatsLabel.setText("<html>Seats selected: </html>"); // Reset the label text
+                                    // If you have any other clean-up code to run when the window closes, include it here
+                                }
+                            });
+
+                           
+
                             // Add seatsPanel to mainPanel
                             seatsGbc.gridx = 0;
                             seatsGbc.gridy = 0;
                             mainPanel.add(seatsPanel, seatsGbc);
 
+                            // Add the info panel to the main panel
+                            seatsGbc.gridx = 1; // Set to the second column
+                            seatsGbc.gridy = 0;
+                            seatsGbc.anchor = GridBagConstraints.NORTH; // Align to the top
+                            mainPanel.add(infoPanel, seatsGbc);
+
                             // Add mainPanel to the frame
-                            seatsFrame.add(mainPanel);
-                            seatsFrame.pack();
+                            seatsFrame.add(mainPanel, BorderLayout.CENTER);
+
+                            // Add the selectedSeatsLabel to the bottom of the seatsFrame
+                            seatsFrame.add(selectedSeatsLabel, BorderLayout.SOUTH);
+                            //seatsFrame.add(selectedSeatsScrollPane, BorderLayout.SOUTH);
+
+                            //seatsFrame.pack();
                             seatsFrame.setLocationRelativeTo(null);
                             seatsFrame.setVisible(true);
                         }
