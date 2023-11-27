@@ -4,6 +4,7 @@ public class Passenger {
     String fname;
     String lname;
     String email;
+    String address;
     
 
     //Member Functions
@@ -23,6 +24,9 @@ public class Passenger {
     public String getLname() {
         return lname;
     }
+    public String getAddress() {
+        return address;
+    }
 
 
     //Setters
@@ -34,6 +38,9 @@ public class Passenger {
     }
     public void setLname(String lname) {
         this.lname = lname;
+    }
+    public void serAddress(String address){
+        this.address = address;
     }
     
 }
