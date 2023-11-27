@@ -406,13 +406,15 @@ public class Main {
                             continueButton.setBackground(new Color(0, 153, 0)); // Set the button color to green
                             continueButton.setForeground(Color.WHITE); // Set the text color to white
                             continueButton.addActionListener(new ActionListener() {
+                                Object[] flightInfo = flightData.get(row);
                                 public void actionPerformed(ActionEvent e) {
                                     // Check if any seats have been selected
                                     if (selectedSeats.isEmpty()) {
                                         JOptionPane.showMessageDialog(frame, "No seats selected.", "None Selected", JOptionPane.INFORMATION_MESSAGE);
                                     } else {
                                         // Code to execute when Continue button is clicked and at least one seat is selected
-                                        System.out.println("Continue button clicked with selected seats: " + selectedSeats);
+                                        //System.out.println("Continue button clicked with selected seats: " + selectedSeats);
+                                        createCheckoutFrame(flightInfo);
                                         // Implement your logic here
                                     }
                                 }
@@ -511,6 +513,8 @@ public class Main {
                             //seatsFrame.pack();
                             seatsFrame.setLocationRelativeTo(null);
                             seatsFrame.setVisible(true);
+                            
+                           
                         }
                     }
                 }
@@ -541,4 +545,86 @@ public class Main {
         // Set the frame visible
         frame.setVisible(true);
     }
+    private static void createCheckoutFrame(Object[] flightInfo) {
+        JFrame checkoutFrame = new JFrame("Checkout");
+        checkoutFrame.setLayout(new BorderLayout());
+        checkoutFrame.setSize(600, 400);
+        checkoutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    
+        JPanel checkoutPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+    
+        JLabel checkoutTitleLabel = new JLabel("Checkout Details", SwingConstants.CENTER);
+        checkoutTitleLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        checkoutPanel.add(checkoutTitleLabel, gbc);
+        gbc.gridy++;
+    
+        // Displaying flight information
+        JLabel departureLabel = new JLabel("Departure: " + flightInfo[1].toString());
+        checkoutPanel.add(departureLabel, gbc);
+        gbc.gridy++;
+    
+        JLabel arrivalLabel = new JLabel("Arrival: " + flightInfo[2].toString());
+        checkoutPanel.add(arrivalLabel, gbc);
+        gbc.gridy++;
+    
+        JLabel departureTimeLabel = new JLabel("Departure Time: " + flightInfo[3].toString());
+        checkoutPanel.add(departureTimeLabel, gbc);
+        gbc.gridy++;
+    
+        JLabel arrivalTimeLabel = new JLabel("Arrival Time: " + flightInfo[4].toString());
+        checkoutPanel.add(arrivalTimeLabel, gbc);
+        gbc.gridy++;
+    
+        // Divider line
+        JSeparator separator = new JSeparator();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        checkoutPanel.add(separator, gbc);
+        gbc.gridy++;
+        gbc.fill = GridBagConstraints.NONE;  // Reset to default
+        gbc.gridwidth = 1;  // Reset to default
+    
+        // Selected seats information
+        JLabel selectedSeatsLabel = new JLabel("Selected Seats: " + String.join(", ", selectedSeats));
+        checkoutPanel.add(selectedSeatsLabel, gbc);
+        gbc.gridy++;
+    
+        // Example price calculation
+        int seatPrice = 100; // Example price per seat
+        int totalPrice = selectedSeats.size() * seatPrice;
+        JLabel totalPriceLabel = new JLabel("Total Price: $" + totalPrice);
+        checkoutPanel.add(totalPriceLabel, gbc);
+        gbc.gridy++;
+    
+        // Payment information fields (simplified for example)
+        checkoutPanel.add(new JLabel("Card Number:"), gbc);
+        gbc.gridx++;
+        JTextField cardNumberField = new JTextField(20);
+        checkoutPanel.add(cardNumberField, gbc);
+    
+        // Checkout button
+        JButton checkoutButton = new JButton("Complete Purchase");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 2;
+        checkoutButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Implement payment processing logic here
+                JOptionPane.showMessageDialog(checkoutFrame, "Purchase Complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                checkoutFrame.dispose();
+            }
+        });
+        checkoutPanel.add(checkoutButton, gbc);
+    
+        checkoutFrame.add(checkoutPanel, BorderLayout.CENTER);
+        checkoutFrame.pack();
+        checkoutFrame.setLocationRelativeTo(null);
+        checkoutFrame.setVisible(true);
+    }
+    
+    
 }
