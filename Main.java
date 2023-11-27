@@ -243,6 +243,13 @@ public class Main {
                         JOptionPane.showMessageDialog(signUpFrame, "Email or password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         // If not empty, proceed with your submission logic
+                        RegistrationHandler.handleRegistration(
+                            emailField.getText(),
+                            passwordField.getPassword(),
+                            firstNameField.getText(),
+                            lastNameField.getText(),
+                            addressField.getText()
+                        );
                         signUpFrame.dispose();
                     }
                 });
