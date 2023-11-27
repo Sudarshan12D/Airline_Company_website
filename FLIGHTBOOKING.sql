@@ -29,11 +29,11 @@ CREATE TABLE IF NOT EXISTS Members (
 
 -- Flights Table
 CREATE TABLE IF NOT EXISTS Flights (
-    FlightID 																	INT AUTO_INCREMENT PRIMARY KEY,
-    Origin 																		VARCHAR(255) NOT NULL,
-    Destination 																VARCHAR(255) NOT NULL,
-    DepartureDateTime 															DATETIME NOT NULL,
-    ArrivalDateTime 															DATETIME NOT NULL
+    FlightID INT AUTO_INCREMENT PRIMARY KEY,
+    Origin VARCHAR(255) NOT NULL,
+    Destination VARCHAR(255) NOT NULL,
+    DepartureDateTime DATETIME NOT NULL,
+    ArrivalDateTime DATETIME NOT NULL
 );
 
 -- Seats Table
@@ -50,12 +50,12 @@ CREATE TABLE IF NOT EXISTS Seats (
 -- Bookings Table
 CREATE TABLE IF NOT EXISTS Bookings (
     BookingID INT AUTO_INCREMENT PRIMARY KEY,
-    UserID INT NOT NULL,
+    MemberID INT,
     FlightID INT NOT NULL,
     SeatID INT NOT NULL,
     CancellationInsurance BOOLEAN DEFAULT FALSE,
     BookingDateTime DATETIME NOT NULL,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (MemberID) REFERENCES Members(MemberID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
     FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
 );
@@ -90,12 +90,22 @@ CREATE TABLE IF NOT EXISTS Destinations (
     City VARCHAR(255) NOT NULL,
     Country VARCHAR(255) NOT NULL
 );
+
 -- Users Table
-INSERT INTO Users (FName,LName, User_Address, Email, User_Password, MembershipStatus, CreditCardInfo)
+INSERT INTO Users (FName, LName, User_Address, Email, User_Password)
 VALUES
-    ('John', 'Doe', 'john.doe@example.com', 'hello', TRUE, '****-****-****-1234'),
-    ('Jane', 'Smith', 'jane.smith@example.com', 'mypassword3',  FALSE, '****-****-****-5678'),
-    ('Robert' 'Johnson', 'robert.johnson@example.com', 'ummmm', TRUE, '****-****-****-9012');
+    ('John', 'Doe', '3RD STREET ', 'john.doe@example.com', 'hello'),
+    ('Jane', 'Smith', '2ND STRRET ','jane.smith@example.com', 'mypassword3'),
+    ('Robert', 'Johnson', '4TH AVE', 'robert.johnson@example.com', 'ummmm'),
+    ('Alice', 'Williams', '5TH AVENUE', 'alice.williams@example.com', 'password123'),
+    ('Bob', 'Miller', '6TH AVENUE', 'bob.miller@example.com', 'securepass');
+
+-- Members Table
+INSERT INTO Members (UserID, CreditCardInfo)
+VALUES
+    (1, '****-****-****-1234'),
+    (2, '****-****-****-5678'),
+    (3, '****-****-****-9012');
 
 -- Flights Table
 INSERT INTO Flights (Origin, Destination, DepartureDateTime, ArrivalDateTime)
@@ -112,7 +122,7 @@ VALUES
     (2, 'C3', 'business_class', 200.00, FALSE);
 
 -- Bookings Table
-INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
+INSERT INTO Bookings (MemberID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
 VALUES
     (1, 1, 1, TRUE, '2023-11-18 10:30:00'),
     (2, 2, 2, FALSE, '2023-11-18 12:45:00'),
