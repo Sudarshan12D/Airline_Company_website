@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -263,8 +265,22 @@ public class Main {
                     return String.class; // Set the class for all cells to String for simplicity
                 }
             };
+
             // Create the table and add it to a scroll pane
-            JTable table = new JTable(model);
+            JTable table = new JTable(model){
+
+                @Override
+                public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                    Component c = super.prepareRenderer(renderer, row, column);
+                    if (column == 5 && "View Seats".equals(getValueAt(row, column))) {
+                        c.setForeground(Color.BLUE);
+                        c.setFont(new Font("Serif", Font.BOLD, 12)); // Set the font for the "View Seats" text
+                    } else {
+                        c.setForeground(Color.BLACK); // Reset to the default text color for other cells
+                    }
+                    return c;
+                }
+            };
 
             
             // Add a mouse listener to handle clicks on the "Book" button
