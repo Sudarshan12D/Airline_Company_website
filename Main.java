@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -234,17 +237,96 @@ public class Main {
             //.................................... Retrieve flight data......................................................
             ArrayList<Object[]> flightData = FlightDataRetriever.getAvailableFlights();
 
-            String[] columnNames = {"Flight ID", "Origin", "Destination", "Departure", "Arrival"};
-            Object[][] data = new Object[flightData.size()][5]; // Adjusted for 5 columns
+           
+            Object[][] data = new Object[flightData.size()][6]; // Adjusted for 6 columns
         
-            // Copy the flight data to the data array
+            // Copy the flight data to the data array and add a "Book" button to each row
             for (int i = 0; i < flightData.size(); i++) {
-                data[i] = flightData.get(i);
+                System.arraycopy(flightData.get(i), 0, data[i], 0, 5);
+                data[i][5] = "View Seats"; // Place a "Book" placeholder that will be replaced with a button
             }
 
+            String[] columnNames = {"Flight ID", "Origin", "Destination", "Departure", "Arrival", "Select Flight"};
+
+            // Create a DefaultTableModel with the new column
+            DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+                public boolean isCellEditable(int row, int column) {
+                    return column == 5; // Only the "Select Flight" column is editable
+                }
+                public Class<?> getColumnClass(int column) {
+                    return String.class; // Set the class for all cells to String for simplicity
+                }
+            };
+
+
             // Create the table and add it to a scroll pane
-            JTable table = new JTable(data, columnNames);
-            table.setAutoCreateRowSorter(true); // Allow sorting of columns
+            JTable table = new JTable(model);
+
+
+
+
+            // Add a mouse listener to handle clicks on the "Book" button
+            table.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    int column = table.getColumnModel().getColumnIndexAtX(e.getX());
+                    int row = e.getY() / table.getRowHeight();
+            
+                    if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
+                        if ("View Seats".equals(table.getValueAt(row, column))) {
+                            // Create and display the seat selection frame
+                            JFrame seatsFrame = new JFrame("Select Seats");
+                            seatsFrame.setLayout(new BorderLayout());
+                            seatsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            seatsFrame.setSize(800, 400);
+                            
+
+                            // Main panel with GridBagLayout
+                            JPanel mainPanel = new JPanel(new GridBagLayout());
+                            mainPanel.setBorder(BorderFactory.createTitledBorder("Select Seats"));
+
+                            GridBagConstraints seatsGbc = new GridBagConstraints();
+                            seatsGbc.insets = new Insets(5, 5, 5, 5);
+
+                            // Panel for seats with GridLayout
+                            JPanel seatsPanel = new JPanel(new GridLayout(6, 7, 10, 10)); // 8 rows, 7 cols for spacers
+                            seatsPanel.setPreferredSize(new Dimension(600, 300));
+
+                            // Buttons for each seat with fixed size
+                            for (int i = 1; i <= 36; i++) {
+                                JButton seatButton = new JButton("Seat " + i);
+                                seatButton.setPreferredSize(new Dimension(80, 40));
+                                seatButton.addActionListener(seatEvent -> {
+                                    JButton clickedSeat = (JButton) seatEvent.getSource();
+                                    JOptionPane.showMessageDialog(seatsFrame, clickedSeat.getText() + " selected.");
+                                });
+                                seatsPanel.add(seatButton);
+
+                                // Add spacer after every third seat in a row
+                                if (i % 3 == 0 && i % 6 != 0) {
+                                    JPanel spacer = new JPanel();
+                                    spacer.setOpaque(false);
+                                    spacer.setPreferredSize(new Dimension(20, 40));
+                                    seatsPanel.add(spacer);
+                                }
+                            }
+
+                            // Add seatsPanel to mainPanel
+                            seatsGbc.gridx = 0;
+                            seatsGbc.gridy = 0;
+                            mainPanel.add(seatsPanel, seatsGbc);
+
+                            // Add mainPanel to the frame
+                            seatsFrame.add(mainPanel);
+                            seatsFrame.pack();
+                            seatsFrame.setLocationRelativeTo(null);
+                            seatsFrame.setVisible(true);
+                        }
+                    }
+                }
+            });
+
+
+            //table.setAutoCreateRowSorter(true); // Allow sorting of columns
             JScrollPane scrollPane = new JScrollPane(table);
             table.setFillsViewportHeight(true);
 
