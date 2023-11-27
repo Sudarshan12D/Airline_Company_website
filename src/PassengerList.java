@@ -10,8 +10,8 @@ public class PassengerList {
         listOfPassengers = new ArrayList<Passenger>();
     }
 
-    void addFlight(String f, String l, String e){
-        listOfPassengers.add(new Passenger(f, l, e));
+    void addFlight(String f, String l, String e, String a){
+        listOfPassengers.add(new Passenger(f, l, e, a));
     }
 
     void addFlight(Passenger p){
