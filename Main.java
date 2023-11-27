@@ -145,7 +145,7 @@ public class Main {
                 // Create a new frame for sign up
                 JFrame signUpFrame = new JFrame("Sign Up");
                 signUpFrame.setLayout(new BorderLayout()); // Use BorderLayout for the frame
-                signUpFrame.setSize(350, 220); // Initial size
+                signUpFrame.setSize(400, 300); // Initial size
                 signUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             
                 // Panel that contains the actual sign up form
@@ -186,7 +186,48 @@ public class Main {
                 JPasswordField passwordField = new JPasswordField(20);
                 centerPanel.add(passwordField, gbc);
             
+                
+
+                // First Name label and text field
+                gbc.gridx = 0; // Reset to first column
+                gbc.gridy++; // Move to next row
+                centerPanel.add(new JLabel("First Name:"), gbc);
+                gbc.gridx++; // Move to the next column
+                JTextField firstNameField = new JTextField(20); // Width set to 10
+                centerPanel.add(firstNameField, gbc);
+
+                // Last Name label and text field
+                gbc.gridx = 0;
+                gbc.gridy++; // Move to the next row
+                centerPanel.add(new JLabel("Last Name:"), gbc);
+                gbc.gridx++; // Move to the next column
+                JTextField lastNameField = new JTextField(20); // Width set to 10
+                centerPanel.add(lastNameField, gbc);
+
+                // Reset column index and increment row index for the address field
+                gbc.gridx = 0; // Reset to first column
+                gbc.gridy++; // Move to the next row for the address field
+
+                // Address label and text field
+                centerPanel.add(new JLabel("Address:"), gbc);
+                gbc.gridx++; // Move to the next column
+                gbc.gridwidth = GridBagConstraints.REMAINDER; // This will make the address field span the rest of the row
+                JTextField addressField = new JTextField(20);
+                centerPanel.add(addressField, gbc);
+
+                // Reset gridwidth for subsequent components
+                gbc.gridwidth = 1;
+
                 // Submit button constraints
+                gbc.gridx = 0; // Start at the first column
+                gbc.gridy++; // Move to the next row after the text fields
+                gbc.gridwidth = 2; // Span across two columns
+                gbc.weightx = 0; // Do not let it grow horizontally
+
+
+                gbc.fill = GridBagConstraints.NONE; // Do not resize the button
+                gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally in its cell
+                gbc.insets = new Insets(20, 0, 10, 0); // Top padding of 20, bottom padding of 10// Submit button constraints
                 gbc.gridx = 0; // Start at the first column
                 gbc.gridy++; // Move to the next row after the text fields
                 gbc.gridwidth = 2; // Span across two columns
@@ -244,8 +285,6 @@ public class Main {
 
             //.................................... Retrieve flight data......................................................
             ArrayList<Object[]> flightData = FlightDataRetriever.getAvailableFlights();
-
-           
             Object[][] data = new Object[flightData.size()][6]; // Adjusted for 6 columns
         
             // Copy the flight data to the data array and add a "Book" button to each row
@@ -383,7 +422,8 @@ public class Main {
                             infoPanel.add(Box.createVerticalStrut(10)); // Add some space between the last label and the button
                             infoPanel.add(continueButton);
                             
-                            // Add selectedSeatsLabel to the top panel
+
+                            // ...............................selectedSeatsLabel..................................................
                             topPanel.add(selectedSeatsLabel, BorderLayout.SOUTH);
                             // Buttons for each seat with fixed size
                             for (int i = 1; i <= 36; i++) {
