@@ -1,11 +1,20 @@
 -- Users Table
+-- Users Table
 CREATE TABLE IF NOT EXISTS Users (
-    UserID 																		INT AUTO_INCREMENT PRIMARY KEY,
-    User_Name VARCHAR(255) 														NOT NULL,
-    Email VARCHAR(255) 															UNIQUE NOT NULL,
-    UserType ENUM('passenger', 'tourism_agent', 'airline_agent', 'admin') 		NOT NULL,
-    MembershipStatus 															BOOLEAN DEFAULT FALSE,
-    CreditCardInfo 																VARCHAR(255)
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    FName VARCHAR(255) NOT NULL,
+    LName VARCHAR(255) NOT NULL,
+    User_Address VARCHAR(255) NOT NULL,
+    User_Password VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- Members Table
+CREATE TABLE IF NOT EXISTS Members (
+    MemberID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    CreditCardInfo VARCHAR(255) NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 -- Flights Table
@@ -72,11 +81,11 @@ CREATE TABLE IF NOT EXISTS Destinations (
     Country VARCHAR(255) NOT NULL
 );
 -- Users Table
-INSERT INTO Users (User_Name, Email, UserType, MembershipStatus, CreditCardInfo)
+INSERT INTO Users (FName,LName, User_Address, Email, User_Password, MembershipStatus, CreditCardInfo)
 VALUES
-    ('John Doe', 'john.doe@example.com', 'passenger', TRUE, '****-****-****-1234'),
-    ('Jane Smith', 'jane.smith@example.com', 'tourism_agent', FALSE, '****-****-****-5678'),
-    ('Robert Johnson', 'robert.johnson@example.com', 'airline_agent', TRUE, '****-****-****-9012');
+    ('John', 'Doe', 'john.doe@example.com', 'hello', TRUE, '****-****-****-1234'),
+    ('Jane', 'Smith', 'jane.smith@example.com', 'mypassword3',  FALSE, '****-****-****-5678'),
+    ('Robert' 'Johnson', 'robert.johnson@example.com', 'ummmm', TRUE, '****-****-****-9012');
 
 -- Flights Table
 INSERT INTO Flights (Origin, Destination, DepartureDateTime, ArrivalDateTime)
