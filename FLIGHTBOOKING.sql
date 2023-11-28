@@ -117,10 +117,28 @@ VALUES
 -- Seats Table
 INSERT INTO Seats (FlightID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
-    (1, 'A1', 'ordinary', 100.00, FALSE),
-    (1, 'B2', 'comfort', 150.00, TRUE),
-    (2, 'C3', 'business_class', 200.00, FALSE);
-
+INSERT INTO Seats (FlightID, SeatNumber, SeatType, Price, IsBooked)
+VALUES
+    -- Seats for Flight 1
+    (1, '1', 'ordinary', 100.00, FALSE),
+    (1, '2', 'ordinary', 100.00, FALSE),
+    (1, '3', 'ordinary', 100.00, FALSE),
+    -- ... add seats 4 through 32 with the same FlightID
+    (1, '32', 'ordinary', 100.00, FALSE),
+    
+    -- Seats for Flight 2
+    (2, '1', 'ordinary', 100.00, FALSE),
+    (2, '2', 'ordinary', 100.00, FALSE),
+    (2, '3', 'ordinary', 100.00, FALSE),
+    -- ... add seats 4 through 32 with the same FlightID
+    (2, '32', 'ordinary', 100.00, FALSE),
+    
+    -- Seats for Flight 3
+    (3, '1', 'ordinary', 100.00, FALSE),
+    (3, '2', 'ordinary', 100.00, FALSE),
+    (3, '3', 'ordinary', 100.00, FALSE),
+    -- ... add seats 4 through 32 with the same FlightID
+    (3, '32', 'ordinary', 100.00, FALSE);
 -- Bookings Table
 INSERT INTO Bookings (MemberID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
 VALUES
