@@ -299,7 +299,7 @@ public class Main {
             frame.add(topPanel, BorderLayout.NORTH);
 
             //.................................... Retrieve flight data......................................................
-            ArrayList<Object[]> flightData = FlightDataRetriever.getAvailableFlights();
+            ArrayList<Object[]> flightData = availableFlights.getAllFlightInfo();
             Object[][] data = new Object[flightData.size()][6]; // Adjusted for 6 columns
         
             // Copy the flight data to the data array and add a "Book" button to each row

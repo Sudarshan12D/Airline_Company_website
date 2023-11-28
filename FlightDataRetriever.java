@@ -14,7 +14,8 @@ public class FlightDataRetriever {
         ArrayList<Seat> seatList = new ArrayList<Seat>();
         ArrayList<CrewMember> crewMemberList = new ArrayList<CrewMember>();
         ArrayList<Crew> crewList = new ArrayList<Crew>();
-        ArrayList<FlightItinerary> flightItinerarieList = new ArrayList<FlightItinerary>();
+        ArrayList<Integer> flightIDList = new ArrayList<Integer>();
+        // ArrayList<FlightItinerary> flightItinerarieList = new ArrayList<FlightItinerary>();
         FlightList fl = new FlightList();
 
         //Get all Location Information
@@ -25,13 +26,14 @@ public class FlightDataRetriever {
 
             while (rs.next()) {
                 ArrayList<String> sqls = new ArrayList<String>();
-                sqls.set(0, rs.getString("FlightID"));
-                sqls.set(1, rs.getString("Origin"));
-                sqls.set(2, rs.getString("Destination"));
-                sqls.set(3, rs.getString("DepartureDateTime"));
-                sqls.set(4, rs.getString("ArrivalDateTime"));
+                sqls.add(rs.getString("FlightID"));
+                sqls.add(rs.getString("Origin"));
+                sqls.add(rs.getString("Destination"));
+                sqls.add(rs.getString("DepartureDateTime"));
+                sqls.add(rs.getString("ArrivalDateTime"));
                 
                 LocationInformation l = new LocationInformation(sqls.get(4), sqls.get(2), sqls.get(3), sqls.get(1));
+                flightIDList.add(Integer.valueOf(sqls.get(0)));
                 locationList.add(l);
             }
         } catch (Exception e) {
@@ -47,13 +49,13 @@ public class FlightDataRetriever {
 
             while (rs.next()) {
                 ArrayList<String> sqls = new ArrayList<String>();
-                sqls.set(0, rs.getString("SeatID"));
-                sqls.set(1, rs.getString("SeatNumber"));
-                sqls.set(2, rs.getString("SeatType"));
-                sqls.set(3, rs.getString("Price"));
+                sqls.add(rs.getString("SeatID"));
+                sqls.add(rs.getString("SeatNumber"));
+                sqls.add(rs.getString("SeatType"));
+                sqls.add(rs.getString("Price"));
                 
                 
-                Seat s = new Seat(Integer.valueOf(sqls.get(1)), sqls.get(2), sqls.get(3), Integer.valueOf(sqls.get(4)), rs.getBoolean("IsBooked"));
+                Seat s = new Seat(Integer.valueOf(sqls.get(0)), sqls.get(1), sqls.get(2), Integer.valueOf(sqls.get(3)), rs.getBoolean("IsBooked"));
                 seatList.add(s);
             }
         } catch (Exception e) {
@@ -69,8 +71,8 @@ public class FlightDataRetriever {
 
             while (rs.next()) {
                 ArrayList<String> sqls = new ArrayList<String>();
-                sqls.set(0, rs.getString("PlaneID"));
-                sqls.set(1, rs.getString("Model"));
+                sqls.add(rs.getString("PlaneID"));
+                sqls.add(rs.getString("Model"));
                 
                 Plane p = new Plane(sqls.get(1));
                 planeList.add(p);
@@ -88,9 +90,9 @@ public class FlightDataRetriever {
 
             while (rs.next()) {
                 ArrayList<String> sqls = new ArrayList<String>();
-                sqls.set(0, rs.getString("CrewID"));
-                sqls.set(1, rs.getString("Position"));
-                sqls.set(2, rs.getString("Position"));
+                sqls.add(rs.getString("CrewID"));
+                sqls.add(rs.getString("Position"));
+                sqls.add(rs.getString("Position"));
                 
                 CrewMember cm = new CrewMember(Integer.valueOf(sqls.get(0)), sqls.get(1), sqls.get(2));
                 crewMemberList.add(cm);
@@ -110,7 +112,7 @@ public class FlightDataRetriever {
         
         //Create Flight Ittinerarys
         for(int j = 0; j < planeList.size(); j++){
-            FlightItinerary fi = new FlightItinerary(planeList.get(j), locationList.get(j), crewList.get(j));
+            FlightItinerary fi = new FlightItinerary(flightIDList.get(j), planeList.get(j), locationList.get(j), crewList.get(j));
             fl.addFlight(fi);
         }
 
