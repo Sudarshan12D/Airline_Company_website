@@ -13,7 +13,7 @@ public class Main {
 
     private static JLabel selectedSeatsLabel;
     static ArrayList<String> selectedSeats = new ArrayList<>();
-    public static RegisteredUser currentUser;
+    public static RegisteredUser currentUser = null;
 
     public static void main(String[] args) {
         //Initialize Database
