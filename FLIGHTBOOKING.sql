@@ -56,16 +56,15 @@ CREATE TABLE IF NOT EXISTS Seats (
 -- Bookings Table
 CREATE TABLE IF NOT EXISTS Bookings (
     BookingID INT AUTO_INCREMENT PRIMARY KEY,
-    MemberID INT,
+    UserID INT,
     FlightID INT NOT NULL,
     SeatID INT NOT NULL,
     CancellationInsurance BOOLEAN DEFAULT FALSE,
     BookingDateTime DATETIME NOT NULL,
-    FOREIGN KEY (MemberID) REFERENCES Members(MemberID),
+    FOREIGN KEY (UserID) REFERENCES Members(UserID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
     FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
 );
-
 -- Payments Table
 CREATE TABLE IF NOT EXISTS Payments (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,

@@ -18,13 +18,13 @@ public class Main {
 
     
     public static void main(String[] args) {
+
         
         loginButton = new JButton("Login");
         signOutButton = new JButton("Sign Out");
         signOutButton.setVisible(false);
         //Initialize Database
         FlightList availableFlights = FlightDataRetriever.loadAllData();
-
         
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
@@ -179,12 +179,9 @@ public class Main {
                 // frame.repaint();
             });
             
-            
 
             authButtonsPanel.add(loginButton);
             authButtonsPanel.add(signOutButton);
-
-
 
 
             //....................................SIGNUP EVENT Listener...................................................
@@ -298,6 +295,7 @@ public class Main {
                             lastNameField.getText(),
                             addressField.getText()
                         );
+
                         JOptionPane.showMessageDialog(signUpFrame, "Account Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         signUpFrame.dispose();
                     }
