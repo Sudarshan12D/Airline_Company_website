@@ -20,7 +20,8 @@ public class Main {
     
         FlightList availableFlights = FlightDataRetriever.loadAllData();
        
-
+        ArrayList<Seat> s = (availableFlights.getFlightItinerary(0).getPlane().getListOfSeats());
+        System.out.println(s.size());
 
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
