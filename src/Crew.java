@@ -11,7 +11,7 @@ public class Crew {
     }
 
     void addCrew(String n, String p, int id){
-        listOfCrew.add(new CrewMember(n, p, id));
+        listOfCrew.add(new CrewMember(id, n, p));
     }
 
     void addCrew(CrewMember c){

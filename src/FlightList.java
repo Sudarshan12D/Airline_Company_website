@@ -10,8 +10,8 @@ public class FlightList {
 
     }
 
-    void addFlight(Plane p, Airline a, LocationInformation l, Crew c){
-        listOfFlights.add(new FlightItinerary(p, a, l, c));
+    void addFlight(Plane p, LocationInformation l, Crew c){
+        listOfFlights.add(new FlightItinerary(p, l, c));
     }
 
     void addFlight(FlightItinerary f){
@@ -26,6 +26,10 @@ public class FlightList {
     //Getters
     public ArrayList<FlightItinerary> getListOfFlights() {
         return listOfFlights;
+    }
+
+    public FlightItinerary getFlightItinerary(int num){
+        return listOfFlights.get(num);
     }
 
 

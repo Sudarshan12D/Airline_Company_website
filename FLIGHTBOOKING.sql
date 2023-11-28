@@ -1,4 +1,3 @@
--- Drop existing tables (if any)
 DROP TABLE IF EXISTS Payments;
 DROP TABLE IF EXISTS Bookings;
 DROP TABLE IF EXISTS Seats;
@@ -32,19 +31,26 @@ CREATE TABLE IF NOT EXISTS Flights (
     FlightID INT AUTO_INCREMENT PRIMARY KEY,
     Origin VARCHAR(255) NOT NULL,
     Destination VARCHAR(255) NOT NULL,
-    DepartureDateTime DATETIME NOT NULL,
-    ArrivalDateTime DATETIME NOT NULL
+    DepartureDateTime VARCHAR(20) NOT NULL,
+    ArrivalDateTime VARCHAR(20) NOT NULL
+);
+
+-- Planes Table
+CREATE TABLE IF NOT EXISTS Planes (
+    PlaneID INT AUTO_INCREMENT PRIMARY KEY,
+    Model VARCHAR(255) NOT NULL,
+    Capacity INT NOT NULL
 );
 
 -- Seats Table
 CREATE TABLE IF NOT EXISTS Seats (
     SeatID INT AUTO_INCREMENT PRIMARY KEY,
-    FlightID INT NOT NULL,
+    PlaneID INT NOT NULL,
     SeatNumber VARCHAR(10) NOT NULL,
     SeatType ENUM('firstClass', 'economy', 'business') NOT NULL,
     Price DECIMAL(10, 2) NOT NULL,
     IsBooked BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+    FOREIGN KEY (PlaneID) REFERENCES Planes(PlaneID)
 );
 
 -- Bookings Table
@@ -77,13 +83,6 @@ CREATE TABLE IF NOT EXISTS Crews (
     Position ENUM('pilot', 'flight_attendant', 'engineer') NOT NULL
 );
 
--- Planes Table
-CREATE TABLE IF NOT EXISTS Planes (
-    PlaneID INT AUTO_INCREMENT PRIMARY KEY,
-    Model VARCHAR(255) NOT NULL,
-    Capacity INT NOT NULL
-);
-
 -- Destinations Table
 CREATE TABLE IF NOT EXISTS Destinations (
     DestinationID INT AUTO_INCREMENT PRIMARY KEY,
@@ -114,8 +113,16 @@ VALUES
     ('London', 'Paris', '2023-12-02 14:30:00', '2023-12-02 16:00:00'),
     ('Tokyo', 'Sydney', '2023-12-03 20:45:00', '2023-12-04 06:30:00');
 
+-- Planes Table
+INSERT INTO Planes (Model, Capacity)
+VALUES
+    ('Boeing 737', 32),
+    ('Airbus A320', 32),
+    ('Boeing 747', 32);
+
+
 -- Seats Table
-INSERT INTO Seats (FlightID, SeatNumber, SeatType, Price, IsBooked)
+INSERT INTO Seats (PlaneID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
     -- Seats for Flight 1
     (1, '1', 'firstClass', 700.00, FALSE),
@@ -250,14 +257,13 @@ INSERT INTO Crews (Name, Position)
 VALUES
     ('Captain Smith', 'pilot'),
     ('Linda Johnson', 'flight_attendant'),
-    ('Tom Davis', 'engineer');
-
--- Planes Table
-INSERT INTO Planes (Model, Capacity)
-VALUES
-    ('Boeing 737', 150),
-    ('Airbus A320', 180),
-    ('Boeing 747', 300);
+    ('Tom Davis', 'engineer'),
+	('Emily Rodriguez', 'pilot'),
+    ('Michael Turner', 'flight_attendant'),
+    ('Sarah White', 'engineer'),
+    ('John Anderson', 'pilot'),
+    ('Megan Clark', 'flight_attendant'),
+    ('Robert Harris', 'engineer');
 
 -- Destinations Table
 INSERT INTO Destinations (City, Country)
