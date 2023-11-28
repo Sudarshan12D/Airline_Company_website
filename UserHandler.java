@@ -121,4 +121,55 @@ public class UserHandler {
         return null;
     }
 
+    public static long handleMembership(String email, String creditcard){
+        long id = 0;
+        String sql = "SELECT Email, UserID FROM Users";
+        
+        ArrayList<String> emailList = new ArrayList<String>();
+        ArrayList<Integer> userIDList = new ArrayList<Integer>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                emailList.add(rs.getString("Email"));
+                userIDList.add(rs.getInt("UserID"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    for (int i=0; i < emailList.size(); i++)  {
+        if (emailList.get(i).compareTo(email) == 0) {
+            String SQL = "INSERT INTO Members(UserID, CreditCardInfo) VALUES (?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmt.setInt(1, userIDList.get(i));
+            pstmt.setString(2, creditcard);
+
+            int affectedRows = pstmt.executeUpdate();
+
+            // Check the affected rows
+            if (affectedRows > 0) {
+                // Get the ID back
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        id = rs.getLong(1);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        }
+    }
+
+        return id;
+    }
+
 }
