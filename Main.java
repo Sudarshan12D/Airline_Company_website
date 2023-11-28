@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,8 +12,13 @@ public class Main {
 
     private static JLabel selectedSeatsLabel;
     static ArrayList<String> selectedSeats = new ArrayList<>();
-
+    
     public static void main(String[] args) {
+        //Initialize Database
+    
+        FlightList availableFlights = FlightDataRetriever.loadAllData();
+
+        
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -241,8 +245,8 @@ public class Main {
                 // Create and add the submit button
                 JButton submitButton = new JButton("Submit");
                 submitButton.addActionListener(submitEvent -> {
-                    if (emailField.getText().trim().isEmpty() || passwordField.getPassword().length == 0) {
-                        JOptionPane.showMessageDialog(signUpFrame, "Email or password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (emailField.getText().trim().isEmpty() || passwordField.getPassword().length == 0 || firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty() || addressField.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(signUpFrame, "you cannot have empty fields", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         // If not empty, proceed with your submission logic
                         UserHandler.handleRegistration(
@@ -252,6 +256,7 @@ public class Main {
                             lastNameField.getText(),
                             addressField.getText()
                         );
+                        JOptionPane.showMessageDialog(signUpFrame, "Account Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         signUpFrame.dispose();
                     }
                 });
@@ -293,7 +298,7 @@ public class Main {
             frame.add(topPanel, BorderLayout.NORTH);
 
             //.................................... Retrieve flight data......................................................
-            ArrayList<Object[]> flightData = FlightDataRetriever.getAvailableFlights();
+            ArrayList<Object[]> flightData = availableFlights.getAllFlightInfo();
             Object[][] data = new Object[flightData.size()][6]; // Adjusted for 6 columns
         
             // Copy the flight data to the data array and add a "Book" button to each row
@@ -331,6 +336,7 @@ public class Main {
             };
 
             
+            
             // Add a mouse listener to handle clicks on the "Book" button
             table.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -339,6 +345,7 @@ public class Main {
             
                     if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
                         if ("View Seats".equals(table.getValueAt(row, column))) {
+
                             // Create and display the seat selection frame
                             JFrame seatsFrame = new JFrame("Select Seats");
                             seatsFrame.setLayout(new BorderLayout());
@@ -361,6 +368,7 @@ public class Main {
                             JPanel seatsPanel = new JPanel(new GridLayout(6, 7, 10, 10)); // 8 rows, 7 cols for spacers
                             seatsPanel.setPreferredSize(new Dimension(600, 300));
 
+                            
                             // Method to create a label with a colored box
                             Function<String, JPanel> createColorInfoPanel = (String text) -> {
                                 JPanel panel = new JPanel();
@@ -376,7 +384,7 @@ public class Main {
                                         colorLabel.setBackground(Color.ORANGE);
                                         break;
                                     case "Economy Class $500":
-                                        colorLabel.setBackground(Color.BLUE);
+                                        colorLabel.setBackground(Color.PINK);
                                         break;
                                     case "First Class $700":
                                         colorLabel.setBackground(Color.YELLOW);
@@ -421,10 +429,16 @@ public class Main {
                                     if (selectedSeats.isEmpty()) {
                                         JOptionPane.showMessageDialog(frame, "No seats selected.", "None Selected", JOptionPane.INFORMATION_MESSAGE);
                                     } else {
-                                        // Code to execute when Continue button is clicked and at least one seat is selected
-                                        //System.out.println("Continue button clicked with selected seats: " + selectedSeats);
-                                        createCheckoutFrame(flightInfo);
-                                        // Implement your logic here
+                                        int totalCost = 0;
+                                        for (String seatNumber : selectedSeats) {
+                                            // Assuming seatNumber is a string that can be parsed as an integer index.
+                                            int index = Integer.parseInt(seatNumber) - 1; // If seat numbers start from 1, adjust index to 0-based.
+                                            int seatPrice = availableFlights.getFlightItinerary(row).getPlane().getListOfSeats().get(index).getPrice();
+                                            totalCost += seatPrice;
+                                        }
+                                        // Now you have the total cost, you can pass it to your createCheckoutFrame or use it as needed.
+                                        createCheckoutFrame(flightInfo, totalCost);
+                                        
                                     }
                                 }
                             });
@@ -433,56 +447,74 @@ public class Main {
                             infoPanel.add(Box.createVerticalStrut(10)); // Add some space between the last label and the button
                             infoPanel.add(continueButton);
                             
+                            // Fetch the seat data from your backend
+                            ArrayList<Seat> seats = availableFlights.getFlightItinerary(row).getPlane().getListOfSeats();
+                            int counter = 0;
+                            
 
                             // ...............................selectedSeatsLabel..................................................
                             topPanel.add(selectedSeatsLabel, BorderLayout.SOUTH);
                             // Buttons for each seat with fixed size
-                            for (int i = 1; i <= 36; i++) {
-                                JButton seatButton = new JButton("Seat " + i);
+                            // Iterate through the list of Seat objects
+                            for (Seat seat : seats) {
+                                JButton seatButton = new JButton(seat.getSeatNumber());
                                 seatButton.setPreferredSize(new Dimension(80, 40));
 
+                                // Set color based on the seat type and booking status
+                                Color colorToSet;
 
-                                // Assign a default action command as "NOT_SELECTED"
-                                seatButton.setActionCommand("NOT_SELECTED");
-
-                                // Set color based on the class of the seat
-                                Color originalColor;
-                                if (i <= 12) { // First class
-                                    originalColor = Color.YELLOW;
-                                } else if (i <= 30) { // Economy class
-                                    originalColor = Color.BLUE;
-                                } else { // Business class
-                                    originalColor = Color.ORANGE;
+                                if (seat.getIsBooked()) {
+                                    colorToSet = Color.GRAY; // Indicate that the seat is already booked
+                                } else {
+                                    switch (seat.getSeatType()) {
+                                        case "firstClass":
+                                            colorToSet = Color.YELLOW;
+                                            break;
+                                        case "economy":
+                                            colorToSet = Color.PINK;
+                                            break;
+                                        case "business":
+                                            colorToSet = Color.ORANGE;
+                                            break;
+                                        default:
+                                            colorToSet = Color.LIGHT_GRAY;
+                                    }
                                 }
 
-                                seatButton.setBackground(originalColor);
+                                seatButton.setBackground(colorToSet);
+                                seatButton.putClientProperty("originalColor", colorToSet);
 
-                                // Set action command to store the original color
-                                seatButton.setActionCommand(originalColor.toString());
-                                
                                 seatButton.addActionListener(seatEvent -> {
                                     JButton clickedSeat = (JButton) seatEvent.getSource();
-                                    Color currentColor = clickedSeat.getBackground();
+                                    Color originalColor = (Color) clickedSeat.getClientProperty("originalColor");
                                     String seatText = clickedSeat.getText();
-
-                                    // If the current color is not green, change it to green
-                                    if (!currentColor.equals(Color.GREEN)) {
+                                    
+                                    
+                                    // Toggle seat selection based on color
+                                    if (!clickedSeat.getBackground().equals(Color.GREEN) && !clickedSeat.getBackground().equals(Color.GRAY)) {
                                         clickedSeat.setBackground(Color.GREEN);
                                         selectedSeats.add(seatText);
-                                    } else {
-                                        // Parse the original color from the action command and change back to it
+                                    } else if (clickedSeat.getBackground().equals(Color.GREEN)) {
                                         clickedSeat.setBackground(originalColor);
                                         selectedSeats.remove(seatText);
                                     }
 
+                                    // Sort the selectedSeats list numerically
+                                    selectedSeats.sort((s1, s2) -> {
+                                        int num1 = Integer.parseInt(s1);
+                                        int num2 = Integer.parseInt(s2);
+                                        return Integer.compare(num1, num2);
+                                    });
+
                                     String selectedSeatsText = "<html>Seats selected: " + String.join(", ", selectedSeats) + "</html>";
                                     selectedSeatsLabel.setText(selectedSeatsText);
                                 });
+
                                 seatsPanel.add(seatButton);
-                                
+                                counter++;
 
                                 // Add spacer after every third seat in a row
-                                if (i % 3 == 0 && i % 6 != 0) {
+                                if (counter % 3 == 0 && counter % 6 != 0) {
                                     JPanel spacer = new JPanel();
                                     spacer.setOpaque(false);
                                     spacer.setPreferredSize(new Dimension(20, 40));
@@ -493,9 +525,19 @@ public class Main {
                             seatsFrame.addWindowListener(new WindowAdapter() {
                                 @Override
                                 public void windowClosing(WindowEvent e) {
-                                    selectedSeats.clear(); // Clear the list of selected seats
-                                    selectedSeatsLabel.setText("<html>Seats selected: </html>"); // Reset the label text
-                                    // If you have any other clean-up code to run when the window closes, include it here
+                                    // Clear the list of selected seats
+                                    selectedSeats.clear();
+                            
+                                    // Reset the appearance of all seat buttons
+                                    for (Component comp : seatsPanel.getComponents()) {
+                                        if (comp instanceof JButton) {
+                                            JButton button = (JButton) comp;
+                                            button.setBackground((Color) button.getClientProperty("originalColor"));
+                                        }
+                                    }
+                            
+                                    // Reset the label text
+                                    selectedSeatsLabel.setText("<html>Seats selected: </html>");
                                 }
                             });
 
@@ -554,7 +596,7 @@ public class Main {
         // Set the frame visible
         frame.setVisible(true);
     }
-    private static void createCheckoutFrame(Object[] flightInfo) {
+    private static void createCheckoutFrame(Object[] flightInfo, int totalCost) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
         checkoutFrame.setSize(600, 400);
@@ -603,9 +645,8 @@ public class Main {
         gbc.gridy++;
     
         // Example price calculation
-        int seatPrice = 100; // Example price per seat
-        int totalPrice = selectedSeats.size() * seatPrice;
-        JLabel totalPriceLabel = new JLabel("Total Price: $" + totalPrice);
+        JLabel totalPriceLabel = new JLabel("Total Price: $" + totalCost);
+        checkoutPanel.add(totalPriceLabel, gbc);
         checkoutPanel.add(totalPriceLabel, gbc);
         gbc.gridy++;
     
