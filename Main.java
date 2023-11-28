@@ -13,16 +13,17 @@ public class Main {
 
     private static JLabel selectedSeatsLabel;
     static ArrayList<String> selectedSeats = new ArrayList<>();
-    public static RegisteredUser currentUser;
+    public static RegisteredUser currentUser = null;
+    private static JButton loginButton;
+    private static JButton signOutButton;
 
     public static void main(String[] args) {
         //Initialize Database
-    
+        loginButton = new JButton("Login");
+        signOutButton = new JButton("Sign Out");
+        signOutButton.setVisible(false);
         FlightList availableFlights = FlightDataRetriever.loadAllData();
-       
-        ArrayList<Seat> s = (availableFlights.getFlightItinerary(0).getPlane().getListOfSeats());
-        System.out.println(s.size());
-
+        
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,7 +70,7 @@ public class Main {
             ));
 
             //..............................LOGIN EVENT Listener..........................................................
-            JButton loginButton = new JButton("Login");
+            //JButton loginButton = new JButton("Login");
             loginButton.addActionListener(loginEvent -> {
                 // Create a new frame for login
                 JFrame loginFrame = new JFrame("Login");
@@ -137,7 +138,14 @@ public class Main {
 
                         if (currentUser == null){
                             //Throw fail login popup --------------------
+                            JOptionPane.showMessageDialog(loginFrame, "Login incorrect. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                            return; // Add return to prevent closing the login frame
                         }
+                        if (currentUser != null) {
+                            loginButton.setVisible(false);  // Hide the login button
+                            signOutButton.setVisible(true);  // Show the sign out button
+                        }
+                      
 
                         loginFrame.dispose();
                         System.out.println("Testing Logged In User Info");
@@ -157,8 +165,22 @@ public class Main {
                 loginFrame.setLocationRelativeTo(null); // Center on screen
                 loginFrame.setVisible(true);
             });
+            signOutButton.addActionListener(signOutEvent -> {
+                currentUser = null; // Reset the current user
+                signOutButton.setVisible(false); // Hide the sign out button
+                loginButton.setVisible(true); // Show the login button
+            
+                // Optionally, reset the frame content to the initial state if needed
+                // frame.getContentPane().removeAll();
+                // Add initial components back to the frame
+                // frame.revalidate();
+                // frame.repaint();
+            });
+            
+            
 
-
+            authButtonsPanel.add(loginButton);
+            authButtonsPanel.add(signOutButton);
 
             //....................................SIGNUP EVENT Listener...................................................
             JButton signUpButton = new JButton("Signup");
@@ -271,6 +293,8 @@ public class Main {
                             lastNameField.getText(),
                             addressField.getText()
                         );
+
+                        JOptionPane.showMessageDialog(signUpFrame, "Sign up successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                         signUpFrame.dispose();
                     }
                 });
