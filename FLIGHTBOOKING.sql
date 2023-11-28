@@ -156,9 +156,9 @@ VALUES
     (1, '36', 'Business', 700.00, FALSE),
     
     -- Seats for Flight 2
-    (2, '1', 'ordinary', 100.00, FALSE),
-    (2, '2', 'ordinary', 100.00, FALSE),
-    (2, '3', 'ordinary', 100.00, FALSE),
+    (2, '1', 'firstClass', 700.00, FALSE),
+    (2, '2', 'firstClass', 700.00, FALSE),
+    (2, '3', 'firstClass', 700.00, FALSE),
     (2, '4', 'firstClass', 700.00, FALSE),
     (2, '5', 'firstClass', 700.00, FALSE),
     (2, '6', 'firstClass', 700.00, FALSE),
@@ -194,9 +194,9 @@ VALUES
     (2, '36', 'Business', 700.00, FALSE),
     
     -- Seats for Flight 3
-    (3, '1', 'ordinary', 100.00, FALSE),
-    (3, '2', 'ordinary', 100.00, FALSE),
-    (3, '3', 'ordinary', 100.00, FALSE),
+    (3, '1', 'firstClass', 700.00, FALSE),
+    (3, '2', 'firstClass', 700.00, FALSE),
+    (3, '3', 'firstClass', 700.00, FALSE),
     (3, '4', 'firstClass', 700.00, FALSE),
     (3, '5', 'firstClass', 700.00, FALSE),
     (3, '6', 'firstClass', 700.00, FALSE),
