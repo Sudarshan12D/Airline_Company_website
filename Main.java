@@ -13,11 +13,13 @@ public class Main {
 
     private static JLabel selectedSeatsLabel;
     static ArrayList<String> selectedSeats = new ArrayList<>();
+    public static RegisteredUser currentUser;
 
     public static void main(String[] args) {
         //Initialize Database
     
         FlightList availableFlights = FlightDataRetriever.loadAllData();
+       
 
 
         // Create the frame
@@ -125,11 +127,22 @@ public class Main {
                     if (loginEmailField.getText().trim().isEmpty() || loginPasswordField.getPassword().length == 0) {
                         JOptionPane.showMessageDialog(loginFrame, "Email or password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        //UserHandler.handleLogin(
-                        //    loginEmailField.getText(),
-                        //    loginPasswordField.getPassword()
-                        //);
+                        String userPasswordString = new String(loginPasswordField.getPassword());
+
+                        currentUser = UserHandler.handleLogin(
+                           loginEmailField.getText(),
+                           userPasswordString
+                        );
+
+                        if (currentUser == null){
+                            //Throw fail login popup --------------------
+                        }
+
                         loginFrame.dispose();
+                        System.out.println("Testing Logged In User Info");
+                        System.out.println(currentUser.getCreditCardNumber());
+                        System.out.println(currentUser.getAddress());
+                        System.out.println(currentUser.getFname());
                     }
                     
                 });

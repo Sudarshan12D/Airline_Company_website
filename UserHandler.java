@@ -40,12 +40,16 @@ public class UserHandler {
         return id;
     }
     
-    public static long handleLogin(String email, String password){
+    public static RegisteredUser handleLogin(String email, String password){
 
-        String sql = "SELECT User_Password, Email FROM Users";
+        String sql = "SELECT User_Password, Email, UserID, User_Address, FName, LName FROM Users";
         
         ArrayList<String> passwordList = new ArrayList<String>();
         ArrayList<String> emailList = new ArrayList<String>();
+        ArrayList<Integer> userIDList = new ArrayList<Integer>();
+        ArrayList<String> addressList = new ArrayList<String>();
+        ArrayList<String> fnameList = new ArrayList<String>();
+        ArrayList<String> lnameList = new ArrayList<String>();
 
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -54,6 +58,10 @@ public class UserHandler {
             while (rs.next()) {
                 emailList.add(rs.getString("Email"));
                 passwordList.add(rs.getString("User_Password"));
+                userIDList.add(rs.getInt("UserID"));
+                addressList.add(rs.getString("User_Address"));
+                fnameList.add(rs.getString("FName"));
+                lnameList.add(rs.getString("LName"));
 
             }
         } catch (Exception e) {
@@ -61,20 +69,56 @@ public class UserHandler {
         }
 
         for (int i=0; i < emailList.size(); i++)  {
-            if (emailList.get(i) == email) {
-                if (passwordList.get(i) == password){
+            System.out.println("entered email is: " + email + "\n");
+            System.out.println("List email is: " + emailList.get(i) + "\n");
+            if (emailList.get(i).compareTo(email) == 0) {
+                System.out.println("entered Password is: " + password + "\n");
+                System.out.println("List Password is: " + passwordList.get(i) + "\n");
+                if (passwordList.get(i).compareTo(password) == 0){
 
+                    ArrayList<Integer> memberIDList = new ArrayList<Integer>();
+                    ArrayList<Integer> memberUserIDList = new ArrayList<Integer>();
+                    ArrayList<String> memberCreditCardList = new ArrayList<String>();
+
+                    sql = "SELECT MemberID, UserID, CreditCardInfo FROM Members";
+
+                    try (Connection conn = DatabaseConnection.getConnection();
+                        Statement stmt = conn.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql)) {
+
+                        while (rs.next()) {
+                            memberIDList.add(rs.getInt("MemberID"));
+                            memberUserIDList.add(rs.getInt("UserID"));
+                            memberCreditCardList.add(rs.getString("CreditCardInfo"));
+                      
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    for(int j = 0; j < memberIDList.size(); j++){
+                        //If Member
+                        if (userIDList.get(i) == memberIDList.get(j)){
+                            RegisteredUser returnUser = new RegisteredUser(
+                                emailList.get(i), fnameList.get(i), lnameList.get(i), 
+                                memberCreditCardList.get(j), addressList.get(i), true);
+
+                            return returnUser;
+                        }
+                    }
+
+                    //Not member but still regitetred
+                    RegisteredUser returnUser = new RegisteredUser(
+                                emailList.get(i), fnameList.get(i), lnameList.get(i), 
+                               "Not a member - no saved card", addressList.get(i), false);
+
+                            return returnUser;
                 }
             }
         }
-
-
-
-
-
-
-
-        return 0;
+        //Login Fail
+        System.out.println("login fail");
+        return null;
     }
 
 }
