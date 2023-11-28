@@ -32,9 +32,10 @@ CREATE TABLE IF NOT EXISTS Flights (
     FlightID INT AUTO_INCREMENT PRIMARY KEY,
     Origin VARCHAR(255) NOT NULL,
     Destination VARCHAR(255) NOT NULL,
-    DepartureDateTime DATETIME NOT NULL,
-    ArrivalDateTime DATETIME NOT NULL
+    DepartureDateTime VARCHAR(20) NOT NULL,
+    ArrivalDateTime VARCHAR(20) NOT NULL
 );
+
 
 -- Seats Table
 CREATE TABLE IF NOT EXISTS Seats (
