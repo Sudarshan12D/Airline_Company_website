@@ -17,13 +17,32 @@ public class Plane {
         listOfSeats.add(new Seat(r, s, id));
     }
 
-    void addFlight(Seat s){
+    void addSeat(Seat s){
         listOfSeats.add(s);
     }
 
     //Getters
+    public String getCallSign() {
+        return callSign;
+    }
+    public int getId() {
+        return id;
+    }
+    public ArrayList<Seat> getListOfSeats() {
+        return listOfSeats;
+    }
 
 
     //Setters
+    public void setCallSign(String callSign) {
+        this.callSign = callSign;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setListOfSeats(ArrayList<Seat> listOfSeats) {
+        this.listOfSeats = listOfSeats;
+    }
+    
     
 }

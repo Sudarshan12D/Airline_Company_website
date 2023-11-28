@@ -18,15 +18,21 @@ public class FlightList {
         listOfFlights.add(f);
     }
 
-    void removeFlight(){
-
+    void removeFlight(int id){
+        //REmove flight by id
 
     }
 
     //Getters
+    public ArrayList<FlightItinerary> getListOfFlights() {
+        return listOfFlights;
+    }
 
 
     //Setters
-
+    public void setListOfFlights(ArrayList<FlightItinerary> listOfFlights) {
+        this.listOfFlights = listOfFlights;
+    }
+    
 }
 

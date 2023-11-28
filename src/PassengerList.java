@@ -10,18 +10,24 @@ public class PassengerList {
         listOfPassengers = new ArrayList<Passenger>();
     }
 
-    void addFlight(String f, String l, String e){
+    void addPassenger(String f, String l, String e){
         listOfPassengers.add(new Passenger(f, l, e));
     }
 
-    void addFlight(Passenger p){
+    void addPassenger(Passenger p){
         listOfPassengers.add(p);
     }
 
 
     //Getters
+    public ArrayList<Passenger> getListOfPassengers() {
+        return listOfPassengers;
+    }
 
 
     //Setters
+    public void setListOfPassengers(ArrayList<Passenger> listOfPassengers) {
+        this.listOfPassengers = listOfPassengers;
+    }
     
 }

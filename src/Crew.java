@@ -18,13 +18,16 @@ public class Crew {
         listOfCrew.add(c);
     }
 
-    void removeFlight(){
-
-
-    }
 
     //Getters
-
+    public ArrayList<CrewMember> getListOfCrew() {
+        return listOfCrew;
+    }
+    
 
     //Setters
-}
+    public void setListOfCrew(ArrayList<CrewMember> listOfCrew) {
+        this.listOfCrew = listOfCrew;
+    }
+    
+}   
