@@ -117,8 +117,6 @@ VALUES
 -- Seats Table
 INSERT INTO Seats (FlightID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
-INSERT INTO Seats (FlightID, SeatNumber, SeatType, Price, IsBooked)
-VALUES
     -- Seats for Flight 1
     (1, '1', 'ordinary', 100.00, FALSE),
     (1, '2', 'ordinary', 100.00, FALSE),
@@ -139,6 +137,7 @@ VALUES
     (3, '3', 'ordinary', 100.00, FALSE),
     -- ... add seats 4 through 32 with the same FlightID
     (3, '32', 'ordinary', 100.00, FALSE);
+
 -- Bookings Table
 INSERT INTO Bookings (MemberID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
 VALUES
