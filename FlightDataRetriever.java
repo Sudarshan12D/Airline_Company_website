@@ -110,6 +110,13 @@ public class FlightDataRetriever {
             crewList.add(c);
         }
         
+        //Add seats to plane
+        for(int i = 0; i < planeList.size(); i++){
+            for(int k = 0; k < 36; k++){
+                planeList.get(i).addSeat(seatList.get(k));
+            }
+        } 
+
         //Create Flight Ittinerarys
         for(int j = 0; j < planeList.size(); j++){
             FlightItinerary fi = new FlightItinerary(flightIDList.get(j), planeList.get(j), locationList.get(j), crewList.get(j));
