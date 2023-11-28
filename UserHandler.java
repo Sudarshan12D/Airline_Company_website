@@ -3,6 +3,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserHandler {
 
@@ -38,11 +39,42 @@ public class UserHandler {
         }
         return id;
     }
-    //public static long handleLogin(String email, char[] password){
-    //    String SQL = "INSERT INTO Users(FName, LName, User_Address, Email, User_Password) VALUES (?, ?, ?, ?, ?)";
+    
+    public static long handleLogin(String email, String password){
+
+        String sql = "SELECT User_Password, Email FROM Users";
         
-    //    SQL = "hello";
-    //    return 0;
-    //}
+        ArrayList<String> passwordList = new ArrayList<String>();
+        ArrayList<String> emailList = new ArrayList<String>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                emailList.add(rs.getString("Email"));
+                passwordList.add(rs.getString("User_Password"));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i=0; i < emailList.size(); i++)  {
+            if (emailList.get(i) == email) {
+                if (passwordList.get(i) == password){
+
+                }
+            }
+        }
+
+
+
+
+
+
+
+        return 0;
+    }
 
 }
