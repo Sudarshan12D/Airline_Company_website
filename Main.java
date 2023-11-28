@@ -120,8 +120,10 @@ public class Main {
                     if (loginEmailField.getText().trim().isEmpty() || loginPasswordField.getPassword().length == 0) {
                         JOptionPane.showMessageDialog(loginFrame, "Email or password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        /// Here you would handle the login
-                        // For now, we'll just close the login window
+                        UserHandler.handleLogin(
+                            loginEmailField.getText(),
+                            loginPasswordField.getPassword()
+                        );
                         loginFrame.dispose();
                     }
                     
@@ -243,7 +245,7 @@ public class Main {
                         JOptionPane.showMessageDialog(signUpFrame, "Email or password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         // If not empty, proceed with your submission logic
-                        RegistrationHandler.handleRegistration(
+                        UserHandler.handleRegistration(
                             emailField.getText(),
                             passwordField.getPassword(),
                             firstNameField.getText(),
