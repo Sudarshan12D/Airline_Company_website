@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class RegistrationHandler {
+public class UserHandler {
 
     public static long handleRegistration(String email, char[] password, String firstName, String lastName, String address) {
         String SQL = "INSERT INTO Users(FName, LName, User_Address, Email, User_Password) VALUES (?, ?, ?, ?, ?)";
@@ -38,4 +38,11 @@ public class RegistrationHandler {
         }
         return id;
     }
+    //public static long handleLogin(String email, char[] password){
+    //    String SQL = "INSERT INTO Users(FName, LName, User_Address, Email, User_Password) VALUES (?, ?, ?, ?, ?)";
+        
+    //    SQL = "hello";
+    //    return 0;
+    //}
+
 }

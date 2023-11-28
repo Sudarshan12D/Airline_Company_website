@@ -4,26 +4,119 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class FlightDataRetriever {
-    public static ArrayList<Object[]> getAvailableFlights() {
-        ArrayList<Object[]> flights = new ArrayList<>();
-        String sql = "SELECT FlightID, Origin, Destination, DepartureDateTime, ArrivalDateTime FROM Flights";
 
+
+
+
+    public static FlightList loadAllData(){
+        ArrayList<LocationInformation> locationList = new ArrayList<LocationInformation>();
+        ArrayList<Plane> planeList = new ArrayList<Plane>();
+        ArrayList<Seat> seatList = new ArrayList<Seat>();
+        ArrayList<CrewMember> crewMemberList = new ArrayList<CrewMember>();
+        ArrayList<Crew> crewList = new ArrayList<Crew>();
+        ArrayList<Integer> flightIDList = new ArrayList<Integer>();
+        // ArrayList<FlightItinerary> flightItinerarieList = new ArrayList<FlightItinerary>();
+        FlightList fl = new FlightList();
+
+        //Get all Location Information
+        String sql = "SELECT FlightID, Origin, Destination, DepartureDateTime, ArrivalDateTime FROM Flights";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Object[] row = new Object[5]; // 5 columns in the flight table
-                row[0] = rs.getInt("FlightID");
-                row[1] = rs.getString("Origin");
-                row[2] = rs.getString("Destination");
-                row[3] = rs.getTimestamp("DepartureDateTime");
-                row[4] = rs.getTimestamp("ArrivalDateTime");
-                flights.add(row);
+                ArrayList<String> sqls = new ArrayList<String>();
+                sqls.add(rs.getString("FlightID"));
+                sqls.add(rs.getString("Origin"));
+                sqls.add(rs.getString("Destination"));
+                sqls.add(rs.getString("DepartureDateTime"));
+                sqls.add(rs.getString("ArrivalDateTime"));
+                
+                LocationInformation l = new LocationInformation(sqls.get(4), sqls.get(2), sqls.get(3), sqls.get(1));
+                flightIDList.add(Integer.valueOf(sqls.get(0)));
+                locationList.add(l);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return flights;
+
+
+        //Get all Seat information
+        sql = "SELECT SeatID, SeatNumber, SeatType, Price, IsBooked FROM Seats";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                ArrayList<String> sqls = new ArrayList<String>();
+                sqls.add(rs.getString("SeatID"));
+                sqls.add(rs.getString("SeatNumber"));
+                sqls.add(rs.getString("SeatType"));
+                sqls.add(rs.getString("Price"));
+                
+                
+                Seat s = new Seat(Integer.valueOf(sqls.get(0)), sqls.get(1), sqls.get(2), Integer.valueOf(sqls.get(3)), rs.getBoolean("IsBooked"));
+                seatList.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //Get all Plane information
+        sql = "SELECT PlaneID, Model FROM Planes";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                ArrayList<String> sqls = new ArrayList<String>();
+                sqls.add(rs.getString("PlaneID"));
+                sqls.add(rs.getString("Model"));
+                
+                Plane p = new Plane(sqls.get(1));
+                planeList.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //Get all CrewMember information
+        sql = "SELECT CrewID, Name, Position FROM Crews";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                ArrayList<String> sqls = new ArrayList<String>();
+                sqls.add(rs.getString("CrewID"));
+                sqls.add(rs.getString("Position"));
+                sqls.add(rs.getString("Position"));
+                
+                CrewMember cm = new CrewMember(Integer.valueOf(sqls.get(0)), sqls.get(1), sqls.get(2));
+                crewMemberList.add(cm);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create crews from crewmembers
+        for(int i = 0; i < crewMemberList.size() / 3; i++){
+            Crew c = new Crew();
+            c.addCrew(crewMemberList.get(i));
+            c.addCrew(crewMemberList.get(i + 1));
+            c.addCrew(crewMemberList.get(i + 2));
+            crewList.add(c);
+        }
+        
+        //Create Flight Ittinerarys
+        for(int j = 0; j < planeList.size(); j++){
+            FlightItinerary fi = new FlightItinerary(flightIDList.get(j), planeList.get(j), locationList.get(j), crewList.get(j));
+            fl.addFlight(fi);
+        }
+
+        //return flight list
+        return fl;
     }
 }

@@ -1,16 +1,21 @@
 
 public class Seat {
-    //Variables
-    String row;
+    //Variables SeatID, SeatNumber, SeatType, Price, IsBooked
     int id;
-    int seatNumber;
+    String seatNumber;
+    String seatType;
+    int price;
+    Boolean isBooked;
+
     
 
     //Member Functions
-    public Seat(String r, int s, int id){
-        this.row = r;
-        this.seatNumber = s;
-        this.id = id;
+    public Seat(int i, String num, String type, int p, Boolean bool){
+        this.id = i;
+        this.seatNumber = num;
+        this.seatType = type;
+        this.price = p;
+        this.isBooked = bool;
     }
 
 
@@ -18,23 +23,37 @@ public class Seat {
     public int getId() {
         return id;
     }
-    public String getRow() {
-        return row;
+    public Boolean getIsBooked() {
+        return isBooked;
     }
-    public int getSeatNumber() {
+    public int getPrice() {
+        return price;
+    }
+    public String getSeatNumber() {
         return seatNumber;
     }
+    public String getSeatType() {
+        return seatType;
+    }
+    
 
 
     //Setters
     public void setId(int id) {
         this.id = id;
     }
-    public void setRow(String row) {
-        this.row = row;
+    public void setIsBooked(Boolean isBooked) {
+        this.isBooked = isBooked;
     }
-    public void setSeatNumber(int seatNumber) {
+    public void setPrice(int price) {
+        this.price = price;
+    }
+    public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
     }
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
+    }
+    
     
 }

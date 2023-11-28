@@ -15,6 +15,11 @@ public class Main {
     static ArrayList<String> selectedSeats = new ArrayList<>();
 
     public static void main(String[] args) {
+        //Initialize Database
+    
+        FlightList availableFlights = FlightDataRetriever.loadAllData();
+
+
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,8 +125,10 @@ public class Main {
                     if (loginEmailField.getText().trim().isEmpty() || loginPasswordField.getPassword().length == 0) {
                         JOptionPane.showMessageDialog(loginFrame, "Email or password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        /// Here you would handle the login
-                        // For now, we'll just close the login window
+                        //UserHandler.handleLogin(
+                        //    loginEmailField.getText(),
+                        //    loginPasswordField.getPassword()
+                        //);
                         loginFrame.dispose();
                     }
                     
@@ -243,7 +250,7 @@ public class Main {
                         JOptionPane.showMessageDialog(signUpFrame, "Email or password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         // If not empty, proceed with your submission logic
-                        RegistrationHandler.handleRegistration(
+                        UserHandler.handleRegistration(
                             emailField.getText(),
                             passwordField.getPassword(),
                             firstNameField.getText(),
@@ -291,7 +298,7 @@ public class Main {
             frame.add(topPanel, BorderLayout.NORTH);
 
             //.................................... Retrieve flight data......................................................
-            ArrayList<Object[]> flightData = FlightDataRetriever.getAvailableFlights();
+            ArrayList<Object[]> flightData = availableFlights.getAllFlightInfo();
             Object[][] data = new Object[flightData.size()][6]; // Adjusted for 6 columns
         
             // Copy the flight data to the data array and add a "Book" button to each row

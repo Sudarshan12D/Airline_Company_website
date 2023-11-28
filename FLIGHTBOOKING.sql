@@ -1,4 +1,3 @@
--- Drop existing tables (if any)
 DROP TABLE IF EXISTS Payments;
 DROP TABLE IF EXISTS Bookings;
 DROP TABLE IF EXISTS Seats;
@@ -32,19 +31,26 @@ CREATE TABLE IF NOT EXISTS Flights (
     FlightID INT AUTO_INCREMENT PRIMARY KEY,
     Origin VARCHAR(255) NOT NULL,
     Destination VARCHAR(255) NOT NULL,
-    DepartureDateTime DATETIME NOT NULL,
-    ArrivalDateTime DATETIME NOT NULL
+    DepartureDateTime VARCHAR(20) NOT NULL,
+    ArrivalDateTime VARCHAR(20) NOT NULL
+);
+
+-- Planes Table
+CREATE TABLE IF NOT EXISTS Planes (
+    PlaneID INT AUTO_INCREMENT PRIMARY KEY,
+    Model VARCHAR(255) NOT NULL,
+    Capacity INT NOT NULL
 );
 
 -- Seats Table
 CREATE TABLE IF NOT EXISTS Seats (
     SeatID INT AUTO_INCREMENT PRIMARY KEY,
-    FlightID INT NOT NULL,
+    PlaneID INT NOT NULL,
     SeatNumber VARCHAR(10) NOT NULL,
     SeatType ENUM('firstClass', 'economy', 'business') NOT NULL,
-    Price DECIMAL(10, 2) NOT NULL,
+    Price INT NOT NULL,
     IsBooked BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+    FOREIGN KEY (PlaneID) REFERENCES Planes(PlaneID)
 );
 
 -- Bookings Table
@@ -77,13 +83,6 @@ CREATE TABLE IF NOT EXISTS Crews (
     Position ENUM('pilot', 'flight_attendant', 'engineer') NOT NULL
 );
 
--- Planes Table
-CREATE TABLE IF NOT EXISTS Planes (
-    PlaneID INT AUTO_INCREMENT PRIMARY KEY,
-    Model VARCHAR(255) NOT NULL,
-    Capacity INT NOT NULL
-);
-
 -- Destinations Table
 CREATE TABLE IF NOT EXISTS Destinations (
     DestinationID INT AUTO_INCREMENT PRIMARY KEY,
@@ -114,122 +113,130 @@ VALUES
     ('London', 'Paris', '2023-12-02 14:30:00', '2023-12-02 16:00:00'),
     ('Tokyo', 'Sydney', '2023-12-03 20:45:00', '2023-12-04 06:30:00');
 
+-- Planes Table
+INSERT INTO Planes (Model, Capacity)
+VALUES
+    ('Boeing 737', 32),
+    ('Airbus A320', 32),
+    ('Boeing 747', 32);
+
+
 -- Seats Table
-INSERT INTO Seats (FlightID, SeatNumber, SeatType, Price, IsBooked)
+INSERT INTO Seats (PlaneID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
     -- Seats for Flight 1
-    (1, '1', 'firstClass', 700.00, FALSE),
-    (1, '2', 'firstClass', 700.00, FALSE),
-    (1, '3', 'firstClass', 700.00, FALSE),
-    (1, '4', 'firstClass', 700.00, FALSE),
-    (1, '5', 'firstClass', 700.00, FALSE),
-    (1, '6', 'firstClass', 700.00, FALSE),
-    (1, '7', 'firstClass', 700.00, FALSE),
-    (1, '8', 'firstClass', 700.00, FALSE),
-    (1, '9', 'firstClass', 700.00, FALSE),
-    (1, '10', 'firstClass', 700.00, FALSE),
-    (1, '11', 'firstClass', 700.00, FALSE),
-    (1, '12', 'firstClass', 700.00, FALSE),
-    (1, '13', 'Economy', 500.00, FALSE),
-    (1, '14', 'Economy', 500.00, FALSE),
-    (1, '15', 'Economy', 500.00, FALSE),
-    (1, '16', 'Economy', 500.00, FALSE),
-    (1, '17', 'Economy', 500.00, FALSE),
-    (1, '18', 'Economy', 500.00, FALSE),
-    (1, '19', 'Economy', 500.00, FALSE),
-    (1, '20', 'Economy', 500.00, FALSE),
-    (1, '21', 'Economy', 500.00, FALSE),
-    (1, '22', 'Economy', 500.00, FALSE),
-    (1, '23', 'Economy', 500.00, FALSE),
-    (1, '24', 'Economy', 500.00, FALSE),
-    (1, '25', 'Economy', 500.00, FALSE),
-    (1, '26', 'Economy', 500.00, FALSE),
-    (1, '27', 'Economy', 500.00, FALSE),
-    (1, '28', 'Economy', 500.00, FALSE),
-    (1, '29', 'Economy', 500.00, FALSE),
-    (1, '30', 'Economy', 500.00, FALSE),
-    (1, '31', 'Business', 700.00, FALSE),
-    (1, '32', 'Business', 700.00, FALSE),
-    (1, '33', 'Business', 700.00, FALSE),
-    (1, '34', 'Business', 700.00, FALSE),
-    (1, '35', 'Business', 700.00, FALSE),
-    (1, '36', 'Business', 700.00, FALSE),
+    (1, '1', 'firstClass', 700, FALSE),
+    (1, '2', 'firstClass', 700, FALSE),
+    (1, '3', 'firstClass', 700, FALSE),
+    (1, '4', 'firstClass', 700, FALSE),
+    (1, '5', 'firstClass', 700, FALSE),
+    (1, '6', 'firstClass', 700, FALSE),
+    (1, '7', 'firstClass', 700, FALSE),
+    (1, '8', 'firstClass', 700, FALSE),
+    (1, '9', 'firstClass', 700, FALSE),
+    (1, '10', 'firstClass', 700, FALSE),
+    (1, '11', 'firstClass', 700, FALSE),
+    (1, '12', 'firstClass', 700, FALSE),
+    (1, '13', 'Economy', 500, FALSE),
+    (1, '14', 'Economy', 500, FALSE),
+    (1, '15', 'Economy', 500, FALSE),
+    (1, '16', 'Economy', 500, FALSE),
+    (1, '17', 'Economy', 500, FALSE),
+    (1, '18', 'Economy', 500, FALSE),
+    (1, '19', 'Economy', 500, FALSE),
+    (1, '20', 'Economy', 500, FALSE),
+    (1, '21', 'Economy', 500, FALSE),
+    (1, '22', 'Economy', 500, FALSE),
+    (1, '23', 'Economy', 500, FALSE),
+    (1, '24', 'Economy', 500, FALSE),
+    (1, '25', 'Economy', 500, FALSE),
+    (1, '26', 'Economy', 500, FALSE),
+    (1, '27', 'Economy', 500, FALSE),
+    (1, '28', 'Economy', 500, FALSE),
+    (1, '29', 'Economy', 500, FALSE),
+    (1, '30', 'Economy', 500, FALSE),
+    (1, '31', 'Business', 700, FALSE),
+    (1, '32', 'Business', 700, FALSE),
+    (1, '33', 'Business', 700, FALSE),
+    (1, '34', 'Business', 700, FALSE),
+    (1, '35', 'Business', 700, FALSE),
+    (1, '36', 'Business', 700, FALSE),
     
     -- Seats for Flight 2
-    (2, '1', 'firstClass', 700.00, FALSE),
-    (2, '2', 'firstClass', 700.00, FALSE),
-    (2, '3', 'firstClass', 700.00, FALSE),
-    (2, '4', 'firstClass', 700.00, FALSE),
-    (2, '5', 'firstClass', 700.00, FALSE),
-    (2, '6', 'firstClass', 700.00, FALSE),
-    (2, '7', 'firstClass', 700.00, FALSE),
-    (2, '8', 'firstClass', 700.00, FALSE),
-    (2, '9', 'firstClass', 700.00, FALSE),
-    (2, '10', 'firstClass', 700.00, FALSE),
-    (2, '11', 'firstClass', 700.00, FALSE),
-    (2, '12', 'firstClass', 700.00, FALSE),
-    (2, '13', 'Economy', 500.00, FALSE),
-    (2, '14', 'Economy', 500.00, FALSE),
-    (2, '15', 'Economy', 500.00, FALSE),
-    (2, '16', 'Economy', 500.00, FALSE),
-    (2, '17', 'Economy', 500.00, FALSE),
-    (2, '18', 'Economy', 500.00, FALSE),
-    (2, '19', 'Economy', 500.00, FALSE),
-    (2, '20', 'Economy', 500.00, FALSE),
-    (2, '21', 'Economy', 500.00, FALSE),
-    (2, '22', 'Economy', 500.00, FALSE),
-    (2, '23', 'Economy', 500.00, FALSE),
-    (2, '24', 'Economy', 500.00, FALSE),
-    (2, '25', 'Economy', 500.00, FALSE),
-    (2, '26', 'Economy', 500.00, FALSE),
-    (2, '27', 'Economy', 500.00, FALSE),
-    (2, '28', 'Economy', 500.00, FALSE),
-    (2, '29', 'Economy', 500.00, FALSE),
-    (2, '30', 'Economy', 500.00, FALSE),
-    (2, '31', 'Business', 700.00, FALSE),
-    (2, '32', 'Business', 700.00, FALSE),
-    (2, '33', 'Business', 700.00, FALSE),
-    (2, '34', 'Business', 700.00, FALSE),
-    (2, '35', 'Business', 700.00, FALSE),
-    (2, '36', 'Business', 700.00, FALSE),
+    (2, '1', 'firstClass', 700, FALSE),
+    (2, '2', 'firstClass', 700, FALSE),
+    (2, '3', 'firstClass', 700, FALSE),
+    (2, '4', 'firstClass', 700, FALSE),
+    (2, '5', 'firstClass', 700, FALSE),
+    (2, '6', 'firstClass', 700, FALSE),
+    (2, '7', 'firstClass', 700, FALSE),
+    (2, '8', 'firstClass', 700, FALSE),
+    (2, '9', 'firstClass', 700, FALSE),
+    (2, '10', 'firstClass', 700, FALSE),
+    (2, '11', 'firstClass', 700, FALSE),
+    (2, '12', 'firstClass', 700, FALSE),
+    (2, '13', 'Economy', 500, FALSE),
+    (2, '14', 'Economy', 500, FALSE),
+    (2, '15', 'Economy', 500, FALSE),
+    (2, '16', 'Economy', 500, FALSE),
+    (2, '17', 'Economy', 500, FALSE),
+    (2, '18', 'Economy', 500, FALSE),
+    (2, '19', 'Economy', 500, FALSE),
+    (2, '20', 'Economy', 500, FALSE),
+    (2, '21', 'Economy', 500, FALSE),
+    (2, '22', 'Economy', 500, FALSE),
+    (2, '23', 'Economy', 500, FALSE),
+    (2, '24', 'Economy', 500, FALSE),
+    (2, '25', 'Economy', 500, FALSE),
+    (2, '26', 'Economy', 500, FALSE),
+    (2, '27', 'Economy', 500, FALSE),
+    (2, '28', 'Economy', 500, FALSE),
+    (2, '29', 'Economy', 500, FALSE),
+    (2, '30', 'Economy', 500, FALSE),
+    (2, '31', 'Business', 700, FALSE),
+    (2, '32', 'Business', 700, FALSE),
+    (2, '33', 'Business', 700, FALSE),
+    (2, '34', 'Business', 700, FALSE),
+    (2, '35', 'Business', 700, FALSE),
+    (2, '36', 'Business', 700, FALSE),
     
     -- Seats for Flight 3
-    (3, '1', 'firstClass', 700.00, FALSE),
-    (3, '2', 'firstClass', 700.00, FALSE),
-    (3, '3', 'firstClass', 700.00, FALSE),
-    (3, '4', 'firstClass', 700.00, FALSE),
-    (3, '5', 'firstClass', 700.00, FALSE),
-    (3, '6', 'firstClass', 700.00, FALSE),
-    (3, '7', 'firstClass', 700.00, FALSE),
-    (3, '8', 'firstClass', 700.00, FALSE),
-    (3, '9', 'firstClass', 700.00, FALSE),
-    (3, '10', 'firstClass', 700.00, FALSE),
-    (3, '11', 'firstClass', 700.00, FALSE),
-    (3, '12', 'firstClass', 700.00, FALSE),
-    (3, '13', 'Economy', 500.00, FALSE),
-    (3, '14', 'Economy', 500.00, FALSE),
-    (3, '15', 'Economy', 500.00, FALSE),
-    (3, '16', 'Economy', 500.00, FALSE),
-    (3, '17', 'Economy', 500.00, FALSE),
-    (3, '18', 'Economy', 500.00, FALSE),
-    (3, '19', 'Economy', 500.00, FALSE),
-    (3, '20', 'Economy', 500.00, FALSE),
-    (3, '21', 'Economy', 500.00, FALSE),
-    (3, '22', 'Economy', 500.00, FALSE),
-    (3, '23', 'Economy', 500.00, FALSE),
-    (3, '24', 'Economy', 500.00, FALSE),
-    (3, '25', 'Economy', 500.00, FALSE),
-    (3, '26', 'Economy', 500.00, FALSE),
-    (3, '27', 'Economy', 500.00, FALSE),
-    (3, '28', 'Economy', 500.00, FALSE),
-    (3, '29', 'Economy', 500.00, FALSE),
-    (3, '30', 'Economy', 500.00, FALSE),
-    (3, '31', 'Business', 700.00, FALSE),
-    (3, '32', 'Business', 700.00, FALSE),
-    (3, '33', 'Business', 700.00, FALSE),
-    (3, '34', 'Business', 700.00, FALSE),
-    (3, '35', 'Business', 700.00, FALSE),
-    (3, '36', 'Business', 700.00, FALSE);
+    (3, '1', 'firstClass', 700, FALSE),
+    (3, '2', 'firstClass', 700, FALSE),
+    (3, '3', 'firstClass', 700, FALSE),
+    (3, '4', 'firstClass', 700, FALSE),
+    (3, '5', 'firstClass', 700, FALSE),
+    (3, '6', 'firstClass', 700, FALSE),
+    (3, '7', 'firstClass', 700, FALSE),
+    (3, '8', 'firstClass', 700, FALSE),
+    (3, '9', 'firstClass', 700, FALSE),
+    (3, '10', 'firstClass', 700, FALSE),
+    (3, '11', 'firstClass', 700, FALSE),
+    (3, '12', 'firstClass', 700, FALSE),
+    (3, '13', 'Economy', 500, FALSE),
+    (3, '14', 'Economy', 500, FALSE),
+    (3, '15', 'Economy', 500, FALSE),
+    (3, '16', 'Economy', 500, FALSE),
+    (3, '17', 'Economy', 500, FALSE),
+    (3, '18', 'Economy', 500, FALSE),
+    (3, '19', 'Economy', 500, FALSE),
+    (3, '20', 'Economy', 500, FALSE),
+    (3, '21', 'Economy', 500, FALSE),
+    (3, '22', 'Economy', 500, FALSE),
+    (3, '23', 'Economy', 500, FALSE),
+    (3, '24', 'Economy', 500, FALSE),
+    (3, '25', 'Economy', 500, FALSE),
+    (3, '26', 'Economy', 500, FALSE),
+    (3, '27', 'Economy', 500, FALSE),
+    (3, '28', 'Economy', 500, FALSE),
+    (3, '29', 'Economy', 500, FALSE),
+    (3, '30', 'Economy', 500, FALSE),
+    (3, '31', 'Business', 700, FALSE),
+    (3, '32', 'Business', 700, FALSE),
+    (3, '33', 'Business', 700, FALSE),
+    (3, '34', 'Business', 700, FALSE),
+    (3, '35', 'Business', 700, FALSE),
+    (3, '36', 'Business', 700, FALSE);
 
 -- Bookings Table
 INSERT INTO Bookings (MemberID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
@@ -250,14 +257,13 @@ INSERT INTO Crews (Name, Position)
 VALUES
     ('Captain Smith', 'pilot'),
     ('Linda Johnson', 'flight_attendant'),
-    ('Tom Davis', 'engineer');
-
--- Planes Table
-INSERT INTO Planes (Model, Capacity)
-VALUES
-    ('Boeing 737', 150),
-    ('Airbus A320', 180),
-    ('Boeing 747', 300);
+    ('Tom Davis', 'engineer'),
+	('Emily Rodriguez', 'pilot'),
+    ('Michael Turner', 'flight_attendant'),
+    ('Sarah White', 'engineer'),
+    ('John Anderson', 'pilot'),
+    ('Megan Clark', 'flight_attendant'),
+    ('Robert Harris', 'engineer');
 
 -- Destinations Table
 INSERT INTO Destinations (City, Country)
