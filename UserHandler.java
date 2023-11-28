@@ -38,12 +38,11 @@ public class UserHandler {
         }
         return id;
     }
-    public static long handleLogin(String email, char[] password){
-        String SQL = "INSERT INTO Users(FName, LName, User_Address, Email, User_Password) VALUES (?, ?, ?, ?, ?)";
-
+    //public static long handleLogin(String email, char[] password){
+    //    String SQL = "INSERT INTO Users(FName, LName, User_Address, Email, User_Password) VALUES (?, ?, ?, ?, ?)";
         
-
-        return 0;
-    }
+    //    SQL = "hello";
+    //    return 0;
+    //}
 
 }

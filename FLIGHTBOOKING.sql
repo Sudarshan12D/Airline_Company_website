@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Payments;
 DROP TABLE IF EXISTS Bookings;
 DROP TABLE IF EXISTS Seats;
 DROP TABLE IF EXISTS Flights;
@@ -256,7 +257,13 @@ INSERT INTO Crews (Name, Position)
 VALUES
     ('Captain Smith', 'pilot'),
     ('Linda Johnson', 'flight_attendant'),
-    ('Tom Davis', 'engineer');
+    ('Tom Davis', 'engineer'),
+	('Emily Rodriguez', 'pilot'),
+    ('Michael Turner', 'flight_attendant'),
+    ('Sarah White', 'engineer'),
+    ('John Anderson', 'pilot'),
+    ('Megan Clark', 'flight_attendant'),
+    ('Robert Harris', 'engineer');
 
 -- Destinations Table
 INSERT INTO Destinations (City, Country)
