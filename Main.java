@@ -19,7 +19,7 @@ public class Main {
         //Initialize Database
     
         FlightList availableFlights = FlightDataRetriever.loadAllData();
-
+        
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
