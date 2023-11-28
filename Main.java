@@ -17,10 +17,7 @@ public class Main {
     public static void main(String[] args) {
         //Initialize Database
     
-
         FlightList availableFlights = FlightDataRetriever.loadAllData();
-        System.out.println("Printing arrival time of the first flight:\n");
-        System.out.println(availableFlights.getFlightItinerary(0).getLocationInformation().getArrTime());
 
 
         // Create the frame
