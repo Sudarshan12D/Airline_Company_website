@@ -18,10 +18,6 @@ public class Main {
     private static JLabel welcomeLabel;
     private static JButton myBookingsButton;
 
-
-
-
-    
     public static void main(String[] args) {
 
         loginButton = new JButton("Login");
@@ -35,14 +31,12 @@ public class Main {
         welcomeLabel = new JLabel();
         welcomeLabel.setFont(new Font("Serif", Font.BOLD, 18));
         welcomeLabel.setOpaque(false);
-        
+
         // Inside the main method, where you initialize other buttons
         myBookingsButton = new JButton("My Bookings");
         myBookingsButton.setVisible(false); // Initially, the button is not visible
 
-
-
-        //Initialize Database
+        // Initialize Database
         FlightList availableFlights = FlightDataRetriever.loadAllData();
 
         // Create the frame
@@ -66,63 +60,68 @@ public class Main {
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setOpaque(false);
 
-        //buttonPanel.add(welcomeLabel, BorderLayout.WEST);
+        // buttonPanel.add(welcomeLabel, BorderLayout.WEST);
 
         membershipButton.addActionListener(e -> {
             // Create a new frame for membership details
             JFrame membershipFrame = new JFrame("Membership Registration");
             membershipFrame.setLayout(null); // Setting layout to null for absolute positioning
-        
+
             // Define a constant email
             String constantEmail = currentUser.getEmail(); // Replace with the actual email
-        
+
             // Add a label for email
             JLabel emailLabel = new JLabel("Email: " + constantEmail);
             emailLabel.setBounds(10, 10, 280, 25); // Set bounds (x, y, width, height)
             membershipFrame.add(emailLabel);
-        
+
             // Add a label and text field for credit card number
             JLabel cardLabel = new JLabel("Credit Card Number:");
             cardLabel.setBounds(10, 45, 280, 25);
             membershipFrame.add(cardLabel);
-        
+
             JTextField cardField = new JTextField(20);
             cardField.setBounds(10, 70, 280, 25);
             membershipFrame.add(cardField);
-        
+
             // Add a register button
             JButton registerButton = new JButton("Register");
             registerButton.setBounds(10, 105, 100, 25);
             membershipFrame.add(registerButton);
-        
+
             // Set the size of the frame
             membershipFrame.setSize(300, 200);
-        
+
             // Set frame behavior and make it visible
             membershipFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             membershipFrame.setVisible(true);
-        
+
             // Add action listener to register button
             registerButton.addActionListener(registerEvent -> {
-                // Using the constant email
-                String email = constantEmail;
-                String creditCard = cardField.getText();
-                
-                // Logic to handle membership registration
-                UserHandler.handleMembership(email, creditCard);
-            
-                // Logic to handle sign out
-                currentUser = null; // Reset the current user
-                signOutButton.setVisible(false); // Hide the sign out button
-                loginButton.setVisible(true); // Show the login button
-                membershipButton.setVisible(false);
-                membershipFrame.dispose();
+                String creditCard = cardField.getText().trim();
+
+                // Check if the credit card field is empty or not a 16-digit number
+                if (creditCard.isEmpty()) {
+                    JOptionPane.showMessageDialog(membershipFrame, "Please enter credit card information.");
+                } else if (!creditCard.matches("\\d{16}")) {
+                    JOptionPane.showMessageDialog(membershipFrame, "Credit card number must be a 16-digit number.");
+                } else {
+                    // Using the constant email
+                    String email = constantEmail;
+
+                    // Logic to handle membership registration
+                    UserHandler.handleMembership(email, creditCard);
+
+                    // Logic to handle sign out
+                    currentUser = null; // Reset the current user
+                    signOutButton.setVisible(false); // Hide the sign out button
+                    loginButton.setVisible(true); // Show the login button
+                    membershipButton.setVisible(false);
+                    membershipFrame.dispose();
+                }
             });
         });
-        
-        
-        
-        
+
         // Create the login button
         JButton viewFlightsButton = new JButton("View Flights");
         viewFlightsButton.addActionListener(e -> {
@@ -223,16 +222,24 @@ public class Main {
                             return; // Add return to prevent closing the login frame
                         }
                         if (currentUser != null) {
-                            loginButton.setVisible(false);  // Hide the login button
+                            loginButton.setVisible(false); // Hide the login button
                             signUpButton.setVisible(false);
-                            signOutButton.setVisible(true);  // Show the sign out button
-                            membershipButton.setVisible(true);
+                            signOutButton.setVisible(true); // Show the sign out button
                             welcomeLabel.setText("Welcome " + currentUser.getEmail());
                             myBookingsButton.setVisible(true);
-
+                
+                            // Check if the user is already a member
+                            if (currentUser.getIsMember()) {
+                                membershipButton.setVisible(false); // Hide membership button for members
+                            } else {
+                                membershipButton.setVisible(true); // Show for non-members
+                            }
+                
+                            loginFrame.dispose();
+                        } else {
+                            // If login failed
+                            JOptionPane.showMessageDialog(loginFrame, "Login incorrect. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
                         }
-
-                        loginFrame.dispose();
                     }
 
                 });
@@ -256,8 +263,6 @@ public class Main {
                 membershipButton.setVisible(false);
 
                 welcomeLabel.setText(""); // Clear the welcome label
-            
-               
 
             });
 
@@ -268,7 +273,7 @@ public class Main {
 
             // ....................................SIGNUP EVENT
             // Listener...................................................
-            //JButton signUpButton = new JButton("Signup");
+            // JButton signUpButton = new JButton("Signup");
             signUpButton.addActionListener(ev -> {
                 // Create a new frame for sign up
                 JFrame signUpFrame = new JFrame("Sign Up");
@@ -381,7 +386,6 @@ public class Main {
                                 firstNameField.getText(),
                                 lastNameField.getText(),
                                 addressField.getText());
-
                         JOptionPane.showMessageDialog(signUpFrame, "Account Created Successfully", "Success",
                                 JOptionPane.INFORMATION_MESSAGE);
                         signUpFrame.dispose();
@@ -792,7 +796,6 @@ public class Main {
         checkoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                
                 // Implement payment processing logic here
                 JOptionPane.showMessageDialog(checkoutFrame, "Purchase Complete!", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
