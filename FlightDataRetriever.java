@@ -112,8 +112,10 @@ public class FlightDataRetriever {
         }
         
         //Add seats to plane
-        for(int i = 0; i < planeList.size(); i++){
-            for(int k = 0; k < 36; k++){
+        int seatsPerPlane = 36;
+
+        for (int i = 0; i < planeList.size(); i++) {
+            for (int k = i * seatsPerPlane; k < (i + 1) * seatsPerPlane; k++) {
                 planeList.get(i).addSeat(seatList.get(k));
             }
         } 

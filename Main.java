@@ -494,7 +494,6 @@ public class Main {
                     int row = e.getY() / table.getRowHeight();
                     
                     if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
-                        int selectedFlightId = Integer.parseInt(table.getValueAt(row, 0).toString()); 
                         if ("View Seats".equals(table.getValueAt(row, column))) {
 
                             // Create and display the seat selection frame
@@ -606,7 +605,8 @@ public class Main {
                             // Fetch the seat data from your backend
                             ArrayList<Seat> seats = availableFlights.getFlightItinerary(row).getPlane().getListOfSeats();
                             int counter = 0;
-                            System.out.println(row);
+                            
+                            
                             // ...............................selectedSeatsLabel..................................................
                             topPanel.add(selectedSeatsLabel, BorderLayout.SOUTH);
                             // Buttons for each seat with fixed size
@@ -617,9 +617,8 @@ public class Main {
 
                                 // Set color based on the seat type and booking status
                                 Color colorToSet;
-                                // System.out.println(selectedFlightId);
-                                // System.out.println(seat.getPlaneID());
-                                if (seat.getIsBooked() && seat.getPlaneID() == selectedFlightId ) {
+                                
+                                if (seat.getIsBooked()) {
                                     colorToSet = Color.GRAY; // Indicate that the seat is already booked
                                 } else {
                                     switch (seat.getSeatType()) {
