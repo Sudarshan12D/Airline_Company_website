@@ -841,7 +841,7 @@ public class Main {
                 ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
 
                 // Call the complete purchase method
-                completePurchase(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds);
+                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds);
             }
         });
         checkoutPanel.add(checkoutButton, gbc);

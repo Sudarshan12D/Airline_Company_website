@@ -6,13 +6,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Booker {
+    //public static long handleBooking(int price, String creditCard, int memberID, int flightID, int seatID, Boolean insurance)
+    public static long handleBooking(int price, String creditCard, String email, int flightID,  ArrayList<String> seatID) {
 
-    public static long handleBooking(int price, String creditCard, int memberID, int flightID, int seatID, Boolean insurance) {
-        addBooking();
+        for (int i =0; i < seatID.size(); i++) {
+            String thisSeat = seatID.get(i);
+            addBooking(email, flightID, thisSeat);
+        }
+
+        addPayment();
 
     }
-    public static long addBooking(int memberID, int flightID, int seatID, Boolean insurance) {
-        String SQL = "INSERT INTO Bookings(UserID, FlightID, SeatID, CancelationInsurance) VALUES (?, ?, ?, ?)";
+
+    //public static long addBooking(String email, int flightID, int seatID, Boolean insurance)
+    public static long addBooking(String email, int flightID, String seatID) {
+        //String SQL = "INSERT INTO Bookings(UserID, FlightID, SeatID, CancelationInsurance) VALUES (?, ?, ?, ?)";
+        String SQL = "INSERT INTO Bookings(UserID, FlightID, SeatID) VALUES (?, ?, ?)";
 
         long id = 0;
 
@@ -21,8 +30,8 @@ public class Booker {
 
             pstmt.setInt(1, memberID);
             pstmt.setInt(2, flightID);
-            pstmt.setInt(3, seatID);
-            pstmt.setBoolean(4, insurance);
+            pstmt.setString(3, seatID);
+            //pstmt.setBoolean(4, insurance);
 
             int affectedRows = pstmt.executeUpdate();
 
