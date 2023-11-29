@@ -14,7 +14,7 @@ public class Plane {
     }
 
     void addSeat(int i, String num, String type, int p, Boolean bool){
-        listOfSeats.add(new Seat(i, num, type, p, bool));
+        listOfSeats.add(new Seat(i, num, type, p, bool, id));
     }
 
     void addSeat(Seat s){
