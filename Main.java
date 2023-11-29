@@ -755,10 +755,10 @@ public class Main {
                     JOptionPane.showMessageDialog(checkoutFrame, "No user is logged in.", "Error", JOptionPane.ERROR_MESSAGE);
                     return; // Early return to prevent further execution
                 }
-
                 // Retrieve the total price from the selectedSeats and flightInfo
                 int totalPrice = totalCost;
                 
+
                 // Get the credit card number from the currentUser object
                 String creditCardNumber = currentUser.getCreditCardNumber();
                 

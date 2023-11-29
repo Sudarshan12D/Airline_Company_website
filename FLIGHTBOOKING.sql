@@ -124,7 +124,7 @@ VALUES
 INSERT INTO Seats (PlaneID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
     -- Seats for Flight 1
-    (1, '1', 'firstClass', 700, FALSE),
+    (1, '1', 'firstClass', 700, TRUE),
     (1, '2', 'firstClass', 700, FALSE),
     (1, '3', 'firstClass', 700, FALSE),
     (1, '4', 'firstClass', 700, FALSE),
