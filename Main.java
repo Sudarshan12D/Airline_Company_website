@@ -601,8 +601,7 @@ public class Main {
                             });
 
                             // Add the Continue button just below the infoPanel
-                            infoPanel.add(Box.createVerticalStrut(10)); // Add some space between the last label and the
-                                                                        // button
+                            infoPanel.add(Box.createVerticalStrut(10)); // Add some space between the last label and the// button
                             infoPanel.add(continueButton);
 
                             // Fetch the seat data from your backend
