@@ -18,6 +18,8 @@ public class Main {
     private static JButton signUpButton;
     private static JButton membershipButton;
     private static JLabel welcomeLabel;
+    private static JButton myBookingsButton;
+
 
 
 
@@ -37,6 +39,10 @@ public class Main {
         welcomeLabel.setFont(new Font("Serif", Font.BOLD, 18));
         welcomeLabel.setOpaque(false);
         
+        // Inside the main method, where you initialize other buttons
+        myBookingsButton = new JButton("My Bookings");
+        myBookingsButton.setVisible(false); // Initially, the button is not visible
+
 
 
         //Initialize Database
@@ -64,7 +70,7 @@ public class Main {
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setOpaque(false);
 
-        buttonPanel.add(welcomeLabel, BorderLayout.WEST);
+        //buttonPanel.add(welcomeLabel, BorderLayout.WEST);
 
         membershipButton.addActionListener(e -> {
             // Open a new frame or dialog to collect membership details
@@ -181,15 +187,12 @@ public class Main {
                             signOutButton.setVisible(true);  // Show the sign out button
                             membershipButton.setVisible(true);
                             welcomeLabel.setText("Welcome " + currentUser.getEmail());
+                            myBookingsButton.setVisible(true);
 
                         }
                       
 
                         loginFrame.dispose();
-                        System.out.println("Testing Logged In User Info");
-                        System.out.println(currentUser.getCreditCardNumber());
-                        System.out.println(currentUser.getAddress());
-                        System.out.println(currentUser.getFname());
                     }
                     
                 });
@@ -207,7 +210,7 @@ public class Main {
                 currentUser = null; // Reset the current user
                 signOutButton.setVisible(false); // Hide the sign out button
                 loginButton.setVisible(true); // Show the login button
-
+                myBookingsButton.setVisible(false);
                 signUpButton.setVisible(true);
                 membershipButton.setVisible(false);
                 membershipButton.setVisible(false);
@@ -220,6 +223,7 @@ public class Main {
             
 
             authButtonsPanel.add(loginButton);
+            authButtonsPanel.add(myBookingsButton);
             authButtonsPanel.add(signOutButton);
             authButtonsPanel.add(membershipButton);
 
