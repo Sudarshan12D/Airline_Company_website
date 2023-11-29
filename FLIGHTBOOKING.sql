@@ -124,7 +124,7 @@ VALUES
 INSERT INTO Seats (PlaneID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
     -- Seats for Flight 1
-    (1, '1', 'firstClass', 700, FALSE),
+    (1, '1', 'firstClass', 700, TRUE),
     (1, '2', 'firstClass', 700, FALSE),
     (1, '3', 'firstClass', 700, FALSE),
     (1, '4', 'firstClass', 700, FALSE),
@@ -238,7 +238,7 @@ VALUES
     (3, '36', 'Business', 700, FALSE);
 
 -- Bookings Table
-INSERT INTO Bookings (MemberID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
+INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
 VALUES
     (1, 1, 1, TRUE, '2023-11-18 10:30:00'),
     (2, 2, 2, FALSE, '2023-11-18 12:45:00'),
