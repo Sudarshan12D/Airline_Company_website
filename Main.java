@@ -15,14 +15,20 @@ public class Main {
     public static RegisteredUser currentUser = null;
     private static JButton loginButton;
     private static JButton signOutButton;
+    private static JButton signUpButton;
+    private static JButton membershipButton;
 
     
     public static void main(String[] args) {
 
         
         loginButton = new JButton("Login");
+        signUpButton = new JButton("Signup");
         signOutButton = new JButton("Sign Out");
         signOutButton.setVisible(false);
+
+        membershipButton = new JButton("Sign Up for Membership");
+        membershipButton.setVisible(false);
         //Initialize Database
         FlightList availableFlights = FlightDataRetriever.loadAllData();
         
@@ -46,6 +52,17 @@ public class Main {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setOpaque(false);
+
+
+        membershipButton.addActionListener(e -> {
+            // Open a new frame or dialog to collect membership details
+            // Example:
+            JFrame membershipFrame = new JFrame("Membership");
+            // Add components to membershipFrame for collecting email and credit card information
+            // ...
+            membershipFrame.pack();
+            membershipFrame.setVisible(true);
+        });
 
         // Create the login button
         JButton viewFlightsButton = new JButton("View Flights");
@@ -145,7 +162,9 @@ public class Main {
                         }
                         if (currentUser != null) {
                             loginButton.setVisible(false);  // Hide the login button
+                            signUpButton.setVisible(false);
                             signOutButton.setVisible(true);  // Show the sign out button
+                            membershipButton.setVisible(true);
                         }
                       
 
@@ -171,21 +190,18 @@ public class Main {
                 currentUser = null; // Reset the current user
                 signOutButton.setVisible(false); // Hide the sign out button
                 loginButton.setVisible(true); // Show the login button
-            
-                // Optionally, reset the frame content to the initial state if needed
-                // frame.getContentPane().removeAll();
-                // Add initial components back to the frame
-                // frame.revalidate();
-                // frame.repaint();
+                signUpButton.setVisible(true);
+                membershipButton.setVisible(false);
             });
             
 
             authButtonsPanel.add(loginButton);
             authButtonsPanel.add(signOutButton);
+            authButtonsPanel.add(membershipButton);
 
 
             //....................................SIGNUP EVENT Listener...................................................
-            JButton signUpButton = new JButton("Signup");
+            
             signUpButton.addActionListener(ev -> {
                 // Create a new frame for sign up
                 JFrame signUpFrame = new JFrame("Sign Up");
