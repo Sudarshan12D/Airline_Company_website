@@ -154,12 +154,12 @@ VALUES
     (1, '28', 'Economy', 500, FALSE),
     (1, '29', 'Economy', 500, FALSE),
     (1, '30', 'Economy', 500, FALSE),
-    (1, '31', 'Business', 700, FALSE),
-    (1, '32', 'Business', 700, FALSE),
-    (1, '33', 'Business', 700, FALSE),
-    (1, '34', 'Business', 700, FALSE),
-    (1, '35', 'Business', 700, FALSE),
-    (1, '36', 'Business', 700, FALSE),
+    (1, '31', 'Business', 1000, FALSE),
+    (1, '32', 'Business', 1000, FALSE),
+    (1, '33', 'Business', 1000, FALSE),
+    (1, '34', 'Business', 1000, FALSE),
+    (1, '35', 'Business', 1000, FALSE),
+    (1, '36', 'Business', 1000, FALSE),
     
     -- Seats for Flight 2
     (2, '1', 'firstClass', 700, FALSE),
@@ -192,12 +192,12 @@ VALUES
     (2, '28', 'Economy', 500, FALSE),
     (2, '29', 'Economy', 500, FALSE),
     (2, '30', 'Economy', 500, FALSE),
-    (2, '31', 'Business', 700, FALSE),
-    (2, '32', 'Business', 700, FALSE),
-    (2, '33', 'Business', 700, FALSE),
-    (2, '34', 'Business', 700, FALSE),
-    (2, '35', 'Business', 700, FALSE),
-    (2, '36', 'Business', 700, FALSE),
+    (2, '31', 'Business', 1000, FALSE),
+    (2, '32', 'Business', 1000, FALSE),
+    (2, '33', 'Business', 1000, FALSE),
+    (2, '34', 'Business', 1000, FALSE),
+    (2, '35', 'Business', 1000, FALSE),
+    (2, '36', 'Business', 1000, FALSE),
     
     -- Seats for Flight 3
     (3, '1', 'firstClass', 700, FALSE),
@@ -230,15 +230,15 @@ VALUES
     (3, '28', 'Economy', 500, FALSE),
     (3, '29', 'Economy', 500, FALSE),
     (3, '30', 'Economy', 500, FALSE),
-    (3, '31', 'Business', 700, FALSE),
-    (3, '32', 'Business', 700, FALSE),
-    (3, '33', 'Business', 700, FALSE),
-    (3, '34', 'Business', 700, FALSE),
-    (3, '35', 'Business', 700, FALSE),
-    (3, '36', 'Business', 700, FALSE);
+    (3, '31', 'Business', 1000, FALSE),
+    (3, '32', 'Business', 1000, FALSE),
+    (3, '33', 'Business', 1000, FALSE),
+    (3, '34', 'Business', 1000, FALSE),
+    (3, '35', 'Business', 1000, FALSE),
+    (3, '36', 'Business', 1000, FALSE);
 
 -- Bookings Table
-INSERT INTO Bookings (MemberID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
+INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
 VALUES
     (1, 1, 1, TRUE, '2023-11-18 10:30:00'),
     (2, 2, 2, FALSE, '2023-11-18 12:45:00'),

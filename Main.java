@@ -13,16 +13,36 @@ public class Main {
     public static RegisteredUser currentUser = null;
     private static JButton loginButton;
     private static JButton signOutButton;
+    private static JButton signUpButton;
     private static JButton membershipButton;
+    private static JLabel welcomeLabel;
+    private static JButton myBookingsButton;
 
+
+
+
+    
     public static void main(String[] args) {
 
         loginButton = new JButton("Login");
+        signUpButton = new JButton("Signup");
         signOutButton = new JButton("Sign Out");
         signOutButton.setVisible(false);
+
         membershipButton = new JButton("Sign Up for Membership");
         membershipButton.setVisible(false);
-        // Initialize Database
+
+        welcomeLabel = new JLabel();
+        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 18));
+        welcomeLabel.setOpaque(false);
+        
+        // Inside the main method, where you initialize other buttons
+        myBookingsButton = new JButton("My Bookings");
+        myBookingsButton.setVisible(false); // Initially, the button is not visible
+
+
+
+        //Initialize Database
         FlightList availableFlights = FlightDataRetriever.loadAllData();
 
         // Create the frame
@@ -45,6 +65,8 @@ public class Main {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setOpaque(false);
+
+        //buttonPanel.add(welcomeLabel, BorderLayout.WEST);
 
         membershipButton.addActionListener(e -> {
             // Create a new frame for membership details
@@ -109,6 +131,7 @@ public class Main {
 
             // Create and add a top panel for the flights label and sign out button
             JPanel topPanel = new JPanel(new BorderLayout());
+            topPanel.add(welcomeLabel, BorderLayout.WEST);
 
             // Create and add a label for "Available Flights"
             JLabel flightsLabel = new JLabel("Available Flights", SwingConstants.CENTER);
@@ -200,17 +223,16 @@ public class Main {
                             return; // Add return to prevent closing the login frame
                         }
                         if (currentUser != null) {
-                            loginButton.setVisible(false); // Hide the login button
-                            signOutButton.setVisible(true); // Show the sign out button
+                            loginButton.setVisible(false);  // Hide the login button
+                            signUpButton.setVisible(false);
+                            signOutButton.setVisible(true);  // Show the sign out button
                             membershipButton.setVisible(true);
+                            welcomeLabel.setText("Welcome " + currentUser.getEmail());
+                            myBookingsButton.setVisible(true);
 
                         }
 
                         loginFrame.dispose();
-                        System.out.println("Testing Logged In User Info");
-                        System.out.println(currentUser.getCreditCardNumber());
-                        System.out.println(currentUser.getAddress());
-                        System.out.println(currentUser.getFname());
                     }
 
                 });
@@ -228,22 +250,25 @@ public class Main {
                 currentUser = null; // Reset the current user
                 signOutButton.setVisible(false); // Hide the sign out button
                 loginButton.setVisible(true); // Show the login button
+                myBookingsButton.setVisible(false);
+                signUpButton.setVisible(true);
+                membershipButton.setVisible(false);
                 membershipButton.setVisible(false);
 
-                // Optionally, reset the frame content to the initial state if needed
-                // frame.getContentPane().removeAll();
-                // Add initial components back to the frame
-                // frame.revalidate();
-                // frame.repaint();
+                welcomeLabel.setText(""); // Clear the welcome label
+            
+               
+
             });
 
             authButtonsPanel.add(loginButton);
+            authButtonsPanel.add(myBookingsButton);
             authButtonsPanel.add(signOutButton);
             authButtonsPanel.add(membershipButton);
 
             // ....................................SIGNUP EVENT
             // Listener...................................................
-            JButton signUpButton = new JButton("Signup");
+            //JButton signUpButton = new JButton("Signup");
             signUpButton.addActionListener(ev -> {
                 // Create a new frame for sign up
                 JFrame signUpFrame = new JFrame("Sign Up");
@@ -766,6 +791,8 @@ public class Main {
         gbc.gridwidth = 2;
         checkoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                
                 // Implement payment processing logic here
                 JOptionPane.showMessageDialog(checkoutFrame, "Purchase Complete!", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
