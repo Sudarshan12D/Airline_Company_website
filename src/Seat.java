@@ -6,16 +6,18 @@ public class Seat {
     String seatType;
     int price;
     Boolean isBooked;
+    int planeID;
 
     
 
     //Member Functions
-    public Seat(int i, String num, String type, int p, Boolean bool){
+    public Seat(int i, String num, String type, int p, Boolean bool, int pid){
         this.id = i;
         this.seatNumber = num;
         this.seatType = type;
         this.price = p;
         this.isBooked = bool;
+        this.planeID = pid;
     }
 
 
@@ -35,6 +37,10 @@ public class Seat {
     public String getSeatType() {
         return seatType;
     }
+    public int getPlaneID() {
+        return planeID;
+    }
+
     
 
 
@@ -54,6 +60,8 @@ public class Seat {
     public void setSeatType(String seatType) {
         this.seatType = seatType;
     }
-    
+    public void setPlaneID(int id) {
+        this.planeID = id;
+    }
     
 }

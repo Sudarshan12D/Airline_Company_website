@@ -42,7 +42,7 @@ public class FlightDataRetriever {
 
 
         //Get all Seat information
-        sql = "SELECT SeatID, SeatNumber, SeatType, Price, IsBooked FROM Seats";
+        sql = "SELECT SeatID, SeatNumber, SeatType, Price, IsBooked, PlaneID FROM Seats";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -53,9 +53,10 @@ public class FlightDataRetriever {
                 sqls.add(rs.getString("SeatNumber"));
                 sqls.add(rs.getString("SeatType"));
                 sqls.add(rs.getString("Price"));
+                sqls.add(rs.getString("PlaneID"));
                 
                 
-                Seat s = new Seat(Integer.valueOf(sqls.get(0)), sqls.get(1), sqls.get(2), Integer.valueOf(sqls.get(3)), rs.getBoolean("IsBooked"));
+                Seat s = new Seat(Integer.valueOf(sqls.get(0)), sqls.get(1), sqls.get(2), Integer.valueOf(sqls.get(3)), rs.getBoolean("IsBooked"), Integer.valueOf(sqls.get(4)));
                 seatList.add(s);
             }
         } catch (Exception e) {
