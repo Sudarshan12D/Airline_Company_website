@@ -520,8 +520,11 @@ public class Main {
                                             int seatPrice = availableFlights.getFlightItinerary(row).getPlane().getListOfSeats().get(index).getPrice();
                                             totalCost += seatPrice;
                                         }
+    
+                                        String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the flight ID from the table.
+
                                         // Now you have the total cost, you can pass it to your createCheckoutFrame or use it as needed.
-                                        createCheckoutFrame(flightInfo, totalCost);
+                                        createCheckoutFrame(flightInfo, totalCost, availableFlights, selectedFlightId);
                                         
                                     }
                                 }
@@ -680,7 +683,7 @@ public class Main {
         // Set the frame visible
         frame.setVisible(true);
     }
-    private static void createCheckoutFrame(Object[] flightInfo, int totalCost) {
+    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights, String selectedFlightId) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
         checkoutFrame.setSize(600, 400);
@@ -747,9 +750,32 @@ public class Main {
         gbc.gridwidth = 2;
         checkoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Implement payment processing logic here
-                JOptionPane.showMessageDialog(checkoutFrame, "Purchase Complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                checkoutFrame.dispose();
+
+                if (currentUser == null) {
+                    JOptionPane.showMessageDialog(checkoutFrame, "No user is logged in.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; // Early return to prevent further execution
+                }
+
+                // Retrieve the total price from the selectedSeats and flightInfo
+                int totalPrice = totalCost;
+                
+                // Get the credit card number from the currentUser object
+                String creditCardNumber = currentUser.getCreditCardNumber();
+                
+                // Get the email from the currentUser object
+                String userEmail = currentUser.getEmail();
+                
+                // Get the flight ID from the FlightItinerary object
+                //String flightId = String.valueOf(availableFlights.getFlightItinerary(selectedFlightId).getId());
+
+
+                System.out.println("Selected Flight ID: " + selectedFlightId);
+
+                // Get the seat IDs from the selectedSeats array
+                ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
+
+                // Call the complete purchase method
+                completePurchase(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds);
             }
         });
         checkoutPanel.add(checkoutButton, gbc);
@@ -760,5 +786,10 @@ public class Main {
         checkoutFrame.setVisible(true);
     }
     
+
+    public static void completePurchase(int totalPrice, String creditCardNumber, String userEmail, String flightId, ArrayList<String> seatIds) {
+        // TODO
+    }
+
     //Test comment to commit
 }
