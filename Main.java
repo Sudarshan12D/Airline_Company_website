@@ -97,10 +97,10 @@ public class Main {
             membershipFrame.setVisible(true);
 
             // Add action listener to register button
+            // Add action listener to register button
             registerButton.addActionListener(registerEvent -> {
                 String creditCard = cardField.getText().trim();
-
-                // Check if the credit card field is empty or not a 16-digit number
+            
                 if (creditCard.isEmpty()) {
                     JOptionPane.showMessageDialog(membershipFrame, "Please enter credit card information.");
                 } else if (!creditCard.matches("\\d{16}")) {
@@ -108,18 +108,34 @@ public class Main {
                 } else {
                     // Using the constant email
                     String email = constantEmail;
-
+            
                     // Logic to handle membership registration
-                    UserHandler.handleMembership(email, creditCard);
-
-                    // Logic to handle sign out
-                    currentUser = null; // Reset the current user
-                    signOutButton.setVisible(false); // Hide the sign out button
-                    loginButton.setVisible(true); // Show the login button
-                    membershipButton.setVisible(false);
-                    membershipFrame.dispose();
+                    long registrationResult = UserHandler.handleMembership(email, creditCard);
+                    
+                    if (registrationResult != -1) { // Assuming -1 indicates failure
+                        // Immediately update the currentUser object to reflect new membership status
+                        currentUser.setIsMember(true); // Assuming there is a setIsMember method
+            
+                        // Immediately reflect the changes in the UI
+                        signOutButton.setVisible(false); // Hide the sign out button
+                        loginButton.setVisible(true); // Show the login button
+                        membershipButton.setVisible(false); // Hide membership button as the user is now a member
+            
+                        // Prompt user to sign in again as a member
+                        JOptionPane.showMessageDialog(membershipFrame, "Membership registered. Please sign in again.", "Membership Registered", JOptionPane.INFORMATION_MESSAGE);
+            
+                        // Reset the current user to null to enforce re-login
+                        currentUser = null; 
+            
+                        membershipFrame.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(membershipFrame, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             });
+            
+            
+
         });
 
         // Create the login button
@@ -378,7 +394,11 @@ public class Main {
                             || addressField.getText().trim().isEmpty()) {
                         JOptionPane.showMessageDialog(signUpFrame, "you cannot have empty fields", "Error",
                                 JOptionPane.ERROR_MESSAGE);
-                    } else {
+                    } if (!emailField.getText().trim().endsWith("@gmail.com")) {
+                        JOptionPane.showMessageDialog(signUpFrame, "Please sign up with a Gmail account.", "Email Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                    else {
                         // If not empty, proceed with your submission logic
                         UserHandler.handleRegistration(
                                 emailField.getText(),
