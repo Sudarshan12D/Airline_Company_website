@@ -18,6 +18,7 @@ public class Main {
     private static JButton signUpButton;
     private static JButton membershipButton;
 
+
     
     public static void main(String[] args) {
 
@@ -32,6 +33,7 @@ public class Main {
         //Initialize Database
         FlightList availableFlights = FlightDataRetriever.loadAllData();
         
+
         // Create the frame
         JFrame frame = new JFrame("Senn Airways");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,7 +54,6 @@ public class Main {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setOpaque(false);
-
 
         membershipButton.addActionListener(e -> {
             // Open a new frame or dialog to collect membership details
@@ -165,6 +166,7 @@ public class Main {
                             signUpButton.setVisible(false);
                             signOutButton.setVisible(true);  // Show the sign out button
                             membershipButton.setVisible(true);
+
                         }
                       
 
@@ -190,8 +192,13 @@ public class Main {
                 currentUser = null; // Reset the current user
                 signOutButton.setVisible(false); // Hide the sign out button
                 loginButton.setVisible(true); // Show the login button
+
                 signUpButton.setVisible(true);
                 membershipButton.setVisible(false);
+                membershipButton.setVisible(false);
+            
+               
+
             });
             
 
