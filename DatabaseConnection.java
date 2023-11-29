@@ -31,8 +31,6 @@ public class DatabaseConnection {
             String username = "root";
             String password = "Sudu12june@#";
 
-     
-
             // Load the JDBC driver
            Class.forName("com.mysql.cj.jdbc.Driver");
 

@@ -48,14 +48,7 @@ public class FlightItinerary {
 
 
 
-    public boolean hasSeat(String seatNumber) {
-        for (Seat seat : this.plane.getListOfSeats()) {
-            if (seat.getSeatNumber().equals(seatNumber)) {
-                return true; // The seat is part of this flight
-            }
-        }
-        return false; // The seat was not found in this flight
-    }
+    
 
     
 
