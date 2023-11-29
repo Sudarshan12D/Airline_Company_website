@@ -1,6 +1,3 @@
-
-
-
 public class FlightItinerary {
     //Variables
     int id;
