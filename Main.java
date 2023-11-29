@@ -17,6 +17,8 @@ public class Main {
     private static JButton signOutButton;
     private static JButton signUpButton;
     private static JButton membershipButton;
+    private static JLabel welcomeLabel;
+
 
 
     
@@ -30,6 +32,13 @@ public class Main {
 
         membershipButton = new JButton("Sign Up for Membership");
         membershipButton.setVisible(false);
+
+        welcomeLabel = new JLabel();
+        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 18));
+        welcomeLabel.setOpaque(false);
+        
+
+
         //Initialize Database
         FlightList availableFlights = FlightDataRetriever.loadAllData();
         
@@ -55,6 +64,8 @@ public class Main {
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setOpaque(false);
 
+        buttonPanel.add(welcomeLabel, BorderLayout.WEST);
+
         membershipButton.addActionListener(e -> {
             // Open a new frame or dialog to collect membership details
             // Example:
@@ -65,6 +76,8 @@ public class Main {
             membershipFrame.setVisible(true);
         });
 
+        
+
         // Create the login button
         JButton viewFlightsButton = new JButton("View Flights");
         viewFlightsButton.addActionListener(e -> {
@@ -73,6 +86,7 @@ public class Main {
 
             // Create and add a top panel for the flights label and sign out button
             JPanel topPanel = new JPanel(new BorderLayout());
+            topPanel.add(welcomeLabel, BorderLayout.WEST);
 
             // Create and add a label for "Available Flights"
             JLabel flightsLabel = new JLabel("Available Flights", SwingConstants.CENTER);
@@ -166,6 +180,7 @@ public class Main {
                             signUpButton.setVisible(false);
                             signOutButton.setVisible(true);  // Show the sign out button
                             membershipButton.setVisible(true);
+                            welcomeLabel.setText("Welcome " + currentUser.getEmail());
 
                         }
                       
@@ -196,6 +211,8 @@ public class Main {
                 signUpButton.setVisible(true);
                 membershipButton.setVisible(false);
                 membershipButton.setVisible(false);
+
+                welcomeLabel.setText(""); // Clear the welcome label
             
                
 
