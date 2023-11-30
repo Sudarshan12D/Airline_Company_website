@@ -115,10 +115,11 @@ public class FlightDataRetriever {
         int seatsPerPlane = 36;
 
         for (int i = 0; i < planeList.size(); i++) {
+            planeList.get(i).setId(i + 1); // Set unique id for each plane
             for (int k = i * seatsPerPlane; k < (i + 1) * seatsPerPlane; k++) {
                 planeList.get(i).addSeat(seatList.get(k));
             }
-        } 
+        }
 
         //Create Flight Ittinerarys
         for(int j = 0; j < planeList.size(); j++){

@@ -584,7 +584,7 @@ public class Main {
                                         String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the flight ID from the table.
 
                                         // Now you have the total cost, you can pass it to your createCheckoutFrame or use it as needed.
-                                        createCheckoutFrame(flightInfo, totalCost, availableFlights, selectedFlightId);
+                                        createCheckoutFrame(flightInfo, totalCost, availableFlights, selectedFlightId, row);
                                         
                                     }
                                 }
@@ -739,7 +739,7 @@ public class Main {
         // Set the frame visible
         frame.setVisible(true);
     }
-    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights, String selectedFlightId) {
+    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights, String selectedFlightId, int row) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
         checkoutFrame.setSize(600, 400);
@@ -851,10 +851,10 @@ public class Main {
                 // Call the complete purchase method
                 if (currentUser.getIsMember()){
 
-                    Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance, );
+                    Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance, availableFlights.getFlightItinerary(row).getPlane());
                 }
                 else {
-                    Booker.handleBooking(totalPrice, cardNumberField.getText(), userEmail, selectedFlightId, seatIds, cancellationInsurance, );
+                    Booker.handleBooking(totalPrice, cardNumberField.getText(), userEmail, selectedFlightId, seatIds, cancellationInsurance, availableFlights.getFlightItinerary(row).getPlane());
 
                 }
             }
