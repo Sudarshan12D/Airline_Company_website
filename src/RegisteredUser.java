@@ -5,15 +5,17 @@ public class RegisteredUser {
     String creditCardNumber;
     Boolean isMember;
     String address;
+    int idNumber;
 
 
-    public RegisteredUser(String e, String f, String l, String c, String a, Boolean m){
+    public RegisteredUser(String e, String f, String l, String c, String a, Boolean m, int i){
         this.email = e;
         this.fname = f;
         this.lname = l;
         this.creditCardNumber = c;
         this.address = a;
         this.isMember = m;
+        this.idNumber = i;
     }
 
     //Get

@@ -102,16 +102,18 @@ public class UserHandler {
                         if (userIDList.get(i) == memberIDList.get(j)) {
                             RegisteredUser returnUser = new RegisteredUser(
                                     emailList.get(i), fnameList.get(i), lnameList.get(i),
-                                    memberCreditCardList.get(j), addressList.get(i), true);
+                                    memberCreditCardList.get(j), addressList.get(i), true, userIDList.get(i));
 
                             return returnUser;
                         }
                     }
 
+
+                    
                     // Not member but still regitetred
                     RegisteredUser returnUser = new RegisteredUser(
                             emailList.get(i), fnameList.get(i), lnameList.get(i),
-                            "Not a member - no saved card", addressList.get(i), false);
+                            "Not a member - no saved card", addressList.get(i), false, userIDList.get(i));
 
                     return returnUser;
                 }
