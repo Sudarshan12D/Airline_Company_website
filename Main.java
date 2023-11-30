@@ -100,7 +100,7 @@ public class Main {
             // Add action listener to register button
             registerButton.addActionListener(registerEvent -> {
                 String creditCard = cardField.getText().trim();
-            
+
                 if (creditCard.isEmpty()) {
                     JOptionPane.showMessageDialog(membershipFrame, "Please enter credit card information.");
                 } else if (!creditCard.matches("\\d{16}")) {
@@ -108,33 +108,33 @@ public class Main {
                 } else {
                     // Using the constant email
                     String email = constantEmail;
-            
+
                     // Logic to handle membership registration
                     long registrationResult = UserHandler.handleMembership(email, creditCard);
-                    
+
                     if (registrationResult != -1) { // Assuming -1 indicates failure
                         // Immediately update the currentUser object to reflect new membership status
                         currentUser.setIsMember(true); // Assuming there is a setIsMember method
-            
+                        System.out.println("isMember: " + currentUser.getIsMember());
                         // Immediately reflect the changes in the UI
                         signOutButton.setVisible(false); // Hide the sign out button
                         loginButton.setVisible(true); // Show the login button
                         membershipButton.setVisible(false); // Hide membership button as the user is now a member
-            
+
                         // Prompt user to sign in again as a member
-                        JOptionPane.showMessageDialog(membershipFrame, "Membership registered. Please sign in again.", "Membership Registered", JOptionPane.INFORMATION_MESSAGE);
-            
+                        JOptionPane.showMessageDialog(membershipFrame, "Membership registered. Please sign in again.",
+                                "Membership Registered", JOptionPane.INFORMATION_MESSAGE);
+
                         // Reset the current user to null to enforce re-login
-                        currentUser = null; 
-            
+                        currentUser = null;
+
                         membershipFrame.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(membershipFrame, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(membershipFrame, "Registration failed. Please try again.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
-            
-            
 
         });
 
@@ -243,18 +243,19 @@ public class Main {
                             signOutButton.setVisible(true); // Show the sign out button
                             welcomeLabel.setText("Welcome " + currentUser.getEmail());
                             myBookingsButton.setVisible(true);
-                
+
                             // Check if the user is already a member
-                            if (currentUser.getIsMember()) {
+                            if (currentUser.getIsMember() == true) {
                                 membershipButton.setVisible(false); // Hide membership button for members
                             } else {
                                 membershipButton.setVisible(true); // Show for non-members
                             }
-                
+
                             loginFrame.dispose();
                         } else {
                             // If login failed
-                            JOptionPane.showMessageDialog(loginFrame, "Login incorrect. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(loginFrame, "Login incorrect. Please try again.",
+                                    "Login Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
 
@@ -394,11 +395,12 @@ public class Main {
                             || addressField.getText().trim().isEmpty()) {
                         JOptionPane.showMessageDialog(signUpFrame, "you cannot have empty fields", "Error",
                                 JOptionPane.ERROR_MESSAGE);
-                    } if (!emailField.getText().trim().endsWith("@gmail.com")) {
-                        JOptionPane.showMessageDialog(signUpFrame, "Please sign up with a Gmail account.", "Email Error",
-                                JOptionPane.ERROR_MESSAGE);
                     }
-                    else {
+                    if (!emailField.getText().trim().endsWith("@gmail.com")) {
+                        JOptionPane.showMessageDialog(signUpFrame, "Please sign up with a Gmail account.",
+                                "Email Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
                         // If not empty, proceed with your submission logic
                         UserHandler.handleRegistration(
                                 emailField.getText(),
@@ -590,9 +592,14 @@ public class Main {
                                                     .getListOfSeats().get(index).getPrice();
                                             totalCost += seatPrice;
                                         }
+
+                                        String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the
+                                                                                                       // flight ID from
+                                                                                                       // the table.
+
                                         // Now you have the total cost, you can pass it to your createCheckoutFrame or
                                         // use it as needed.
-                                        createCheckoutFrame(flightInfo, totalCost);
+                                        createCheckoutFrame(flightInfo, totalCost, availableFlights, selectedFlightId);
 
                                     }
                                 }
@@ -748,7 +755,8 @@ public class Main {
         frame.setVisible(true);
     }
 
-    private static void createCheckoutFrame(Object[] flightInfo, int totalCost) {
+    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights,
+            String selectedFlightId) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
         checkoutFrame.setSize(600, 400);
@@ -816,10 +824,31 @@ public class Main {
         checkoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                // Implement payment processing logic here
-                JOptionPane.showMessageDialog(checkoutFrame, "Purchase Complete!", "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-                checkoutFrame.dispose();
+                if (currentUser == null) {
+                    JOptionPane.showMessageDialog(checkoutFrame, "No user is logged in.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return; // Early return to prevent further execution
+                }
+                // Retrieve the total price from the selectedSeats and flightInfo
+                int totalPrice = totalCost;
+
+                // Get the credit card number from the currentUser object
+                String creditCardNumber = currentUser.getCreditCardNumber();
+
+                // Get the email from the currentUser object
+                String userEmail = currentUser.getEmail();
+
+                // Get the flight ID from the FlightItinerary object
+                // String flightId =
+                // String.valueOf(availableFlights.getFlightItinerary(selectedFlightId).getId());
+
+                System.out.println("Selected Flight ID: " + selectedFlightId);
+
+                // Get the seat IDs from the selectedSeats array
+                ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
+
+                // Call the complete purchase method
+                completePurchase(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds);
             }
         });
         checkoutPanel.add(checkoutButton, gbc);
@@ -829,6 +858,12 @@ public class Main {
         checkoutFrame.setLocationRelativeTo(null);
         checkoutFrame.setVisible(true);
     }
+
+    public static void completePurchase(int totalPrice, String creditCardNumber, String userEmail, String flightId,
+            ArrayList<String> seatIds) {
+        // TODO
+    }
+    
 
     // Test comment to commit
 }
