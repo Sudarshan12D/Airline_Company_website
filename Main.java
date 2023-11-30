@@ -856,7 +856,14 @@ public class Main {
                 ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
 
                 // Call the complete purchase method
-                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance);
+                if (currentUser.getIsMember()){
+
+                    Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance);
+                }
+                else {
+                    Booker.handleBooking(totalPrice, cardNumberField.getText(), userEmail, selectedFlightId, seatIds, cancellationInsurance);
+
+                }
             }
         });
         
@@ -867,7 +874,4 @@ public class Main {
         checkoutFrame.setVisible(true);
     }
     
-
-    
-    //Test comment to commit
 }
