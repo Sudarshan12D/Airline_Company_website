@@ -4,6 +4,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Function;
 
 public class Main {
@@ -17,6 +18,9 @@ public class Main {
     private static JButton membershipButton;
     private static JLabel welcomeLabel;
     private static JButton myBookingsButton;
+
+    CardLayout cardLayout = new CardLayout();
+    JPanel cardPanel = new JPanel(cardLayout);
 
     public static void main(String[] args) {
 
@@ -44,6 +48,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1500, 800);
         frame.setLayout(new BorderLayout());
+        
 
         // Replace the below path with the actual path to your background image
         BackgroundPanel backgroundPanel = new BackgroundPanel("plane.jpg");
@@ -96,8 +101,8 @@ public class Main {
             membershipFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             membershipFrame.setVisible(true);
 
-            // Add action listener to register button
-            // Add action listener to register button
+
+            //................................................Membership button...................................................
             registerButton.addActionListener(registerEvent -> {
                 String creditCard = cardField.getText().trim();
 
@@ -137,6 +142,118 @@ public class Main {
             });
 
         });
+
+        
+
+        
+        //................................................MyBookings button.................................................../
+
+        // ButtonRenderer and ButtonEditor for "Cancel Flight" button
+        class ButtonRenderer extends JButton implements TableCellRenderer {
+            public ButtonRenderer() {
+                setOpaque(true);
+            }
+
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                        boolean isSelected, boolean hasFocus, int row, int column) {
+                setText((value == null) ? "" : value.toString());
+                return this;
+            }
+        }
+
+        class ButtonEditor extends DefaultCellEditor {
+            protected JButton button;
+            private String label;
+            private boolean isPushed;
+
+            public ButtonEditor(JCheckBox checkBox) {
+                super(checkBox);
+                button = new JButton();
+                button.setOpaque(true);
+                button.addActionListener(e -> fireEditingStopped());
+            }
+
+            public Component getTableCellEditorComponent(JTable table, Object value,
+                                                        boolean isSelected, int row, int column) {
+                if (isSelected) {
+                    button.setForeground(table.getSelectionForeground());
+                    button.setBackground(table.getSelectionBackground());
+                } else {
+                    button.setForeground(table.getForeground());
+                    button.setBackground(table.getBackground());
+                }
+                label = (value == null) ? "" : value.toString();
+                button.setText(label);
+                isPushed = true;
+                return button;
+            }
+
+            public Object getCellEditorValue() {
+                if (isPushed) {
+                    // TODO: Implement the cancellation logic here
+                    System.out.println(label + ": Cancellation logic here");
+                }
+                isPushed = false;
+                return label;
+            }
+        }
+
+        myBookingsButton.addActionListener(e -> {
+            // Create a dialog that acts as a popup
+            JDialog myBookingsDialog = new JDialog(frame, "My Bookings", false); // false means it's not modal
+            myBookingsDialog.setLayout(new BorderLayout());
+            myBookingsDialog.setSize(800, 600); // Set the size of the popup
+            myBookingsDialog.setLocationRelativeTo(frame); // Set the location relative to the main frame
+        
+            // Define the column names for the table
+            String[] bookingColumnNames = { "Flight ID", "Origin", "Destination", "Departure", "Arrival", "Selected Seats", "Action" };
+        
+            // Retrieve the booking data for the current user
+            //ArrayList<Object[]> myBookingData = retrieveMyBookings(currentUser);
+        
+            // Create a table model for "My Bookings"
+            DefaultTableModel myBookingModel = new DefaultTableModel(bookingColumnNames, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return column == 6; // Only the "Action" column is editable
+                }
+            };
+        
+            // Populate the table model with your booking data
+            // for (Object[] booking : myBookingData) {
+            //     // Add a placeholder for "Selected Seats" (to be implemented later) and a "Cancel Flight" button
+            //     Object[] row = Arrays.copyOf(booking, booking.length + 2); // Extend array to include new columns
+            //     row[booking.length] = "Seats TBD"; // Placeholder for selected seats
+            //     row[booking.length + 1] = "Cancel Flight"; // Placeholder for the button
+            //     myBookingModel.addRow(row);
+            // }
+        
+            // Create the table with the model
+            JTable myBookingsTable = new JTable(myBookingModel);
+            myBookingsTable.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+            myBookingsTable.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
+        
+            // Add a scroll pane with the table to the dialog
+            JScrollPane myBookingsScrollPane = new JScrollPane(myBookingsTable);
+            myBookingsDialog.add(myBookingsScrollPane, BorderLayout.CENTER);
+        
+            // Add the close button at the bottom of the dialog
+            JButton closeButton = new JButton("Close");
+            closeButton.addActionListener(closeEvent -> myBookingsDialog.dispose());
+            JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            closePanel.add(closeButton);
+            myBookingsDialog.add(closePanel, BorderLayout.SOUTH);
+        
+            // Make the dialog visible
+            myBookingsDialog.setVisible(true);
+        });
+        
+        // ... [Other parts of your class] ...
+        
+        
+    
+
+
 
         // Create the login button
         JButton viewFlightsButton = new JButton("View Flights");
@@ -584,7 +701,7 @@ public class Main {
                                         String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the flight ID from the table.
 
                                         // Now you have the total cost, you can pass it to your createCheckoutFrame or use it as needed.
-                                        createCheckoutFrame(flightInfo, totalCost, availableFlights, selectedFlightId);
+                                        createCheckoutFrame(flightInfo, totalCost, availableFlights, selectedFlightId, seatsFrame);
                                         
                                     }
                                 }
@@ -654,8 +771,7 @@ public class Main {
                                         return Integer.compare(num1, num2);
                                     });
 
-                                    String selectedSeatsText = "<html>Seats selected: "
-                                            + String.join(", ", selectedSeats) + "</html>";
+                                    String selectedSeatsText = "<html>Seats selected: " + String.join(", ", selectedSeats) + "</html>";
                                     selectedSeatsLabel.setText(selectedSeatsText);
                                 });
 
@@ -739,7 +855,7 @@ public class Main {
         // Set the frame visible
         frame.setVisible(true);
     }
-    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights, String selectedFlightId) {
+    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights, String selectedFlightId, JFrame seatsFrame) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
         checkoutFrame.setSize(600, 400);
@@ -857,6 +973,11 @@ public class Main {
                     Booker.handleBooking(totalPrice, cardNumberField.getText(), userEmail, selectedFlightId, seatIds, cancellationInsurance);
 
                 }
+
+                checkoutFrame.dispose();
+                seatsFrame.dispose();
+                JOptionPane.showMessageDialog(checkoutFrame, "Flight Booked", "Success", JOptionPane.INFORMATION_MESSAGE);
+               
             }
         });
         
