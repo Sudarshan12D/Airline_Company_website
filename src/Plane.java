@@ -32,6 +32,15 @@ public class Plane {
         return listOfSeats;
     }
 
+    public Seat getSeat(int n){
+        for (int i = 0; i < listOfSeats.size(); i++){
+            if (listOfSeats.get(i).id == n){
+                return listOfSeats.get(i);
+            }
+        }
+        return null;
+    }
+
 
     //Setters
     public void setCallSign(String callSign) {
