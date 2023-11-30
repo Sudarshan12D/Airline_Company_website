@@ -29,7 +29,11 @@ public class DatabaseConnection {
         try {
             String url = "jdbc:mysql://localhost:3306/FLIGHT_BOOKINGS";
             String username = "root";
-            String password = "Sudu12june@#";
+<<<<<<< HEAD
+            String password = "Barcelona15";
+=======
+            String password = "hgrt%48K";
+>>>>>>> ceedbd0fb04d51c9e6e512f8567d58ec0d210c8f
 
             // Load the JDBC driver
            Class.forName("com.mysql.cj.jdbc.Driver");

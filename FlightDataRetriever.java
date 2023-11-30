@@ -115,10 +115,11 @@ public class FlightDataRetriever {
         int seatsPerPlane = 36;
 
         for (int i = 0; i < planeList.size(); i++) {
+            planeList.get(i).setId(i + 1); // Set unique id for each plane
             for (int k = i * seatsPerPlane; k < (i + 1) * seatsPerPlane; k++) {
                 planeList.get(i).addSeat(seatList.get(k));
             }
-        } 
+        }
 
         //Create Flight Ittinerarys
         for(int j = 0; j < planeList.size(); j++){
@@ -126,7 +127,32 @@ public class FlightDataRetriever {
             fl.addFlight(fi);
         }
 
+        //Create Bookings
+        loadBookingData(fl);
+
         //return flight list
         return fl;
     }
+    private static void loadBookingData(FlightList fl) {
+        ArrayList<Bookings> bookingList = new ArrayList<>();
+
+        // Get all Booking information
+        String sql = "SELECT UserID, FlightID, SeatID FROM Bookings";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                String userID = rs.getString("UserID");
+                String flightID = rs.getString("FlightID");
+                String seatID = rs.getString("SeatID");
+
+                Bookings booking = new Bookings(userID, flightID, seatID);
+                bookingList.add(booking);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+

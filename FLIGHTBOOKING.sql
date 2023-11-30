@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS Bookings (
     FlightID INT NOT NULL,
     SeatID INT NOT NULL,
     CancellationInsurance BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (UserID) REFERENCES Members(UserID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
     FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
 );
@@ -97,11 +97,11 @@ VALUES
     ('Bob', 'Miller', '6TH AVENUE', 'bob.miller@example.com', 'securepass');
 
 -- Members Table
-INSERT INTO Members (UserID, CreditCardInfo)
+INSERT INTO Members (MemberID, UserID, CreditCardInfo)
 VALUES
-    (1, '****-****-****-1234'),
-    (2, '****-****-****-5678'),
-    (3, '****-****-****-9012');
+    (1, 1, '****-****-****-1234'),
+    (2, 2, '****-****-****-5678'),
+    (3, 3, '****-****-****-9012');
 
 -- Flights Table
 INSERT INTO Flights (Origin, Destination, DepartureDateTime, ArrivalDateTime)
@@ -236,7 +236,13 @@ VALUES
     (3, '36', 'Business', 1000, FALSE);
 
 -- Bookings Table
+<<<<<<< HEAD
+
 INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
+=======
+INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
+
+>>>>>>> 44067b4580a57bf74da8df856031b39ade0d61ad
 VALUES
     (1, 1, 1, TRUE),
     (2, 2, 2, FALSE),
