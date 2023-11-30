@@ -137,7 +137,7 @@ public class FlightDataRetriever {
         ArrayList<Bookings> bookingList = new ArrayList<Bookings>();
 
         // Get all Booking information
-        String sql = "SELECT UserID, FlightID, SeatID FROM Bookings";
+        String sql = "SELECT UserID, FlightID, SeatID, BookingID FROM Bookings";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -146,8 +146,9 @@ public class FlightDataRetriever {
                 String userID = rs.getString("UserID");
                 String flightID = rs.getString("FlightID");
                 String seatID = rs.getString("SeatID");
+                String bookingID = rs.getString("BookingId");
 
-                Bookings booking = new Bookings(userID, flightID, seatID);
+                Bookings booking = new Bookings(userID, flightID, seatID, bookingID);
                 bookingList.add(booking);
             }
         } catch (Exception e) {
