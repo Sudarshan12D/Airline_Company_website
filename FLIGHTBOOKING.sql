@@ -237,6 +237,7 @@ VALUES
 
 -- Bookings Table
 INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
+
 VALUES
     (1, 1, 1, TRUE),
     (2, 2, 2, FALSE),
