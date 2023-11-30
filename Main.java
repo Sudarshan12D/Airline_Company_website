@@ -797,7 +797,6 @@ public class Main {
         // Example price calculation
         JLabel totalPriceLabel = new JLabel("Total Price: $" + totalCost);
         checkoutPanel.add(totalPriceLabel, gbc);
-        checkoutPanel.add(totalPriceLabel, gbc);
         gbc.gridy++;
 
         // Payment information fields (simplified for example)
@@ -805,6 +804,21 @@ public class Main {
         gbc.gridx++;
         JTextField cardNumberField = new JTextField(20);
         checkoutPanel.add(cardNumberField, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JCheckBox insuranceCheckBox = new JCheckBox("Cancellation Insurance");
+        insuranceCheckBox.addItemListener(e -> {
+            // Check if the checkbox is checked
+            boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
+            int updatedTotalCost = selected ? totalCost + 100 : totalCost;
+            
+            // Update the total price label
+            totalPriceLabel.setText("Total Price: $" + updatedTotalCost);
+        });
+        gbc.gridwidth = 2;
+        checkoutPanel.add(insuranceCheckBox, gbc);
+        gbc.gridy++;
 
         // Checkout button
         JButton checkoutButton = new JButton("Complete Purchase");
@@ -821,6 +835,11 @@ public class Main {
                 // Retrieve the total price from the selectedSeats and flightInfo
                 int totalPrice = totalCost;
                 
+                boolean cancellationInsurance = insuranceCheckBox.isSelected();
+                if (cancellationInsurance) {
+                    totalPrice += 100;
+                }
+
 
                 // Get the credit card number from the currentUser object
                 String creditCardNumber = currentUser.getCreditCardNumber();
@@ -831,18 +850,17 @@ public class Main {
                 // Get the flight ID from the FlightItinerary object
                 //String flightId = String.valueOf(availableFlights.getFlightItinerary(selectedFlightId).getId());
 
-
                 System.out.println("Selected Flight ID: " + selectedFlightId);
 
                 // Get the seat IDs from the selectedSeats array
                 ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
 
                 // Call the complete purchase method
-                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds);
+                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance);
             }
         });
+        
         checkoutPanel.add(checkoutButton, gbc);
-
         checkoutFrame.add(checkoutPanel, BorderLayout.CENTER);
         checkoutFrame.pack();
         checkoutFrame.setLocationRelativeTo(null);

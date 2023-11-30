@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Booker {
     //public static long handleBooking(int price, String creditCard, int memberID, int flightID, int seatID, Boolean insurance)
-    public static long handleBooking(int price, String creditCard, String email, int flightID,  ArrayList<String> seatID) {
+    public static long handleBooking(int price, String creditCard, String email, String flightID,  ArrayList<String> seatID, boolean insurance) {
 
         for (int i =0; i < seatID.size(); i++) {
             String thisSeat = seatID.get(i);
