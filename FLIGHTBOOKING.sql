@@ -97,11 +97,11 @@ VALUES
     ('Bob', 'Miller', '6TH AVENUE', 'bob.miller@example.com', 'securepass');
 
 -- Members Table
-INSERT INTO Members (UserID, CreditCardInfo)
+INSERT INTO Members (MemberID, UserID, CreditCardInfo)
 VALUES
-    (1, '****-****-****-1234'),
-    (2, '****-****-****-5678'),
-    (3, '****-****-****-9012');
+    (1, 1, '****-****-****-1234'),
+    (2, 2, '****-****-****-5678'),
+    (3, 3, '****-****-****-9012');
 
 -- Flights Table
 INSERT INTO Flights (Origin, Destination, DepartureDateTime, ArrivalDateTime)

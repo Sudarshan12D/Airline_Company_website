@@ -69,11 +69,11 @@ public class UserHandler {
         }
 
         for (int i=0; i < emailList.size(); i++)  {
-            System.out.println("entered email is: " + email + "\n");
-            System.out.println("List email is: " + emailList.get(i) + "\n");
+            //System.out.println("entered email is: " + email + "\n");
+            //System.out.println("List email is: " + emailList.get(i) + "\n");
             if (emailList.get(i).compareTo(email) == 0) {
-                System.out.println("entered Password is: " + password + "\n");
-                System.out.println("List Password is: " + passwordList.get(i) + "\n");
+                //System.out.println("entered Password is: " + password + "\n");
+                //System.out.println("List Password is: " + passwordList.get(i) + "\n");
                 if (passwordList.get(i).compareTo(password) == 0){
 
                     ArrayList<Integer> memberIDList = new ArrayList<Integer>();
@@ -142,13 +142,14 @@ public class UserHandler {
 
     for (int i=0; i < emailList.size(); i++)  {
         if (emailList.get(i).compareTo(email) == 0) {
-            String SQL = "INSERT INTO Members(UserID, CreditCardInfo) VALUES (?, ?)";
+            String SQL = "INSERT INTO Members(MemberID, UserID, CreditCardInfo) VALUES (?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setInt(1, userIDList.get(i));
-            pstmt.setString(2, creditcard);
+            pstmt.setInt(2, userIDList.get(i));
+            pstmt.setString(3, creditcard);
 
             int affectedRows = pstmt.executeUpdate();
 

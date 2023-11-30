@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Booker {
-    public static FlightList handleBooking(int price, String creditCard, String email, String flightID, ArrayList<String> seatID, boolean insurance) {
+    public static FlightList handleBooking(int price, String creditCard, String email, String flightID, ArrayList<String> seatID, boolean insurance, Plane thisplane) {
         int parsedFlightID = Integer.parseInt(flightID);
 
         for (int i = 0; i < seatID.size(); i++) {
