@@ -494,7 +494,7 @@ public class Main {
                 public void mouseClicked(MouseEvent e) {
                     int column = table.getColumnModel().getColumnIndexAtX(e.getX());
                     int row = e.getY() / table.getRowHeight();
-                    
+
                     if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
                         if ("View Seats".equals(table.getValueAt(row, column))) {
 
@@ -567,9 +567,11 @@ public class Main {
                             infoPanel.add(createColorInfoPanel.apply("Selected Seats"));
                             infoPanel.add(createColorInfoPanel.apply("Reserved Seats"));
 
-                            // ..................................CONTINUE BUTTON HERE.........................................
+                            // ..................................CONTINUE BUTTON
+                            // HERE.........................................
                             JButton continueButton = new JButton("Continue");
-                            continueButton.setAlignmentX(Component.CENTER_ALIGNMENT); // To align the button in the center of the box layout
+                            continueButton.setAlignmentX(Component.CENTER_ALIGNMENT); // To align the button in the
+                                                                                      // center of the box layout
                             continueButton.setBackground(new Color(0, 153, 0)); // Set the button color to green
                             continueButton.setForeground(Color.WHITE); // Set the text color to white
                             continueButton.addActionListener(new ActionListener() {
@@ -584,31 +586,35 @@ public class Main {
                                         int totalCost = 0;
                                         for (String seatNumber : selectedSeats) {
                                             // Assuming seatNumber is a string that can be parsed as an integer index.
-                                            int index = Integer.parseInt(seatNumber) - 1; // If seat numbers start from 1, adjust index to 0-based.
+                                            int index = Integer.parseInt(seatNumber) - 1; // If seat numbers start from
+                                                                                          // 1, adjust index to 0-based.
                                             int seatPrice = availableFlights.getFlightItinerary(row).getPlane()
                                                     .getListOfSeats().get(index).getPrice();
                                             totalCost += seatPrice;
                                         }
-    
-                                        String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the flight ID from the table.
 
-                                        // Now you have the total cost, you can pass it to your createCheckoutFrame or use it as needed.
+                                        String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the
+                                                                                                       // flight ID from
+                                                                                                       // the table.
+
+                                        // Now you have the total cost, you can pass it to your createCheckoutFrame or
+                                        // use it as needed.
                                         createCheckoutFrame(flightInfo, totalCost, availableFlights, selectedFlightId);
-                                        
+
                                     }
                                 }
                             });
 
                             // Add the Continue button just below the infoPanel
-                            infoPanel.add(Box.createVerticalStrut(10)); // Add some space between the last label and the// button
+                            infoPanel.add(Box.createVerticalStrut(10)); // Add some space between the last label and
+                                                                        // the// button
                             infoPanel.add(continueButton);
 
-                            
                             // Fetch the seat data from your backend
-                            ArrayList<Seat> seats = availableFlights.getFlightItinerary(row).getPlane().getListOfSeats();
+                            ArrayList<Seat> seats = availableFlights.getFlightItinerary(row).getPlane()
+                                    .getListOfSeats();
                             int counter = 0;
-                            
-                            
+
                             // ...............................selectedSeatsLabel..................................................
                             topPanel.add(selectedSeatsLabel, BorderLayout.SOUTH);
                             // Buttons for each seat with fixed size
@@ -619,7 +625,7 @@ public class Main {
 
                                 // Set color based on the seat type and booking status
                                 Color colorToSet;
-                                
+
                                 if (seat.getIsBooked()) {
                                     colorToSet = Color.GRAY; // Indicate that the seat is already booked
                                 } else {
@@ -748,7 +754,9 @@ public class Main {
         // Set the frame visible
         frame.setVisible(true);
     }
-    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights, String selectedFlightId) {
+
+    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights,
+            String selectedFlightId) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
         checkoutFrame.setSize(600, 400);
@@ -814,7 +822,7 @@ public class Main {
             // Check if the checkbox is checked
             boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
             int updatedTotalCost = selected ? totalCost + 100 : totalCost;
-            
+
             // Update the total price label
             totalPriceLabel.setText("Total Price: $" + updatedTotalCost);
         });
@@ -831,26 +839,27 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
 
                 if (currentUser == null) {
-                    JOptionPane.showMessageDialog(checkoutFrame, "No user is logged in.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(checkoutFrame, "No user is logged in.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     return; // Early return to prevent further execution
                 }
                 // Retrieve the total price from the selectedSeats and flightInfo
                 int totalPrice = totalCost;
-                
+
                 boolean cancellationInsurance = insuranceCheckBox.isSelected();
                 if (cancellationInsurance) {
                     totalPrice += 100;
                 }
 
-
                 // Get the credit card number from the currentUser object
                 String creditCardNumber = currentUser.getCreditCardNumber();
-                
+
                 // Get the email from the currentUser object
                 String userEmail = currentUser.getEmail();
-                
+
                 // Get the flight ID from the FlightItinerary object
-                //String flightId = String.valueOf(availableFlights.getFlightItinerary(selectedFlightId).getId());
+                // String flightId =
+                // String.valueOf(availableFlights.getFlightItinerary(selectedFlightId).getId());
 
                 System.out.println("Selected Flight ID: " + selectedFlightId);
 
@@ -858,18 +867,17 @@ public class Main {
                 ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
 
                 // Call the complete purchase method
-                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance);
+                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds,
+                        cancellationInsurance);
             }
         });
-        
+
         checkoutPanel.add(checkoutButton, gbc);
         checkoutFrame.add(checkoutPanel, BorderLayout.CENTER);
         checkoutFrame.pack();
         checkoutFrame.setLocationRelativeTo(null);
         checkoutFrame.setVisible(true);
     }
-    
 
-    
-    //Test comment to commit
+    // Test comment to commit
 }
