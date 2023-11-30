@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS Bookings (
     FlightID INT NOT NULL,
     SeatID INT NOT NULL,
     CancellationInsurance BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (UserID) REFERENCES Members(UserID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
     FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
 );
@@ -237,6 +237,7 @@ VALUES
 
 -- Bookings Table
 INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
+
 VALUES
     (1, 1, 1, TRUE),
     (2, 2, 2, FALSE),

@@ -120,7 +120,7 @@ public class Main {
                         signOutButton.setVisible(false); // Hide the sign out button
                         loginButton.setVisible(true); // Show the login button
                         membershipButton.setVisible(false); // Hide membership button as the user is now a member
-
+                        welcomeLabel.setVisible(false);
                         // Prompt user to sign in again as a member
                         JOptionPane.showMessageDialog(membershipFrame, "Membership registered. Please sign in again.",
                                 "Membership Registered", JOptionPane.INFORMATION_MESSAGE);
@@ -161,9 +161,8 @@ public class Main {
                     BorderFactory.createEmptyBorder(10, 0, 10, 0) // Adds padding above and below the header
             ));
 
-            // ..............................LOGIN EVENT
-            // Listener..........................................................
-            // JButton loginButton = new JButton("Login");
+            // ..............................LOGIN EVENT Listener..........................................................
+
             loginButton.addActionListener(loginEvent -> {
                 // Create a new frame for login
                 JFrame loginFrame = new JFrame("Login");
@@ -181,9 +180,7 @@ public class Main {
 
                 // Title "Login"
                 JLabel loginTitleLabel = new JLabel("Login");
-                loginTitleLabel.setFont(new Font(loginTitleLabel.getFont().getName(), Font.BOLD, 18)); // Set font to
-                                                                                                       // bold and size
-                                                                                                       // 18
+                loginTitleLabel.setFont(new Font(loginTitleLabel.getFont().getName(), Font.BOLD, 18)); // Set font to bold and size 18
                 gbcLogin.gridwidth = 2; // This component will span two columns
                 gbcLogin.gridx = 0; // Align to the first column
                 gbcLogin.gridy = 0; // Place it on the first row
@@ -270,6 +267,9 @@ public class Main {
                 loginFrame.setLocationRelativeTo(null); // Center on screen
                 loginFrame.setVisible(true);
             });
+            
+
+            // ..............................SIGN OUT EVENT Listener..........................................................
             signOutButton.addActionListener(signOutEvent -> {
                 currentUser = null; // Reset the current user
                 signOutButton.setVisible(false); // Hide the sign out button
@@ -288,9 +288,8 @@ public class Main {
             authButtonsPanel.add(signOutButton);
             authButtonsPanel.add(membershipButton);
 
-            // ....................................SIGNUP EVENT
-            // Listener...................................................
-            // JButton signUpButton = new JButton("Signup");
+            // ....................................SIGNUP EVENT Listener...................................................
+            
             signUpButton.addActionListener(ev -> {
                 // Create a new frame for sign up
                 JFrame signUpFrame = new JFrame("Sign Up");
@@ -310,9 +309,7 @@ public class Main {
 
                 // Title "Create new user"
                 JLabel signuptitleLabel = new JLabel("Create new user");
-                signuptitleLabel.setFont(new Font(signuptitleLabel.getFont().getName(), Font.BOLD, 18)); // Set font to
-                                                                                                         // bold and
-                                                                                                         // size 18
+                signuptitleLabel.setFont(new Font(signuptitleLabel.getFont().getName(), Font.BOLD, 18)); // Set font to bold and size 18
                 gbc.gridwidth = 2; // This component will span two columns
                 gbc.gridx = 0; // Align to the first column
                 gbc.gridy = 0; // Place it on the first row
@@ -361,8 +358,7 @@ public class Main {
                 // Address label and text field
                 centerPanel.add(new JLabel("Address:"), gbc);
                 gbc.gridx++; // Move to the next column
-                gbc.gridwidth = GridBagConstraints.REMAINDER; // This will make the address field span the rest of the
-                                                              // row
+                gbc.gridwidth = GridBagConstraints.REMAINDER; // This will make the address field span the rest of the row
                 JTextField addressField = new JTextField(20);
                 centerPanel.add(addressField, gbc);
 
@@ -390,17 +386,13 @@ public class Main {
                 // Create and add the submit button
                 JButton submitButton = new JButton("Submit");
                 submitButton.addActionListener(submitEvent -> {
-                    if (emailField.getText().trim().isEmpty() || passwordField.getPassword().length == 0
-                            || firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty()
-                            || addressField.getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(signUpFrame, "you cannot have empty fields", "Error",
-                                JOptionPane.ERROR_MESSAGE);
+                    if (emailField.getText().trim().isEmpty() || passwordField.getPassword().length == 0 || firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty() || addressField.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(signUpFrame, "you cannot have empty fields", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else if (!emailField.getText().trim().endsWith("@gmail.com")) {
+                        JOptionPane.showMessageDialog(signUpFrame, "Please sign up with a Gmail account.", "Email Error", JOptionPane.ERROR_MESSAGE);
                     }
-                    if (!emailField.getText().trim().endsWith("@gmail.com")) {
-                        JOptionPane.showMessageDialog(signUpFrame, "Please sign up with a Gmail account.",
-                                "Email Error",
-                                JOptionPane.ERROR_MESSAGE);
-                    } else {
+                    else {
+                        
                         // If not empty, proceed with your submission logic
                         UserHandler.handleRegistration(
                                 emailField.getText(),
@@ -442,7 +434,6 @@ public class Main {
                 signUpFrame.setVisible(true);
             });
 
-            authButtonsPanel.add(loginButton);
             authButtonsPanel.add(signUpButton);
             topPanel.add(authButtonsPanel, BorderLayout.EAST);
 
@@ -839,8 +830,7 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
 
                 if (currentUser == null) {
-                    JOptionPane.showMessageDialog(checkoutFrame, "No user is logged in.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(checkoutFrame, "Log in or Sign up to Book ticket", "Error", JOptionPane.ERROR_MESSAGE);
                     return; // Early return to prevent further execution
                 }
                 // Retrieve the total price from the selectedSeats and flightInfo
@@ -867,8 +857,14 @@ public class Main {
                 ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
 
                 // Call the complete purchase method
-                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds,
-                        cancellationInsurance);
+                if (currentUser.getIsMember()){
+
+                    Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance);
+                }
+                else {
+                    Booker.handleBooking(totalPrice, cardNumberField.getText(), userEmail, selectedFlightId, seatIds, cancellationInsurance);
+
+                }
             }
         });
 
@@ -878,6 +874,5 @@ public class Main {
         checkoutFrame.setLocationRelativeTo(null);
         checkoutFrame.setVisible(true);
     }
-
-    // Test comment to commit
+    
 }
