@@ -206,6 +206,7 @@ public class Main {
 
 
             //Search for users bookings
+            ArrayList<Object[]> toDisplayBookings = new ArrayList<>();
             for(int i = 0; i < bookingsList.size(); i++){
                 if(Integer.valueOf(bookingsList.get(i).getUserID()) == currentUser.getID()){
                     int bookedFlightID = Integer.valueOf(bookingsList.get(i).getFlightID());
@@ -233,19 +234,13 @@ public class Main {
                         bookedPlane = bookedFlight.getPlane();
 
                         for(int k = 0; k < bookedPlane.getListOfSeats().size(); k++){
-                            if (bookedPlane.getListOfSeats().get(k).getId() == bookedSeatID){
+                            if (Integer.valueOf(bookedPlane.getListOfSeats().get(k).getSeatNumber()) == bookedSeatID){
                                 bookedSeat = bookedPlane.getListOfSeats().get(k);
                             }
                         }
                     }
 
-                        //add not found
-
-                        ArrayList<Object[]> toDisplayBookings = new ArrayList<>();
-
-                    
-
-                    
+                        
                     Object[] row = new Object[6]; // 5 columns in the flight table
                     row[0] = bookedFlightID;
                     row[1] = bookedLocation.getDepLocation();
@@ -256,19 +251,13 @@ public class Main {
                     toDisplayBookings.add(row);
                     
 
-
-
-
-
-
-
-
-
-
-
-
                 }
             }
+
+
+
+
+
 
 
             // Create a dialog that acts as a popup
@@ -292,13 +281,13 @@ public class Main {
             };
         
             // Populate the table model with your booking data
-            // for (Object[] booking : myBookingData) {
-            //     // Add a placeholder for "Selected Seats" (to be implemented later) and a "Cancel Flight" button
-            //     Object[] row = Arrays.copyOf(booking, booking.length + 2); // Extend array to include new columns
-            //     row[booking.length] = "Seats TBD"; // Placeholder for selected seats
-            //     row[booking.length + 1] = "Cancel Flight"; // Placeholder for the button
-            //     myBookingModel.addRow(row);
-            // }
+            for (Object[] booking : toDisplayBookings) {
+                // Add a placeholder for "Selected Seats" (to be implemented later) and a "Cancel Flight" button
+                Object[] row = Arrays.copyOf(booking, booking.length + 2); // Extend array to include new columns
+                row[booking.length] = "Cancel"; // Placeholder for selected seats
+                row[booking.length + 1] = "Cancel Flight"; // Placeholder for the button
+                myBookingModel.addRow(row);
+            }
         
             // Create the table with the model
             JTable myBookingsTable = new JTable(myBookingModel);
