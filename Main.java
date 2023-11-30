@@ -100,7 +100,7 @@ public class Main {
             // Add action listener to register button
             registerButton.addActionListener(registerEvent -> {
                 String creditCard = cardField.getText().trim();
-            
+
                 if (creditCard.isEmpty()) {
                     JOptionPane.showMessageDialog(membershipFrame, "Please enter credit card information.");
                 } else if (!creditCard.matches("\\d{16}")) {
@@ -108,33 +108,33 @@ public class Main {
                 } else {
                     // Using the constant email
                     String email = constantEmail;
-            
+
                     // Logic to handle membership registration
                     long registrationResult = UserHandler.handleMembership(email, creditCard);
-                    
+
                     if (registrationResult != -1) { // Assuming -1 indicates failure
                         // Immediately update the currentUser object to reflect new membership status
                         currentUser.setIsMember(true); // Assuming there is a setIsMember method
-            
+                        System.out.println("isMember: " + currentUser.getIsMember());
                         // Immediately reflect the changes in the UI
                         signOutButton.setVisible(false); // Hide the sign out button
                         loginButton.setVisible(true); // Show the login button
                         membershipButton.setVisible(false); // Hide membership button as the user is now a member
-            
+
                         // Prompt user to sign in again as a member
-                        JOptionPane.showMessageDialog(membershipFrame, "Membership registered. Please sign in again.", "Membership Registered", JOptionPane.INFORMATION_MESSAGE);
-            
+                        JOptionPane.showMessageDialog(membershipFrame, "Membership registered. Please sign in again.",
+                                "Membership Registered", JOptionPane.INFORMATION_MESSAGE);
+
                         // Reset the current user to null to enforce re-login
-                        currentUser = null; 
-            
+                        currentUser = null;
+
                         membershipFrame.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(membershipFrame, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(membershipFrame, "Registration failed. Please try again.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
-            
-            
 
         });
 
@@ -240,18 +240,19 @@ public class Main {
                             signOutButton.setVisible(true); // Show the sign out button
                             welcomeLabel.setText("Welcome " + currentUser.getEmail());
                             myBookingsButton.setVisible(true);
-                
+
                             // Check if the user is already a member
-                            if (currentUser.getIsMember()) {
+                            if (currentUser.getIsMember() == true) {
                                 membershipButton.setVisible(false); // Hide membership button for members
                             } else {
                                 membershipButton.setVisible(true); // Show for non-members
                             }
-                
+
                             loginFrame.dispose();
                         } else {
                             // If login failed
-                            JOptionPane.showMessageDialog(loginFrame, "Login incorrect. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(loginFrame, "Login incorrect. Please try again.",
+                                    "Login Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
 
@@ -848,7 +849,14 @@ public class Main {
                 ArrayList<String> seatIds = new ArrayList<>(selectedSeats);
 
                 // Call the complete purchase method
-                Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance);
+                if (currentUser.getIsMember()){
+
+                    Booker.handleBooking(totalPrice, creditCardNumber, userEmail, selectedFlightId, seatIds, cancellationInsurance);
+                }
+                else {
+                    Booker.handleBooking(totalPrice, cardNumberField.getText(), userEmail, selectedFlightId, seatIds, cancellationInsurance);
+
+                }
             }
         });
         
@@ -859,7 +867,4 @@ public class Main {
         checkoutFrame.setVisible(true);
     }
     
-
-    
-    //Test comment to commit
 }
