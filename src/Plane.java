@@ -32,6 +32,7 @@ public class Plane {
         return listOfSeats;
     }
 
+    //get seat by ID number
     public Seat getSeat(int n){
         for (int i = 0; i < listOfSeats.size(); i++){
             if (listOfSeats.get(i).id == n){
