@@ -13,8 +13,8 @@ public class Plane {
         listOfSeats = new ArrayList<Seat>();
     }
 
-    void addSeat(String r, int s, int id){
-        listOfSeats.add(new Seat(r, s, id));
+    void addSeat(int i, String num, String type, int p, Boolean bool){
+        listOfSeats.add(new Seat(i, num, type, p, bool, id));
     }
 
     void addSeat(Seat s){
@@ -43,6 +43,5 @@ public class Plane {
     public void setListOfSeats(ArrayList<Seat> listOfSeats) {
         this.listOfSeats = listOfSeats;
     }
-    
     
 }

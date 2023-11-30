@@ -7,7 +7,7 @@ public class CrewMember {
     
 
     //Member Functions
-    public CrewMember(String n, String p, int id){
+    public CrewMember(int id, String n, String p){
         this.name = n;
         this.position = p;
         this.id = id;
