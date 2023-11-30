@@ -37,6 +37,9 @@ public class RegisteredUser {
     public String getLname() {
         return lname;
     }
+    public int getID(){
+        return idNumber;
+    }
 
     //Set
     public void setAddress(String address) {

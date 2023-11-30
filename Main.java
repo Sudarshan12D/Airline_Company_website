@@ -10,7 +10,8 @@ import java.util.function.Function;
 public class Main {
 
     private static JLabel selectedSeatsLabel;
-    static ArrayList<String> selectedSeats = new ArrayList<>();
+    static ArrayList<String> selectedSeats = new ArrayList<String>();
+    static ArrayList<Bookings> bookingsList = new ArrayList<Bookings>();
     public static RegisteredUser currentUser = null;
     private static JButton loginButton;
     private static JButton signOutButton;
@@ -199,6 +200,77 @@ public class Main {
         }
 
         myBookingsButton.addActionListener(e -> {
+            //Load bookings from database
+            bookingsList = FlightDataRetriever.loadBookingData();
+
+
+
+            //Search for users bookings
+            for(int i = 0; i < bookingsList.size(); i++){
+                if(Integer.valueOf(bookingsList.get(i).getUserID()) == currentUser.getID()){
+                    int bookedFlightID = Integer.valueOf(bookingsList.get(i).getFlightID());
+                    int bookedSeatID = Integer.valueOf(bookingsList.get(i).getSeatID());
+                    int bookedUserID = Integer.valueOf(bookingsList.get(i).getUserID());
+
+                    FlightItinerary bookedFlight = null;
+                    LocationInformation bookedLocation = null;
+                    Plane bookedPlane = null;
+                    Seat bookedSeat = null;
+
+                    for(int j = 0; j < availableFlights.getListOfFlights().size(); j++){
+                        if( bookedFlightID == availableFlights.getListOfFlights().get(j).getId()){
+                            bookedFlight = availableFlights.getListOfFlights().get(j);
+                        }
+                    }
+
+                    //add not found
+
+                    if(bookedFlight != null){
+
+                    
+
+                        bookedLocation = bookedFlight.getLocationInformation();
+                        bookedPlane = bookedFlight.getPlane();
+
+                        for(int k = 0; k < bookedPlane.getListOfSeats().size(); k++){
+                            if (bookedPlane.getListOfSeats().get(k).getId() == bookedSeatID){
+                                bookedSeat = bookedPlane.getListOfSeats().get(k);
+                            }
+                        }
+                    }
+
+                        //add not found
+
+                        ArrayList<Object[]> toDisplayBookings = new ArrayList<>();
+
+                    
+
+                    
+                    Object[] row = new Object[6]; // 5 columns in the flight table
+                    row[0] = bookedFlightID;
+                    row[1] = bookedLocation.getDepLocation();
+                    row[2] = bookedLocation.getArrLocation();
+                    row[3] = bookedLocation.getDepTime();
+                    row[4] = bookedLocation.getArrTime();
+                    row[5] = bookedSeat.getSeatNumber();
+                    toDisplayBookings.add(row);
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+            }
+
+
             // Create a dialog that acts as a popup
             JDialog myBookingsDialog = new JDialog(frame, "My Bookings", false); // false means it's not modal
             myBookingsDialog.setLayout(new BorderLayout());

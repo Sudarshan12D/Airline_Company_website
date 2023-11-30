@@ -236,13 +236,9 @@ VALUES
     (3, '36', 'Business', 1000, FALSE);
 
 -- Bookings Table
-<<<<<<< HEAD
 
 INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
-=======
-INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
 
->>>>>>> 44067b4580a57bf74da8df856031b39ade0d61ad
 VALUES
     (1, 1, 1, TRUE),
     (2, 2, 2, FALSE),

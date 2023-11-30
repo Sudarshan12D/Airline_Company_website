@@ -17,6 +17,7 @@ public class FlightDataRetriever {
         ArrayList<Integer> flightIDList = new ArrayList<Integer>();
         // ArrayList<FlightItinerary> flightItinerarieList = new ArrayList<FlightItinerary>();
         FlightList fl = new FlightList();
+        
 
         //Get all Location Information
         String sql = "SELECT FlightID, Origin, Destination, DepartureDateTime, ArrivalDateTime FROM Flights";
@@ -127,14 +128,13 @@ public class FlightDataRetriever {
             fl.addFlight(fi);
         }
 
-        //Create Bookings
-        loadBookingData(fl);
+        
 
         //return flight list
         return fl;
     }
-    private static void loadBookingData(FlightList fl) {
-        ArrayList<Bookings> bookingList = new ArrayList<>();
+    public static ArrayList<Bookings> loadBookingData() {
+        ArrayList<Bookings> bookingList = new ArrayList<Bookings>();
 
         // Get all Booking information
         String sql = "SELECT UserID, FlightID, SeatID FROM Bookings";
@@ -153,6 +153,7 @@ public class FlightDataRetriever {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return bookingList;
     }
 }
 
