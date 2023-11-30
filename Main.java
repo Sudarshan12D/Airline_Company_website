@@ -291,9 +291,37 @@ public class Main {
         
             // Create the table with the model
             JTable myBookingsTable = new JTable(myBookingModel);
-            myBookingsTable.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-            myBookingsTable.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
-        
+            //myBookingsTable.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+            
+            myBookingsTable.getColumnModel().getColumn(6).setCellRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JButton button = new JButton(value.toString());
+                    return button;
+                }
+            });
+            //myBookingsTable.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
+            myBookingsTable.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
+                @Override
+                public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                    JButton button = new JButton((value == null) ? "" : value.toString());
+                    button.addActionListener(e -> {
+                        // Retrieve data from the row where the button was clicked
+                        Object[] rowData = toDisplayBookings.get(row);
+            
+                        // Call cancelBooking() with the retrieved data
+                        Booker.cancelBooking(rowData); // Assuming cancelBooking method accepts an Object array
+            
+                        // Show confirmation message
+                        JOptionPane.showMessageDialog(table, "Your flight has been canceled.\nYour payment has been refunded to your credit card");
+            
+                        // Optionally remove the row from the table model
+                        ((DefaultTableModel) table.getModel()).removeRow(row);
+                    });
+                    return button;
+                }
+            });
+            
             // Add a scroll pane with the table to the dialog
             JScrollPane myBookingsScrollPane = new JScrollPane(myBookingsTable);
             myBookingsDialog.add(myBookingsScrollPane, BorderLayout.CENTER);
