@@ -60,8 +60,7 @@ CREATE TABLE IF NOT EXISTS Bookings (
     FlightID INT NOT NULL,
     SeatID INT NOT NULL,
     CancellationInsurance BOOLEAN DEFAULT FALSE,
-    BookingDateTime DATETIME NOT NULL,
-    FOREIGN KEY (UserID) REFERENCES Members(UserID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
     FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
 );
@@ -70,7 +69,6 @@ CREATE TABLE IF NOT EXISTS Payments (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,
     BookingID INT NOT NULL,
     Amount DECIMAL(10, 2) NOT NULL,
-    PaymentDateTime DATETIME NOT NULL,
     CreditCardUsed VARCHAR(255) NOT NULL,
     FOREIGN KEY (BookingID) REFERENCES Bookings(BookingID)
 );
@@ -124,7 +122,7 @@ VALUES
 INSERT INTO Seats (PlaneID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
     -- Seats for Flight 1
-    (1, '1', 'firstClass', 700, FALSE),
+    (1, '1', 'firstClass', 700, TRUE),
     (1, '2', 'firstClass', 700, FALSE),
     (1, '3', 'firstClass', 700, FALSE),
     (1, '4', 'firstClass', 700, FALSE),
@@ -136,7 +134,7 @@ VALUES
     (1, '10', 'firstClass', 700, FALSE),
     (1, '11', 'firstClass', 700, FALSE),
     (1, '12', 'firstClass', 700, FALSE),
-    (1, '13', 'Economy', 500, FALSE),
+    (1, '13', 'Economy', 500, TRUE),
     (1, '14', 'Economy', 500, FALSE),
     (1, '15', 'Economy', 500, FALSE),
     (1, '16', 'Economy', 500, FALSE),
@@ -144,7 +142,7 @@ VALUES
     (1, '18', 'Economy', 500, FALSE),
     (1, '19', 'Economy', 500, FALSE),
     (1, '20', 'Economy', 500, FALSE),
-    (1, '21', 'Economy', 500, FALSE),
+    (1, '21', 'Economy', 500, TRUE),
     (1, '22', 'Economy', 500, FALSE),
     (1, '23', 'Economy', 500, FALSE),
     (1, '24', 'Economy', 500, FALSE),
@@ -154,16 +152,16 @@ VALUES
     (1, '28', 'Economy', 500, FALSE),
     (1, '29', 'Economy', 500, FALSE),
     (1, '30', 'Economy', 500, FALSE),
-    (1, '31', 'Business', 700, FALSE),
-    (1, '32', 'Business', 700, FALSE),
-    (1, '33', 'Business', 700, FALSE),
-    (1, '34', 'Business', 700, FALSE),
-    (1, '35', 'Business', 700, FALSE),
-    (1, '36', 'Business', 700, FALSE),
+    (1, '31', 'Business', 1000, FALSE),
+    (1, '32', 'Business', 1000, FALSE),
+    (1, '33', 'Business', 1000, FALSE),
+    (1, '34', 'Business', 1000, FALSE),
+    (1, '35', 'Business', 1000, FALSE),
+    (1, '36', 'Business', 1000, FALSE),
     
     -- Seats for Flight 2
     (2, '1', 'firstClass', 700, FALSE),
-    (2, '2', 'firstClass', 700, FALSE),
+    (2, '2', 'firstClass', 700, TRUE),
     (2, '3', 'firstClass', 700, FALSE),
     (2, '4', 'firstClass', 700, FALSE),
     (2, '5', 'firstClass', 700, FALSE),
@@ -192,17 +190,17 @@ VALUES
     (2, '28', 'Economy', 500, FALSE),
     (2, '29', 'Economy', 500, FALSE),
     (2, '30', 'Economy', 500, FALSE),
-    (2, '31', 'Business', 700, FALSE),
-    (2, '32', 'Business', 700, FALSE),
-    (2, '33', 'Business', 700, FALSE),
-    (2, '34', 'Business', 700, FALSE),
-    (2, '35', 'Business', 700, FALSE),
-    (2, '36', 'Business', 700, FALSE),
+    (2, '31', 'Business', 1000, FALSE),
+    (2, '32', 'Business', 1000, FALSE),
+    (2, '33', 'Business', 1000, FALSE),
+    (2, '34', 'Business', 1000, FALSE),
+    (2, '35', 'Business', 1000, FALSE),
+    (2, '36', 'Business', 1000, FALSE),
     
     -- Seats for Flight 3
     (3, '1', 'firstClass', 700, FALSE),
     (3, '2', 'firstClass', 700, FALSE),
-    (3, '3', 'firstClass', 700, FALSE),
+    (3, '3', 'firstClass', 700, TRUE),
     (3, '4', 'firstClass', 700, FALSE),
     (3, '5', 'firstClass', 700, FALSE),
     (3, '6', 'firstClass', 700, FALSE),
@@ -230,26 +228,30 @@ VALUES
     (3, '28', 'Economy', 500, FALSE),
     (3, '29', 'Economy', 500, FALSE),
     (3, '30', 'Economy', 500, FALSE),
-    (3, '31', 'Business', 700, FALSE),
-    (3, '32', 'Business', 700, FALSE),
-    (3, '33', 'Business', 700, FALSE),
-    (3, '34', 'Business', 700, FALSE),
-    (3, '35', 'Business', 700, FALSE),
-    (3, '36', 'Business', 700, FALSE);
+    (3, '31', 'Business', 1000, FALSE),
+    (3, '32', 'Business', 1000, FALSE),
+    (3, '33', 'Business', 1000, FALSE),
+    (3, '34', 'Business', 1000, FALSE),
+    (3, '35', 'Business', 1000, FALSE),
+    (3, '36', 'Business', 1000, FALSE);
 
 -- Bookings Table
+<<<<<<< HEAD
 INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance, BookingDateTime)
+=======
+INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
+>>>>>>> 6ed132cab9688cc8534ed9e8e825f31adced59b0
 VALUES
-    (1, 1, 1, TRUE, '2023-11-18 10:30:00'),
-    (2, 2, 2, FALSE, '2023-11-18 12:45:00'),
-    (3, 3, 3, TRUE, '2023-11-18 15:00:00');
+    (1, 1, 1, TRUE),
+    (2, 2, 2, FALSE),
+    (3, 3, 3, TRUE);
 
 -- Payments Table
-INSERT INTO Payments (BookingID, Amount, PaymentDateTime, CreditCardUsed)
+INSERT INTO Payments (BookingID, Amount, CreditCardUsed)
 VALUES
-    (1, 120.00, '2023-11-18 11:00:00', '****-****-****-1234'),
-    (2, 150.00, '2023-11-18 13:15:00', '****-****-****-5678'),
-    (3, 200.00, '2023-11-18 16:30:00', '****-****-****-9012');
+    (1, 120.00, '****-****-****-1234'),
+    (2, 150.00, '****-****-****-5678'),
+    (3, 200.00, '****-****-****-9012');
 
 -- Crews Table
 INSERT INTO Crews (Name, Position)

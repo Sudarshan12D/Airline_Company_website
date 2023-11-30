@@ -18,10 +18,6 @@ public class Crew {
         listOfCrew.add(c);
     }
 
-    void removeFlight(){
-
-
-    }
 
     //Getters
     public ArrayList<CrewMember> getListOfCrew() {

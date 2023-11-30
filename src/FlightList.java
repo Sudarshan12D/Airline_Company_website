@@ -19,7 +19,7 @@ public class FlightList {
     }
 
     void removeFlight(){
-
+        // Still need to remove flight -----------------------------------------------------
 
     }
 
@@ -55,4 +55,3 @@ public class FlightList {
     }
 
 }
-

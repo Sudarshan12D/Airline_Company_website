@@ -1,6 +1,3 @@
-
-
-
 public class FlightItinerary {
     //Variables
     int id;
@@ -48,5 +45,11 @@ public class FlightItinerary {
     public void setPlane(Plane plane) {
         this.plane = plane;
     }
+
+
+
+    
+
+    
 
 }
