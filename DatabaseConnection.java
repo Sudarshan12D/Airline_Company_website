@@ -27,7 +27,7 @@ public class DatabaseConnection {
 
     private static void initializeConnection() {
         try {
-            String url = "jdbc:mysql://localhost:3306/FLIGHTBOOKINGS";
+            String url = "jdbc:mysql://localhost:3306/FLIGHT_BOOKINGS";
             String username = "root";
             String password = "Sudu12june@#";
 

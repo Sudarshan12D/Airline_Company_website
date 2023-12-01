@@ -101,8 +101,7 @@ public class Main {
             membershipFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             membershipFrame.setVisible(true);
 
-            // ................................................Membership
-            // button...................................................
+            // ................................................Membership button...................................................
             registerButton.addActionListener(registerEvent -> {
                 String creditCard = cardField.getText().trim();
 
@@ -930,8 +929,8 @@ public class Main {
         frame.setVisible(true);
     }
 
-    private static void createCheckoutFrame(Object[] flightInfo, int totalCost, FlightList availableFlights,
-            String selectedFlightId, JFrame seatsFrame, int row) {
+        
+    private static void createCheckoutFrame(Object[] flightInfo, int Cost, FlightList availableFlights, String selectedFlightId, JFrame seatsFrame, int row) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
         checkoutFrame.setSize(600, 400);
@@ -981,14 +980,24 @@ public class Main {
 
         // Example price calculation
         JLabel totalPriceLabel;
-        if (currentUser.getIsMember() == true) {
-            double discount = totalCost * 0.9;
-            totalPriceLabel = new JLabel("Total Price: $" + discount + " (10% off for members)");
-            checkoutPanel.add(totalPriceLabel, gbc);
+        int totalCost = Cost;
+        
+        if (currentUser != null) {
+
+            if(currentUser.getIsMember() == true){
+                totalCost = totalCost - 100;
+                totalPriceLabel = new JLabel("Total Price: $" + totalCost + " (100$ off for members)");
+                checkoutPanel.add(totalPriceLabel, gbc);
+            }
+            else{
+                totalPriceLabel = new JLabel("Total Price: $" + totalCost);
+                checkoutPanel.add(totalPriceLabel, gbc);
+            }
         } else {
             totalPriceLabel = new JLabel("Total Price: $" + totalCost);
             checkoutPanel.add(totalPriceLabel, gbc);
         }
+        
 
         gbc.gridy++;
 
@@ -1004,18 +1013,16 @@ public class Main {
         insuranceCheckBox.addItemListener(e -> {
             // Check if the checkbox is checked
             boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
-            int updatedTotalCost = selected ? totalCost + 100 : totalCost;
-
-            // Update the total price label
-
-            if (currentUser.getIsMember() == true) {
-                double discount = totalCost * 0.9 + updatedTotalCost;
-                totalPriceLabel.setText("Total Price: $" + discount);
-
-            } else {
-                totalPriceLabel.setText("Total Price: $" + updatedTotalCost);
-
+            int updatedTotalCost = Cost;
+            if (currentUser != null && currentUser.getIsMember()) {
+                updatedTotalCost -= 100; // Member discount
             }
+            if (selected) {
+                updatedTotalCost += 100; // Insurance cost
+            }
+            totalPriceLabel.setText("Total Price: $" + updatedTotalCost + (currentUser != null && currentUser.getIsMember() ? " (100$ off for members)" : ""));
+
+            
         });
         gbc.gridwidth = 2;
         checkoutPanel.add(insuranceCheckBox, gbc);
@@ -1035,7 +1042,13 @@ public class Main {
                     return; // Early return to prevent further execution
                 }
                 // Retrieve the total price from the selectedSeats and flightInfo
-                int totalPrice = totalCost;
+                int totalPrice = Cost;
+                if (currentUser != null && currentUser.getIsMember()) {
+                    totalPrice -= 100; // Member discount
+                }
+                if (insuranceCheckBox.isSelected()) {
+                    totalPrice += 100; // Insurance cost
+                }
 
                 boolean cancellationInsurance = insuranceCheckBox.isSelected();
                 if (cancellationInsurance) {
