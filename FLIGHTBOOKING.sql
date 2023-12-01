@@ -69,8 +69,7 @@ CREATE TABLE IF NOT EXISTS Payments (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,
     BookingID INT NOT NULL,
     Amount DECIMAL(10, 2) NOT NULL,
-    CreditCardUsed VARCHAR(255) NOT NULL,
-    FOREIGN KEY (BookingID) REFERENCES Bookings(BookingID)
+    CreditCardUsed VARCHAR(255) NOT NULL
 );
 
 -- Crews Table
@@ -236,7 +235,6 @@ VALUES
     (3, '36', 'Business', 1000, FALSE);
 
 -- Bookings Table
-
 INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
 
 VALUES

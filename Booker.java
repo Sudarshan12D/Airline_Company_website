@@ -126,19 +126,54 @@ public class Booker {
         seatObject.setIsBooked(true);
     }
 
-    public static void cancelBooking(Plane thisPlane, String SeatID, Bookings thisBooking) {
-        removeBooking(thisBooking);
-        updateSeatDBNot(thisPlane, SeatID);
-        setSeatNotBooked(thisPlane, SeatID);
-    }
+    public static void cancelBooking(FlightList flightList, Object[] row) {
+        int flightID = (int) row[0];
+        String seatID = (String) row[5];
+        System.out.println("1");
 
-    public static void removeBooking(Bookings thisBooking) {
-        String SQL = "DELETE FROM Bookings WHERE BookingID = ?";
+        // Find the corresponding flight in the flightList
+        FlightItinerary selectedFlight = null;
+        for (FlightItinerary flight : flightList.getListOfFlights()) {
+            if (flight.getId() == flightID) {
+                selectedFlight = flight;
+                break;
+            }
+        }
+        System.out.println("2");
+
+        if (selectedFlight != null) {
+            System.out.println("3");
+            // Find the corresponding plane in the selected flight
+            Plane selectedPlane = selectedFlight.getPlane();
+    
+            // Find the corresponding seat in the selected plane
+            int parsedSeatID = Integer.parseInt(seatID);
+            Seat selectedSeat = selectedPlane.getSeat(parsedSeatID + (36 * (selectedFlight.getId() -1)));
+    
+            if (selectedSeat != null) {
+                System.out.println("4");
+                removeBooking(parsedSeatID, selectedFlight.getId());
+                updateSeatDBNot(selectedPlane, selectedSeat.getId());
+                setSeatNotBooked(selectedSeat);
+                System.out.println("Booking canceled successfully.");
+                }
+            } else {
+                System.out.println("Selected seat not found on the plane.");
+            }
+        }
+
+    public static void removeBooking(int SeatID, int FlightID) {
+        String SQL = "DELETE FROM Bookings WHERE SeatID = ? AND FlightID = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            System.out.println("SeatID: "+ SeatID);
+            System.out.println("FlightID: " + FlightID);
+
     
-            pstmt.setInt(1, Integer.parseInt(thisBooking.getBookingID()));
-    
+            pstmt.setInt(1, SeatID);
+            pstmt.setInt(2, FlightID);    
+
             int affectedRows = pstmt.executeUpdate();
     
             if (affectedRows > 0) {
@@ -152,16 +187,15 @@ public class Booker {
         }
     }
 
-    public static void updateSeatDBNot(Plane thisPlane, String seatID) {
-        int parsedSeatID = Integer.parseInt(seatID);
-        int updatedSeatID = parsedSeatID + (36 * (thisPlane.getId() - 1));
+    public static void updateSeatDBNot(Plane thisPlane, int seatID) {
+        //int updatedSeatID = seatID + (36 * (thisPlane.getId() - 1));
     
         String SQL = "UPDATE Seats SET IsBooked = FALSE WHERE SeatID = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(SQL)) {
     
-            pstmt.setInt(1, updatedSeatID);
+            pstmt.setInt(1, seatID);
     
             pstmt.executeUpdate();
     
@@ -170,10 +204,7 @@ public class Booker {
         }
     }
 
-    public static void setSeatNotBooked(Plane thisPlane, String seatID) {
-        int parsedSeatID = Integer.parseInt(seatID);
-        int modifiedSeatID = parsedSeatID + (36 * (thisPlane.getId() - 1));
-        Seat seatObject = thisPlane.getSeat(modifiedSeatID);
-        seatObject.setIsBooked(false);
+    public static void setSeatNotBooked(Seat thisSeat) {
+        thisSeat.setIsBooked(false);
     }
 }

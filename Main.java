@@ -310,7 +310,7 @@ public class Main {
                         Object[] rowData = toDisplayBookings.get(row);
             
                         // Call cancelBooking() with the retrieved data
-                        Booker.cancelBooking(rowData); // Assuming cancelBooking method accepts an Object array
+                        Booker.cancelBooking(availableFlights, rowData); // Assuming cancelBooking method accepts an Object array
             
                         // Show confirmation message
                         JOptionPane.showMessageDialog(table, "Your flight has been canceled.\nYour payment has been refunded to your credit card");
