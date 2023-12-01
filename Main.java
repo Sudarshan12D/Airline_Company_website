@@ -150,54 +150,54 @@ public class Main {
         //................................................MyBookings button.................................................../
 
         // ButtonRenderer and ButtonEditor for "Cancel Flight" button
-        class ButtonRenderer extends JButton implements TableCellRenderer {
-            public ButtonRenderer() {
-                setOpaque(true);
-            }
+        // class ButtonRenderer extends JButton implements TableCellRenderer {
+        //     public ButtonRenderer() {
+        //         setOpaque(true);
+        //     }
 
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                        boolean isSelected, boolean hasFocus, int row, int column) {
-                setText((value == null) ? "" : value.toString());
-                return this;
-            }
-        }
+        //     public Component getTableCellRendererComponent(JTable table, Object value,
+        //                                                 boolean isSelected, boolean hasFocus, int row, int column) {
+        //         setText((value == null) ? "" : value.toString());
+        //         return this;
+        //     }
+        // }
 
-        class ButtonEditor extends DefaultCellEditor {
-            protected JButton button;
-            private String label;
-            private boolean isPushed;
+        // class ButtonEditor extends DefaultCellEditor {
+        //     protected JButton button;
+        //     private String label;
+        //     private boolean isPushed;
 
-            public ButtonEditor(JCheckBox checkBox) {
-                super(checkBox);
-                button = new JButton();
-                button.setOpaque(true);
-                button.addActionListener(e -> fireEditingStopped());
-            }
+        //     public ButtonEditor(JCheckBox checkBox) {
+        //         super(checkBox);
+        //         button = new JButton();
+        //         button.setOpaque(true);
+        //         button.addActionListener(e -> fireEditingStopped());
+        //     }
 
-            public Component getTableCellEditorComponent(JTable table, Object value,
-                                                        boolean isSelected, int row, int column) {
-                if (isSelected) {
-                    button.setForeground(table.getSelectionForeground());
-                    button.setBackground(table.getSelectionBackground());
-                } else {
-                    button.setForeground(table.getForeground());
-                    button.setBackground(table.getBackground());
-                }
-                label = (value == null) ? "" : value.toString();
-                button.setText(label);
-                isPushed = true;
-                return button;
-            }
+        //     public Component getTableCellEditorComponent(JTable table, Object value,
+        //                                                 boolean isSelected, int row, int column) {
+        //         if (isSelected) {
+        //             button.setForeground(table.getSelectionForeground());
+        //             button.setBackground(table.getSelectionBackground());
+        //         } else {
+        //             button.setForeground(table.getForeground());
+        //             button.setBackground(table.getBackground());
+        //         }
+        //         label = (value == null) ? "" : value.toString();
+        //         button.setText(label);
+        //         isPushed = true;
+        //         return button;
+        //     }
 
-            public Object getCellEditorValue() {
-                if (isPushed) {
-                    // TODO: Implement the cancellation logic here
-                    System.out.println(label + ": Cancellation logic here");
-                }
-                isPushed = false;
-                return label;
-            }
-        }
+        //     public Object getCellEditorValue() {
+        //         if (isPushed) {
+        //             // TODO: Implement the cancellation logic here
+        //             System.out.println(label + ": Cancellation logic here");
+        //         }
+        //         isPushed = false;
+        //         return label;
+        //     }
+        // }
 
         myBookingsButton.addActionListener(e -> {
             //Load bookings from database
@@ -211,7 +211,7 @@ public class Main {
                 if(Integer.valueOf(bookingsList.get(i).getUserID()) == currentUser.getID()){
                     int bookedFlightID = Integer.valueOf(bookingsList.get(i).getFlightID());
                     int bookedSeatID = Integer.valueOf(bookingsList.get(i).getSeatID());
-                    int bookedUserID = Integer.valueOf(bookingsList.get(i).getUserID());
+                    //int bookedUserID = Integer.valueOf(bookingsList.get(i).getUserID());
 
                     FlightItinerary bookedFlight = null;
                     LocationInformation bookedLocation = null;
@@ -255,11 +255,6 @@ public class Main {
             }
 
 
-
-
-
-
-
             // Create a dialog that acts as a popup
             JDialog myBookingsDialog = new JDialog(frame, "My Bookings", false); // false means it's not modal
             myBookingsDialog.setLayout(new BorderLayout());
@@ -268,9 +263,7 @@ public class Main {
         
             // Define the column names for the table
             String[] bookingColumnNames = { "Flight ID", "Origin", "Destination", "Departure", "Arrival", "Selected Seats", "Action" };
-        
-            // Retrieve the booking data for the current user
-            //ArrayList<Object[]> myBookingData = retrieveMyBookings(currentUser);
+    
         
             // Create a table model for "My Bookings"
             DefaultTableModel myBookingModel = new DefaultTableModel(bookingColumnNames, 0) {
@@ -326,12 +319,6 @@ public class Main {
             JScrollPane myBookingsScrollPane = new JScrollPane(myBookingsTable);
             myBookingsDialog.add(myBookingsScrollPane, BorderLayout.CENTER);
         
-            // Add the close button at the bottom of the dialog
-            JButton closeButton = new JButton("Close");
-            closeButton.addActionListener(closeEvent -> myBookingsDialog.dispose());
-            JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            closePanel.add(closeButton);
-            myBookingsDialog.add(closePanel, BorderLayout.SOUTH);
         
             // Make the dialog visible
             myBookingsDialog.setVisible(true);
