@@ -121,7 +121,7 @@ VALUES
 INSERT INTO Seats (PlaneID, SeatNumber, SeatType, Price, IsBooked)
 VALUES
     -- Seats for Flight 1
-    (1, '1', 'firstClass', 700, TRUE),
+    (1, '1', 'firstClass', 700, FALSE),
     (1, '2', 'firstClass', 700, FALSE),
     (1, '3', 'firstClass', 700, FALSE),
     (1, '4', 'firstClass', 700, FALSE),
@@ -133,7 +133,7 @@ VALUES
     (1, '10', 'firstClass', 700, FALSE),
     (1, '11', 'firstClass', 700, FALSE),
     (1, '12', 'firstClass', 700, FALSE),
-    (1, '13', 'Economy', 500, TRUE),
+    (1, '13', 'Economy', 500, FALSE),
     (1, '14', 'Economy', 500, FALSE),
     (1, '15', 'Economy', 500, FALSE),
     (1, '16', 'Economy', 500, FALSE),
@@ -141,7 +141,7 @@ VALUES
     (1, '18', 'Economy', 500, FALSE),
     (1, '19', 'Economy', 500, FALSE),
     (1, '20', 'Economy', 500, FALSE),
-    (1, '21', 'Economy', 500, TRUE),
+    (1, '21', 'Economy', 500, FALSE),
     (1, '22', 'Economy', 500, FALSE),
     (1, '23', 'Economy', 500, FALSE),
     (1, '24', 'Economy', 500, FALSE),
@@ -160,7 +160,7 @@ VALUES
     
     -- Seats for Flight 2
     (2, '1', 'firstClass', 700, FALSE),
-    (2, '2', 'firstClass', 700, TRUE),
+    (2, '2', 'firstClass', 700, FALSE),
     (2, '3', 'firstClass', 700, FALSE),
     (2, '4', 'firstClass', 700, FALSE),
     (2, '5', 'firstClass', 700, FALSE),
@@ -199,7 +199,7 @@ VALUES
     -- Seats for Flight 3
     (3, '1', 'firstClass', 700, FALSE),
     (3, '2', 'firstClass', 700, FALSE),
-    (3, '3', 'firstClass', 700, TRUE),
+    (3, '3', 'firstClass', 700, FALSE),
     (3, '4', 'firstClass', 700, FALSE),
     (3, '5', 'firstClass', 700, FALSE),
     (3, '6', 'firstClass', 700, FALSE),
@@ -234,20 +234,7 @@ VALUES
     (3, '35', 'Business', 1000, FALSE),
     (3, '36', 'Business', 1000, FALSE);
 
--- Bookings Table
-INSERT INTO Bookings (UserID, FlightID, SeatID, CancellationInsurance)
 
-VALUES
-    (1, 1, 1, TRUE),
-    (2, 2, 2, FALSE),
-    (3, 3, 3, TRUE);
-
--- Payments Table
-INSERT INTO Payments (BookingID, Amount, CreditCardUsed)
-VALUES
-    (1, 120.00, '****-****-****-1234'),
-    (2, 150.00, '****-****-****-5678'),
-    (3, 200.00, '****-****-****-9012');
 
 -- Crews Table
 INSERT INTO Crews (Name, Position)
