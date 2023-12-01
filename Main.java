@@ -147,54 +147,54 @@ public class Main {
         // button.................................................../
 
         // ButtonRenderer and ButtonEditor for "Cancel Flight" button
-        class ButtonRenderer extends JButton implements TableCellRenderer {
-            public ButtonRenderer() {
-                setOpaque(true);
-            }
+        // class ButtonRenderer extends JButton implements TableCellRenderer {
+        //     public ButtonRenderer() {
+        //         setOpaque(true);
+        //     }
 
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                setText((value == null) ? "" : value.toString());
-                return this;
-            }
-        }
+        //     public Component getTableCellRendererComponent(JTable table, Object value,
+        //                                                 boolean isSelected, boolean hasFocus, int row, int column) {
+        //         setText((value == null) ? "" : value.toString());
+        //         return this;
+        //     }
+        // }
 
-        class ButtonEditor extends DefaultCellEditor {
-            protected JButton button;
-            private String label;
-            private boolean isPushed;
+        // class ButtonEditor extends DefaultCellEditor {
+        //     protected JButton button;
+        //     private String label;
+        //     private boolean isPushed;
 
-            public ButtonEditor(JCheckBox checkBox) {
-                super(checkBox);
-                button = new JButton();
-                button.setOpaque(true);
-                button.addActionListener(e -> fireEditingStopped());
-            }
+        //     public ButtonEditor(JCheckBox checkBox) {
+        //         super(checkBox);
+        //         button = new JButton();
+        //         button.setOpaque(true);
+        //         button.addActionListener(e -> fireEditingStopped());
+        //     }
 
-            public Component getTableCellEditorComponent(JTable table, Object value,
-                    boolean isSelected, int row, int column) {
-                if (isSelected) {
-                    button.setForeground(table.getSelectionForeground());
-                    button.setBackground(table.getSelectionBackground());
-                } else {
-                    button.setForeground(table.getForeground());
-                    button.setBackground(table.getBackground());
-                }
-                label = (value == null) ? "" : value.toString();
-                button.setText(label);
-                isPushed = true;
-                return button;
-            }
+        //     public Component getTableCellEditorComponent(JTable table, Object value,
+        //                                                 boolean isSelected, int row, int column) {
+        //         if (isSelected) {
+        //             button.setForeground(table.getSelectionForeground());
+        //             button.setBackground(table.getSelectionBackground());
+        //         } else {
+        //             button.setForeground(table.getForeground());
+        //             button.setBackground(table.getBackground());
+        //         }
+        //         label = (value == null) ? "" : value.toString();
+        //         button.setText(label);
+        //         isPushed = true;
+        //         return button;
+        //     }
 
-            public Object getCellEditorValue() {
-                if (isPushed) {
-                    // TODO: Implement the cancellation logic here
-                    System.out.println(label + ": Cancellation logic here");
-                }
-                isPushed = false;
-                return label;
-            }
-        }
+        //     public Object getCellEditorValue() {
+        //         if (isPushed) {
+        //             // TODO: Implement the cancellation logic here
+        //             System.out.println(label + ": Cancellation logic here");
+        //         }
+        //         isPushed = false;
+        //         return label;
+        //     }
+        // }
 
         myBookingsButton.addActionListener(e -> {
             // Load bookings from database
@@ -206,7 +206,7 @@ public class Main {
                 if (Integer.valueOf(bookingsList.get(i).getUserID()) == currentUser.getID()) {
                     int bookedFlightID = Integer.valueOf(bookingsList.get(i).getFlightID());
                     int bookedSeatID = Integer.valueOf(bookingsList.get(i).getSeatID());
-                    // int bookedUserID = Integer.valueOf(bookingsList.get(i).getUserID());
+                    //int bookedUserID = Integer.valueOf(bookingsList.get(i).getUserID());
 
                     FlightItinerary bookedFlight = null;
                     LocationInformation bookedLocation = null;
@@ -245,6 +245,7 @@ public class Main {
                 }
             }
 
+
             // Create a dialog that acts as a popup
             JDialog myBookingsDialog = new JDialog(frame, "My Bookings", false); // false means it's not modal
             myBookingsDialog.setLayout(new BorderLayout());
@@ -252,12 +253,9 @@ public class Main {
             myBookingsDialog.setLocationRelativeTo(frame); // Set the location relative to the main frame
 
             // Define the column names for the table
-            String[] bookingColumnNames = { "Flight ID", "Origin", "Destination", "Departure", "Arrival",
-                    "Selected Seats", "Action" };
-
-            // Retrieve the booking data for the current user
-            // ArrayList<Object[]> myBookingData = retrieveMyBookings(currentUser);
-
+            String[] bookingColumnNames = { "Flight ID", "Origin", "Destination", "Departure", "Arrival", "Selected Seats", "Action" };
+    
+        
             // Create a table model for "My Bookings"
             DefaultTableModel myBookingModel = new DefaultTableModel(bookingColumnNames, 0) {
                 @Override
@@ -278,8 +276,6 @@ public class Main {
 
             // Create the table with the model
             JTable myBookingsTable = new JTable(myBookingModel);
-            // myBookingsTable.getColumnModel().getColumn(6).setCellRenderer(new
-            // ButtonRenderer());
 
             myBookingsTable.getColumnModel().getColumn(6).setCellRenderer(new TableCellRenderer() {
                 @Override
@@ -301,8 +297,7 @@ public class Main {
                         Object[] rowData = toDisplayBookings.get(row);
 
                         // Call cancelBooking() with the retrieved data
-                        Booker.cancelBooking(availableFlights, rowData); // Assuming cancelBooking method accepts an
-                                                                         // Object array
+                        Booker.cancelBooking(availableFlights, rowData); // Assuming cancelBooking method accepts an Object array
 
                         // Show confirmation message
                         JOptionPane.showMessageDialog(table,
@@ -319,14 +314,8 @@ public class Main {
             // Add a scroll pane with the table to the dialog
             JScrollPane myBookingsScrollPane = new JScrollPane(myBookingsTable);
             myBookingsDialog.add(myBookingsScrollPane, BorderLayout.CENTER);
-
-            // Add the close button at the bottom of the dialog
-            JButton closeButton = new JButton("Close");
-            closeButton.addActionListener(closeEvent -> myBookingsDialog.dispose());
-            JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            closePanel.add(closeButton);
-            myBookingsDialog.add(closePanel, BorderLayout.SOUTH);
-
+        
+        
             // Make the dialog visible
             myBookingsDialog.setVisible(true);
         });
@@ -466,8 +455,7 @@ public class Main {
                 loginFrame.setVisible(true);
             });
 
-            // ..............................SIGN OUT EVENT
-            // Listener..........................................................
+            // ..............................SIGN OUT EVENT Listener..........................................................
             signOutButton.addActionListener(signOutEvent -> {
                 currentUser = null; // Reset the current user
                 signOutButton.setVisible(false); // Hide the sign out button
@@ -486,8 +474,7 @@ public class Main {
             authButtonsPanel.add(signOutButton);
             authButtonsPanel.add(membershipButton);
 
-            // ....................................SIGNUP EVENT
-            // Listener...................................................
+            // ....................................SIGNUP EVENT Listener...................................................
 
             signUpButton.addActionListener(ev -> {
                 // Create a new frame for sign up
@@ -508,9 +495,7 @@ public class Main {
 
                 // Title "Create new user"
                 JLabel signuptitleLabel = new JLabel("Create new user");
-                signuptitleLabel.setFont(new Font(signuptitleLabel.getFont().getName(), Font.BOLD, 18)); // Set font to
-                                                                                                         // bold and
-                                                                                                         // size 18
+                signuptitleLabel.setFont(new Font(signuptitleLabel.getFont().getName(), Font.BOLD, 18)); // Set font to bold and size 18
                 gbc.gridwidth = 2; // This component will span two columns
                 gbc.gridx = 0; // Align to the first column
                 gbc.gridy = 0; // Place it on the first row
@@ -559,8 +544,7 @@ public class Main {
                 // Address label and text field
                 centerPanel.add(new JLabel("Address:"), gbc);
                 gbc.gridx++; // Move to the next column
-                gbc.gridwidth = GridBagConstraints.REMAINDER; // This will make the address field span the rest of the
-                                                              // row
+                gbc.gridwidth = GridBagConstraints.REMAINDER; // This will make the address field span the rest of the row
                 JTextField addressField = new JTextField(20);
                 centerPanel.add(addressField, gbc);
 
@@ -575,8 +559,7 @@ public class Main {
 
                 gbc.fill = GridBagConstraints.NONE; // Do not resize the button
                 gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally in its cell
-                gbc.insets = new Insets(20, 0, 10, 0); // Top padding of 20, bottom padding of 10// Submit button
-                                                       // constraints
+                gbc.insets = new Insets(20, 0, 10, 0); // Top padding of 20, bottom padding of 10// Submit button constraints
                 gbc.gridx = 0; // Start at the first column
                 gbc.gridy++; // Move to the next row after the text fields
                 gbc.gridwidth = 2; // Span across two columns
@@ -645,8 +628,7 @@ public class Main {
             // Add the top panel to the frame
             frame.add(topPanel, BorderLayout.NORTH);
 
-            // .................................... Retrieve flight
-            // data......................................................
+            // .................................... Retrieve flight data......................................................
             ArrayList<Object[]> flightData = availableFlights.getAllFlightInfo();
             Object[][] data = new Object[flightData.size()][6]; // Adjusted for 6 columns
 
@@ -766,8 +748,7 @@ public class Main {
                             // ..................................CONTINUE BUTTON
                             // HERE.........................................
                             JButton continueButton = new JButton("Continue");
-                            continueButton.setAlignmentX(Component.CENTER_ALIGNMENT); // To align the button in the
-                                                                                      // center of the box layout
+                            continueButton.setAlignmentX(Component.CENTER_ALIGNMENT); // To align the button in the center of the box layout
                             continueButton.setBackground(new Color(0, 153, 0)); // Set the button color to green
                             continueButton.setForeground(Color.WHITE); // Set the text color to white
                             continueButton.addActionListener(new ActionListener() {
@@ -789,9 +770,7 @@ public class Main {
                                             totalCost += seatPrice;
                                         }
 
-                                        String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the
-                                                                                                       // flight ID from
-                                                                                                       // the table.
+                                        String selectedFlightId = table.getValueAt(row, 0).toString(); // This gets the flight ID from the table.
 
                                         // Now you have the total cost, you can pass it to your createCheckoutFrame or
                                         // use it as needed.
