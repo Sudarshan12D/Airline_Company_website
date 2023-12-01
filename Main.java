@@ -310,6 +310,7 @@ public class Main {
 
                         // Optionally remove the row from the table model
                         ((DefaultTableModel) table.getModel()).removeRow(row);
+                        myBookingsDialog.dispose();
                     });
                     return button;
                 }
@@ -1014,9 +1015,33 @@ public class Main {
         gbc.gridy++;
 
         // Existing code
+        JTextField cardNumberField = new JTextField(20);
+        cardNumberField.setToolTipText("Enter 16-digit card number");
+
+        // Check if current user is a member
+        if (currentUser != null && currentUser.getIsMember()) {
+            // If user is a member, retrieve the credit card number
+            String creditCardNumber = currentUser.getCreditCardNumber();
+            
+            // Replace the first 12 digits with asterisks and keep the last 4 digits
+            if (creditCardNumber.length() >= 16) {
+                String maskedNumber = "**** **** **** " + creditCardNumber.substring(12);
+                cardNumberField.setText(maskedNumber);
+            } else {
+                // Handle the unexpected case where the card number is not of the correct length
+                cardNumberField.setText(creditCardNumber); // Or some error handling
+            }
+        
+            cardNumberField.setEditable(false);
+        } else {
+            // If user is not a member, allow them to enter their card number
+            cardNumberField.setEditable(true);
+            cardNumberField.setText(""); // Clear any pre-filled text
+        }
+        
+
         checkoutPanel.add(new JLabel("Card Number:"), gbc);
         gbc.gridx++;
-        JTextField cardNumberField = new JTextField(20);
         checkoutPanel.add(cardNumberField, gbc);
         gbc.gridx = 0;
         gbc.gridy++;
@@ -1056,6 +1081,19 @@ public class Main {
                     return; // Early return to prevent further execution
                 }
                 // Retrieve the total price from the selectedSeats and flightInfo
+                if (!currentUser.getIsMember()) {
+                    String cardNumber = cardNumberField.getText().trim();
+        
+                    // Validate card number
+                    if (cardNumber.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please enter the card number.");
+                        return; // Stop further processing
+                    }
+                    if (!cardNumber.matches("\\d{16}")) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid 16-digit card number.");
+                        return; // Stop further processing
+                    }
+                }
                 int totalPrice = totalCost;
 
                 boolean cancellationInsurance = insuranceCheckBox.isSelected();
