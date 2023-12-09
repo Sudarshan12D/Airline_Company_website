@@ -5,6 +5,8 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static Connection connection;
 
+    // -------------------------- SINGELTON CLASS --------------------------
+
     private DatabaseConnection() {
         // private constructor to prevent instantiation
     }

@@ -66,7 +66,7 @@ public class Main {
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setOpaque(false);
 
-
+        // ....................................MEMBERSHIP...................................................
         membershipButton.addActionListener(e -> {
             // Create a new frame for membership details
             JFrame membershipFrame = new JFrame("Membership Registration");
@@ -95,7 +95,7 @@ public class Main {
             membershipFrame.add(registerButton);
 
             // Set the size of the frame
-            membershipFrame.setSize(300, 200);
+            membershipFrame.setSize(330, 200);
 
             // Set frame behavior and make it visible
             membershipFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -126,14 +126,16 @@ public class Main {
                         signUpButton.setVisible(true);
                         myBookingsButton.setVisible(false);
                         membershipButton.setVisible(false); // Hide membership button as the user is now a member
-                        welcomeLabel.setVisible(false);
+                        
                         // Prompt user to sign in again as a member
                         JOptionPane.showMessageDialog(membershipFrame, "Membership registered. Please sign in again.",
                                 "Membership Registered", JOptionPane.INFORMATION_MESSAGE);
 
                         // Reset the current user to null to enforce re-login
                         currentUser = null;
-
+                        if (currentUser == null){
+                            welcomeLabel.setVisible(false);
+                        }
                         membershipFrame.dispose();
                     } else {
                         JOptionPane.showMessageDialog(membershipFrame, "Registration failed. Please try again.",
@@ -144,7 +146,7 @@ public class Main {
 
         });
 
-        
+        // ....................................MY BOOKINGS...................................................
         myBookingsButton.addActionListener(e -> {
             // Load bookings from database
             bookingsList = FlightDataRetriever.loadBookingData();
@@ -370,6 +372,7 @@ public class Main {
                             signUpButton.setVisible(false);
                             signOutButton.setVisible(true); // Show the sign out button
                             welcomeLabel.setText("Welcome " + currentUser.getEmail());
+                            welcomeLabel.setVisible(true);
                             myBookingsButton.setVisible(true);
 
                             // Check if the user is already a member
@@ -610,7 +613,7 @@ public class Main {
                 }
             };
 
-            // Add a mouse listener to handle clicks on the "Book" button
+            // ....................................SEATS...................................................
             table.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     int column = table.getColumnModel().getColumnIndexAtX(e.getX());
@@ -873,7 +876,7 @@ public class Main {
         frame.setVisible(true);
     }
 
-        
+    // ....................................CHECKOUT...................................................
     private static void createCheckoutFrame(Object[] flightInfo, int Cost, FlightList availableFlights, String selectedFlightId, JFrame seatsFrame, int row) {
         JFrame checkoutFrame = new JFrame("Checkout");
         checkoutFrame.setLayout(new BorderLayout());
