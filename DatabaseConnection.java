@@ -5,6 +5,8 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static Connection connection;
 
+    // -------------------------- SINGELTON CLASS --------------------------
+
     private DatabaseConnection() {
         // private constructor to prevent instantiation
     }
@@ -29,11 +31,7 @@ public class DatabaseConnection {
         try {
             String url = "jdbc:mysql://localhost:3306/FLIGHT_BOOKINGS";
             String username = "root";
-<<<<<<< HEAD
-            String password = "Barcelona15";
-=======
-            String password = "hgrt%48K";
->>>>>>> ceedbd0fb04d51c9e6e512f8567d58ec0d210c8f
+            String password = "Sudu12june@#";
 
             // Load the JDBC driver
            Class.forName("com.mysql.cj.jdbc.Driver");
